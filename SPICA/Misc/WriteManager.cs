@@ -12,7 +12,7 @@ namespace SPICA.Misc
 
         public static StreamWriter CreateOutputFile(String OutputFileName)
         {
-            String newFilePath = getDesktopPath() + "\\" + OutputFileName;
+            String newFilePath = Path.Combine(getDesktopPath(), OutputFileName);
             return new StreamWriter(newFilePath);
         }
     }
