@@ -13,9 +13,9 @@ namespace SPICA.Formats.Generic.COLLADA
 
         public DAEMatrix matrix;
 
-        [XmlElement("translate")] public DAEVector3   Translation;
-        [XmlElement("rotate")]    public DAEVector4[] Rotation;
-        [XmlElement("scale")]     public DAEVector3   Scale;
+        [XmlElement("translate")] public DAEVector3 Translation;
+        [XmlElement("rotate")] public DAEVector4[] Rotation;
+        [XmlElement("scale")] public DAEVector3 Scale;
 
         [XmlElement("node")] public List<DAENode> Nodes;
 
@@ -30,7 +30,7 @@ namespace SPICA.Formats.Generic.COLLADA
             Rotation[0] = new DAEVector4() { sid = "rotateZ" };
             Rotation[1] = new DAEVector4() { sid = "rotateY" };
             Rotation[2] = new DAEVector4() { sid = "rotateX" };
-            Scale       = new DAEVector3() { sid = "scale" };
+            Scale = new DAEVector3() { sid = "scale" };
 
             Translation.Set(T);
             Rotation[0].Set(new Vector4(0, 0, 1, DAEUtils.RadToDeg(R.Z)));

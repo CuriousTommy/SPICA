@@ -1,6 +1,6 @@
 ﻿using SPICA.Formats.Common;
 using SPICA.Math3D;
-
+using SPICA.Misc;
 using System.IO;
 using System.Numerics;
 
@@ -15,7 +15,7 @@ namespace SPICA.Formats.GFL2.Model.Material
         public GFTextureMappingType MappingType;
 
         public Vector2 Scale;
-        public float   Rotation;
+        public float Rotation;
         public Vector2 Translation;
 
         public GFTextureWrap WrapU;
@@ -26,25 +26,25 @@ namespace SPICA.Formats.GFL2.Model.Material
 
         public uint MinLOD;
 
-        public GFTextureCoord(BinaryReader Reader)
+        public GFTextureCoord(ref StreamWriter outputFile, LogReader Reader)
         {
-            Name = new GFHashName(Reader).Name;
+            Name = new GFHashName(ref outputFile, Reader).Name;
 
-            UnitIndex = Reader.ReadByte();
+            UnitIndex = Reader.ReadByte(ref outputFile);
 
             MappingType = (GFTextureMappingType)Reader.ReadByte();
 
-            Scale       = Reader.ReadVector2();
-            Rotation    = Reader.ReadSingle();
-            Translation = Reader.ReadVector2();
+            Scale = Reader.ReadVector2(ref outputFile);
+            Rotation = Reader.ReadSingle(ref outputFile);
+            Translation = Reader.ReadVector2(ref outputFile);
 
-            WrapU = (GFTextureWrap)Reader.ReadUInt32();
-            WrapV = (GFTextureWrap)Reader.ReadUInt32();
+            WrapU = (GFTextureWrap)Reader.ReadUInt32(ref outputFile);
+            WrapV = (GFTextureWrap)Reader.ReadUInt32(ref outputFile);
 
-            MagFilter = (GFMagFilter)Reader.ReadUInt32(); //Not sure
-            MinFilter = (GFMinFilter)Reader.ReadUInt32(); //Not sure
+            MagFilter = (GFMagFilter)Reader.ReadUInt32(ref outputFile); //Not sure
+            MinFilter = (GFMinFilter)Reader.ReadUInt32(ref outputFile); //Not sure
 
-            MinLOD = Reader.ReadUInt32(); //Not sure
+            MinLOD = Reader.ReadUInt32(ref outputFile); //Not sure
         }
 
         public Matrix3x4 GetTransform()

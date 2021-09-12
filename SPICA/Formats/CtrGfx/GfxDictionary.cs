@@ -4,13 +4,14 @@ using SPICA.Serialization.Attributes;
 
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 
 namespace SPICA.Formats.CtrGfx
 {
     class GfxDictionary<T> : ICustomSerialization, ICollection<T>, INameIndexed where T : INamed
     {
         [Ignore] private List<GfxDictionaryNode<T>> Nodes;
-        [Ignore] private List<T>                    Values;
+        [Ignore] private List<T> Values;
 
         [Ignore] private bool TreeNeedsRebuild;
 
@@ -31,21 +32,21 @@ namespace SPICA.Formats.CtrGfx
 
         public GfxDictionary()
         {
-            Nodes  = new List<GfxDictionaryNode<T>> { new GfxDictionaryNode<T>() };
+            Nodes = new List<GfxDictionaryNode<T>> { new GfxDictionaryNode<T>() };
             Values = new List<T>();
         }
 
-        void ICustomSerialization.Deserialize(BinaryDeserializer Deserializer)
+        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer)
         {
             uint MagicNumber = Deserializer.Reader.ReadUInt32();
-            uint TreeLength  = Deserializer.Reader.ReadUInt32();
+            uint TreeLength = Deserializer.Reader.ReadUInt32();
             uint ValuesCount = Deserializer.Reader.ReadUInt32();
 
             Nodes.Clear();
 
             for (int i = 0; i < ValuesCount + 1; i++)
             {
-                GfxDictionaryNode<T> Node = Deserializer.Deserialize<GfxDictionaryNode<T>>();
+                GfxDictionaryNode<T> Node = Deserializer.Deserialize<GfxDictionaryNode<T>>(ref OutputFile);
 
                 if (Nodes.Count > 0) Values.Add(Node.Value);
 
@@ -159,7 +160,7 @@ namespace SPICA.Formats.CtrGfx
             {
                 GfxDictionaryNode<T> Node = new GfxDictionaryNode<T>
                 {
-                    Name  = Value.Name,
+                    Name = Value.Name,
                     Value = Value
                 };
 

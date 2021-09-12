@@ -46,9 +46,9 @@ namespace SPICA.Rendering.Animation
                 State.Transforms[1] = Params.TextureCoords[1].GetTransform().ToMatrix4();
                 State.Transforms[2] = Params.TextureCoords[2].GetTransform().ToMatrix4();
 
-                State.Emission  = Params.EmissionColor .ToColor4();
-                State.Ambient   = Params.AmbientColor  .ToColor4();
-                State.Diffuse   = Params.DiffuseColor  .ToColor4();
+                State.Emission = Params.EmissionColor.ToColor4();
+                State.Ambient = Params.AmbientColor.ToColor4();
+                State.Diffuse = Params.DiffuseColor.ToColor4();
                 State.Specular0 = Params.Specular0Color.ToColor4();
                 State.Specular1 = Params.Specular1Color.ToColor4();
                 State.Constant0 = Params.Constant0Color.ToColor4();
@@ -101,9 +101,9 @@ namespace SPICA.Rendering.Animation
 
                     switch (Elem.TargetType)
                     {
-                        case H3DTargetType.MaterialEmission:  SetRGBA(RGBA, ref State.Emission);  break;
-                        case H3DTargetType.MaterialAmbient:   SetRGBA(RGBA, ref State.Ambient);   break;
-                        case H3DTargetType.MaterialDiffuse:   SetRGBA(RGBA, ref State.Diffuse);   break;
+                        case H3DTargetType.MaterialEmission: SetRGBA(RGBA, ref State.Emission); break;
+                        case H3DTargetType.MaterialAmbient: SetRGBA(RGBA, ref State.Ambient); break;
+                        case H3DTargetType.MaterialDiffuse: SetRGBA(RGBA, ref State.Diffuse); break;
                         case H3DTargetType.MaterialSpecular0: SetRGBA(RGBA, ref State.Specular0); break;
                         case H3DTargetType.MaterialSpecular1: SetRGBA(RGBA, ref State.Specular1); break;
                         case H3DTargetType.MaterialConstant0: SetRGBA(RGBA, ref State.Constant0); break;
@@ -120,9 +120,9 @@ namespace SPICA.Rendering.Animation
 
                     switch (Elem.TargetType)
                     {
-                        case H3DTargetType.MaterialTexCoord0Scale: SetVector2(Vector, ref TC[0].Scale);       break;
-                        case H3DTargetType.MaterialTexCoord1Scale: SetVector2(Vector, ref TC[1].Scale);       break;
-                        case H3DTargetType.MaterialTexCoord2Scale: SetVector2(Vector, ref TC[2].Scale);       break;
+                        case H3DTargetType.MaterialTexCoord0Scale: SetVector2(Vector, ref TC[0].Scale); break;
+                        case H3DTargetType.MaterialTexCoord1Scale: SetVector2(Vector, ref TC[1].Scale); break;
+                        case H3DTargetType.MaterialTexCoord2Scale: SetVector2(Vector, ref TC[2].Scale); break;
 
                         case H3DTargetType.MaterialTexCoord0Trans: SetVector2(Vector, ref TC[0].Translation); break;
                         case H3DTargetType.MaterialTexCoord1Trans: SetVector2(Vector, ref TC[1].Translation); break;

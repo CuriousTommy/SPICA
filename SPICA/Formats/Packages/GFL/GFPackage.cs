@@ -1,7 +1,6 @@
-using System.IO;
-
 using SPICA.Formats.Common;
 using SPICA.Formats.CtrH3D;
+using System.IO;
 
 namespace SPICA.Formats.Packages
 {
@@ -26,7 +25,7 @@ namespace SPICA.Formats.Packages
                 Input.Seek(4 + i * 4, SeekOrigin.Begin);
 
                 uint StartAddress = Reader.ReadUInt32();
-                uint EndAddress   = Reader.ReadUInt32();
+                uint EndAddress = Reader.ReadUInt32();
 
                 int Length = (int)(EndAddress - StartAddress);
 

@@ -37,16 +37,16 @@ namespace SPICA.Formats.CtrGfx.Model.Material
 
         [Ignore] public float Scale;
 
-        void ICustomSerialization.Deserialize(BinaryDeserializer Deserializer)
+        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer)
         {
             Scale = AmbientF.W;
         }
 
         bool ICustomSerialization.Serialize(BinarySerializer Serializer)
         {
-            EmissionF  = Emission.ToVector4();
-            AmbientF   = Ambient.ToVector4();
-            DiffuseF   = Diffuse.ToVector4();
+            EmissionF = Emission.ToVector4();
+            AmbientF = Ambient.ToVector4();
+            DiffuseF = Diffuse.ToVector4();
             Specular0F = Specular0.ToVector4();
             Specular1F = Specular1.ToVector4();
             Constant0F = Constant0.ToVector4();

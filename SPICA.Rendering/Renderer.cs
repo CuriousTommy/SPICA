@@ -21,8 +21,8 @@ namespace SPICA.Rendering
         public readonly List<Model> Models;
         public readonly List<Light> Lights;
 
-        public readonly Dictionary<string, Texture>      Textures;
-        public readonly Dictionary<string, LUT>          LUTs;
+        public readonly Dictionary<string, Texture> Textures;
+        public readonly Dictionary<string, LUT> LUTs;
         public readonly Dictionary<string, VertexShader> Shaders;
 
         public Color4 SceneAmbient;
@@ -39,8 +39,8 @@ namespace SPICA.Rendering
             Lights = new List<Light>();
 
             Textures = new Dictionary<string, Texture>();
-            LUTs     = new Dictionary<string, LUT>();
-            Shaders  = new Dictionary<string, VertexShader>();
+            LUTs = new Dictionary<string, LUT>();
+            Shaders = new Dictionary<string, VertexShader>();
 
             int VertexShaderHandle = GL.CreateShader(ShaderType.VertexShader);
 
@@ -60,7 +60,7 @@ namespace SPICA.Rendering
 
         public void Resize(int Width, int Height)
         {
-            this.Width  = Width;
+            this.Width = Width;
             this.Height = Height;
 
             GL.Viewport(0, 0, Width, Height);

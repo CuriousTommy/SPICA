@@ -6,6 +6,7 @@ using SPICA.Formats.CtrH3D.Model.Mesh;
 using SPICA.Formats.GFL2.Model.Material;
 using SPICA.Formats.GFL2.Model.Mesh;
 using SPICA.Math3D;
+using SPICA.Misc;
 using SPICA.PICA.Commands;
 
 using System;
@@ -19,54 +20,54 @@ namespace SPICA.Formats.GFL2.Model
 {
     public class GFModel
     {
-        private const uint   MagicNum = 0x15122117u;
+        private const uint MagicNum = 0x15122117u;
         private const string MagicStr = "gfmodel";
 
         internal const string DefaultLUTName = "LookupTableSetContentCtrName";
 
         public string Name;
 
-        public Vector4   BBoxMinVector;
-        public Vector4   BBoxMaxVector;
+        public Vector4 BBoxMinVector;
+        public Vector4 BBoxMaxVector;
         public Matrix4x4 Transform;
 
-        public readonly List<GFBone>     Skeleton;
-        public readonly List<GFLUT>      LUTs;
+        public readonly List<GFBone> Skeleton;
+        public readonly List<GFLUT> LUTs;
         public readonly List<GFMaterial> Materials;
-        public readonly List<GFMesh>     Meshes;
+        public readonly List<GFMesh> Meshes;
 
         public GFModel()
         {
-            Skeleton  = new List<GFBone>();
-            LUTs      = new List<GFLUT>();
+            Skeleton = new List<GFBone>();
+            LUTs = new List<GFLUT>();
             Materials = new List<GFMaterial>();
-            Meshes    = new List<GFMesh>();
+            Meshes = new List<GFMesh>();
         }
 
-        public GFModel(BinaryReader Reader, string ModelName) : this()
+        public GFModel(ref StreamWriter outputFile, LogReader Reader, string ModelName) : this()
         {
             Name = ModelName;
 
-            uint MagicNumber   = Reader.ReadUInt32();
+            uint MagicNumber = Reader.ReadUInt32();
             uint SectionsCount = Reader.ReadUInt32();
 
             GFSection.SkipPadding(Reader.BaseStream);
 
             GFSection ModelSection = new GFSection(Reader);
 
-            GFHashName[] ShaderNames   = ReadHashTable(Reader);
-            GFHashName[] TextureNames  = ReadHashTable(Reader);
+            GFHashName[] ShaderNames = ReadHashTable(Reader);
+            GFHashName[] TextureNames = ReadHashTable(Reader);
             GFHashName[] MaterialNames = ReadHashTable(Reader);
-            GFHashName[] MeshNames     = ReadHashTable(Reader);
+            GFHashName[] MeshNames = ReadHashTable(Reader);
 
             BBoxMinVector = Reader.ReadVector4();
             BBoxMaxVector = Reader.ReadVector4();
-            Transform     = Reader.ReadMatrix4x4();
+            Transform = Reader.ReadMatrix4x4();
 
             //TODO: Investigate what is this (maybe Tile permissions?)
-            uint  UnknownDataLength = Reader.ReadUInt32();
-            uint  UnknownDataOffset = Reader.ReadUInt32();
-            ulong Padding           = Reader.ReadUInt64();
+            uint UnknownDataLength = Reader.ReadUInt32();
+            uint UnknownDataOffset = Reader.ReadUInt32();
+            ulong Padding = Reader.ReadUInt64();
 
             Reader.BaseStream.Seek(UnknownDataOffset + UnknownDataLength, SeekOrigin.Current);
 
@@ -93,7 +94,7 @@ namespace SPICA.Formats.GFL2.Model
 
             for (int Index = 0; Index < MaterialNames.Length; Index++)
             {
-                Materials.Add(new GFMaterial(Reader));
+                Materials.Add(new GFMaterial(ref outputFile, Reader));
             }
 
             for (int Index = 0; Index < MeshNames.Length; Index++)
@@ -160,10 +161,10 @@ namespace SPICA.Formats.GFL2.Model
 
             new GFSection(MagicStr).Write(Writer);
 
-            List<string> ShaderNames   = new List<string>();
-            List<string> TextureNames  = new List<string>();
+            List<string> ShaderNames = new List<string>();
+            List<string> TextureNames = new List<string>();
             List<string> MaterialNames = new List<string>();
-            List<string> MeshNames     = new List<string>();
+            List<string> MeshNames = new List<string>();
 
             foreach (GFMaterial Mat in Materials)
             {
@@ -278,9 +279,9 @@ namespace SPICA.Formats.GFL2.Model
                 {
                     ParentIndex = (short)Skeleton.FindIndex(x => x.Name == Bone.Parent),
 
-                    Name        = Bone.Name,
-                    Scale       = Bone.Scale,
-                    Rotation    = Bone.Rotation,
+                    Name = Bone.Name,
+                    Scale = Bone.Scale,
+                    Rotation = Bone.Rotation,
                     Translation = Bone.Translation
                 });
             }
@@ -328,8 +329,8 @@ namespace SPICA.Formats.GFL2.Model
 
                     Params.TextureCoords[Unit].MappingType = (H3DTextureMappingType)MappingType;
 
-                    Params.TextureCoords[Unit].Scale       = Material.TextureCoords[Unit].Scale;
-                    Params.TextureCoords[Unit].Rotation    = Material.TextureCoords[Unit].Rotation;
+                    Params.TextureCoords[Unit].Scale = Material.TextureCoords[Unit].Scale;
+                    Params.TextureCoords[Unit].Rotation = Material.TextureCoords[Unit].Rotation;
                     Params.TextureCoords[Unit].Translation = Material.TextureCoords[Unit].Translation;
 
                     //Texture Mapper
@@ -344,9 +345,9 @@ namespace SPICA.Formats.GFL2.Model
                     Mat.TextureMappers[Unit].BorderColor = Material.BorderColor[Unit];
                 }
 
-                Params.EmissionColor  = Material.EmissionColor;
-                Params.AmbientColor   = Material.AmbientColor;
-                Params.DiffuseColor   = Material.DiffuseColor;
+                Params.EmissionColor = Material.EmissionColor;
+                Params.AmbientColor = Material.AmbientColor;
+                Params.DiffuseColor = Material.DiffuseColor;
                 Params.Specular0Color = Material.Specular0Color;
                 Params.Specular1Color = Material.Specular1Color;
                 Params.Constant0Color = Material.Constant0Color;
@@ -355,7 +356,7 @@ namespace SPICA.Formats.GFL2.Model
                 Params.Constant3Color = Material.Constant3Color;
                 Params.Constant4Color = Material.Constant4Color;
                 Params.Constant5Color = Material.Constant5Color;
-                Params.BlendColor     = Material.BlendColor;
+                Params.BlendColor = Material.BlendColor;
 
                 //HACK: It's usually 0 on Sun/Moon, this causes issues on some
                 //models being rendered transparent (Shader differences).
@@ -363,26 +364,26 @@ namespace SPICA.Formats.GFL2.Model
 
                 Params.ColorScale = 1f;
 
-                Params.LUTInputAbsolute  = Material.LUTInputAbsolute;
+                Params.LUTInputAbsolute = Material.LUTInputAbsolute;
                 Params.LUTInputSelection = Material.LUTInputSelection;
-                Params.LUTInputScale     = Material.LUTInputScale;
+                Params.LUTInputScale = Material.LUTInputScale;
 
-                Params.ColorOperation   = Material.ColorOperation;
-                Params.BlendFunction    = Material.BlendFunction;
+                Params.ColorOperation = Material.ColorOperation;
+                Params.BlendFunction = Material.BlendFunction;
                 Params.LogicalOperation = Material.LogicalOperation;
-                Params.AlphaTest        = Material.AlphaTest;
-                Params.StencilTest      = Material.StencilTest;
+                Params.AlphaTest = Material.AlphaTest;
+                Params.StencilTest = Material.StencilTest;
                 Params.StencilOperation = Material.StencilOperation;
-                Params.DepthColorMask   = Material.DepthColorMask;
-                Params.FaceCulling      = Material.FaceCulling;
+                Params.DepthColorMask = Material.DepthColorMask;
+                Params.FaceCulling = Material.FaceCulling;
 
-                Params.ColorBufferRead  = Material.ColorBufferRead;
+                Params.ColorBufferRead = Material.ColorBufferRead;
                 Params.ColorBufferWrite = Material.ColorBufferWrite;
 
-                Params.StencilBufferRead  = Material.StencilBufferRead;
+                Params.StencilBufferRead = Material.StencilBufferRead;
                 Params.StencilBufferWrite = Material.StencilBufferWrite;
 
-                Params.DepthBufferRead  = Material.DepthBufferRead;
+                Params.DepthBufferRead = Material.DepthBufferRead;
                 Params.DepthBufferWrite = Material.DepthBufferWrite;
 
                 if (Material.LUT0HashId != 0)
@@ -426,7 +427,7 @@ namespace SPICA.Formats.GFL2.Model
                 }
 
                 Params.ShaderReference = $"0@{VtxShaderName}";
-                Params.ModelReference  = $"{Mat.Name}@{Name}";
+                Params.ModelReference = $"{Mat.Name}@{Name}";
 
                 /*
                  * Add those for compatibility with the older BCH models.
@@ -438,24 +439,24 @@ namespace SPICA.Formats.GFL2.Model
                  */
                 Params.MetaData = new H3DMetaData();
 
-                Params.MetaData.Add(new H3DMetaDataValue("EdgeType",     Material.EdgeType));
+                Params.MetaData.Add(new H3DMetaDataValue("EdgeType", Material.EdgeType));
                 Params.MetaData.Add(new H3DMetaDataValue("IDEdgeEnable", Material.IDEdgeEnable));
-                Params.MetaData.Add(new H3DMetaDataValue("EdgeID",       Material.EdgeID));
+                Params.MetaData.Add(new H3DMetaDataValue("EdgeID", Material.EdgeID));
 
                 Params.MetaData.Add(new H3DMetaDataValue("ProjectionType", Material.ProjectionType));
 
-                Params.MetaData.Add(new H3DMetaDataValue("RimPow",     Material.RimPower));
-                Params.MetaData.Add(new H3DMetaDataValue("RimScale",   Material.RimScale));
-                Params.MetaData.Add(new H3DMetaDataValue("PhongPow",   Material.PhongPower));
+                Params.MetaData.Add(new H3DMetaDataValue("RimPow", Material.RimPower));
+                Params.MetaData.Add(new H3DMetaDataValue("RimScale", Material.RimScale));
+                Params.MetaData.Add(new H3DMetaDataValue("PhongPow", Material.PhongPower));
                 Params.MetaData.Add(new H3DMetaDataValue("PhongScale", Material.PhongScale));
 
                 Params.MetaData.Add(new H3DMetaDataValue("IDEdgeOffsetEnable", Material.IDEdgeOffsetEnable));
 
                 Params.MetaData.Add(new H3DMetaDataValue("EdgeMapAlphaMask", Material.EdgeMapAlphaMask));
 
-                Params.MetaData.Add(new H3DMetaDataValue("BakeTexture0",  Material.BakeTexture0));
-                Params.MetaData.Add(new H3DMetaDataValue("BakeTexture1",  Material.BakeTexture1));
-                Params.MetaData.Add(new H3DMetaDataValue("BakeTexture2",  Material.BakeTexture2));
+                Params.MetaData.Add(new H3DMetaDataValue("BakeTexture0", Material.BakeTexture0));
+                Params.MetaData.Add(new H3DMetaDataValue("BakeTexture1", Material.BakeTexture1));
+                Params.MetaData.Add(new H3DMetaDataValue("BakeTexture2", Material.BakeTexture2));
                 Params.MetaData.Add(new H3DMetaDataValue("BakeConstant0", Material.BakeConstant0));
                 Params.MetaData.Add(new H3DMetaDataValue("BakeConstant1", Material.BakeConstant1));
                 Params.MetaData.Add(new H3DMetaDataValue("BakeConstant2", Material.BakeConstant2));
@@ -508,16 +509,16 @@ namespace SPICA.Formats.GFL2.Model
 
                     SubMeshes.Add(new H3DSubMesh()
                     {
-                        Skinning         = SMSk,
+                        Skinning = SMSk,
                         BoneIndicesCount = SubMesh.BoneIndicesCount,
-                        BoneIndices      = BoneIndices,
-                        Indices          = SubMesh.Indices
+                        BoneIndices = BoneIndices,
+                        Indices = SubMesh.Indices
                     });
 
                     H3DMesh M = new H3DMesh(
                         SubMesh.RawBuffer,
                         SubMesh.VertexStride,
-                        SubMesh.Attributes, 
+                        SubMesh.Attributes,
                         SubMesh.FixedAttributes,
                         SubMeshes);
 
@@ -528,9 +529,9 @@ namespace SPICA.Formats.GFL2.Model
                     GFMaterial Mat = Materials[MatIndex];
 
                     M.MaterialIndex = (ushort)MatIndex;
-                    M.NodeIndex     = (ushort)NodeIndex;
-                    M.Layer         = Mat.RenderLayer;
-                    M.Priority      = Mat.RenderPriority;
+                    M.NodeIndex = (ushort)NodeIndex;
+                    M.Layer = Mat.RenderLayer;
+                    M.Priority = Mat.RenderPriority;
 
                     M.UpdateBoolUniforms(Output.Materials[MatIndex]);
 

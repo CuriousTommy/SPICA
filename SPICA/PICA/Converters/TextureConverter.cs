@@ -46,7 +46,7 @@ namespace SPICA.PICA.Converters
                     {
                         for (int Px = 0; Px < 64; Px++)
                         {
-                            int X =  SwizzleLUT[Px] & 7;
+                            int X = SwizzleLUT[Px] & 7;
                             int Y = (SwizzleLUT[Px] - X) >> 3;
 
                             int OOffs = (TX + X + ((Height - 1 - (TY + Y)) * Width)) * 4;
@@ -156,8 +156,8 @@ namespace SPICA.PICA.Converters
 
         private static void DecodeRGBA5551(byte[] Buffer, int Address, ushort Value)
         {
-            int R = ((Value >>  1) & 0x1f) << 3;
-            int G = ((Value >>  6) & 0x1f) << 3;
+            int R = ((Value >> 1) & 0x1f) << 3;
+            int G = ((Value >> 6) & 0x1f) << 3;
             int B = ((Value >> 11) & 0x1f) << 3;
 
             SetColor(Buffer, Address, (Value & 1) * 0xff,
@@ -168,8 +168,8 @@ namespace SPICA.PICA.Converters
 
         private static void DecodeRGB565(byte[] Buffer, int Address, ushort Value)
         {
-            int R = ((Value >>  0) & 0x1f) << 3;
-            int G = ((Value >>  5) & 0x3f) << 2;
+            int R = ((Value >> 0) & 0x1f) << 3;
+            int G = ((Value >> 5) & 0x3f) << 2;
             int B = ((Value >> 11) & 0x1f) << 3;
 
             SetColor(Buffer, Address, 0xff,
@@ -180,8 +180,8 @@ namespace SPICA.PICA.Converters
 
         private static void DecodeRGBA4(byte[] Buffer, int Address, ushort Value)
         {
-            int R = (Value >>  4) & 0xf;
-            int G = (Value >>  8) & 0xf;
+            int R = (Value >> 4) & 0xf;
+            int G = (Value >> 8) & 0xf;
             int B = (Value >> 12) & 0xf;
 
             SetColor(Buffer, Address, (Value & 0xf) | (Value << 4),
@@ -254,7 +254,7 @@ namespace SPICA.PICA.Converters
                     {
                         for (int Px = 0; Px < 64; Px++)
                         {
-                            int X =  SwizzleLUT[Px] & 7;
+                            int X = SwizzleLUT[Px] & 7;
                             int Y = (SwizzleLUT[Px] - X) >> 3;
 
                             int IOffs = (TX + X + ((TY + Y) * Img.Width)) * 4;
@@ -281,7 +281,7 @@ namespace SPICA.PICA.Converters
             return Output;
         }
 
-        
+
 
         public static int CalculateLength(int Width, int Height, PICATextureFormat Format)
         {

@@ -20,40 +20,40 @@ namespace SPICA.Formats.CtrGfx.Animation
         [Ignore] private GfxFloatKeyFrameGroup _TranslationY;
         [Ignore] private GfxFloatKeyFrameGroup _TranslationZ;
 
-        public GfxFloatKeyFrameGroup ScaleX       => _ScaleX;
-        public GfxFloatKeyFrameGroup ScaleY       => _ScaleY;
-        public GfxFloatKeyFrameGroup ScaleZ       => _ScaleZ;
+        public GfxFloatKeyFrameGroup ScaleX => _ScaleX;
+        public GfxFloatKeyFrameGroup ScaleY => _ScaleY;
+        public GfxFloatKeyFrameGroup ScaleZ => _ScaleZ;
 
-        public GfxFloatKeyFrameGroup RotationX    => _RotationX;
-        public GfxFloatKeyFrameGroup RotationY    => _RotationY;
-        public GfxFloatKeyFrameGroup RotationZ    => _RotationZ;
+        public GfxFloatKeyFrameGroup RotationX => _RotationX;
+        public GfxFloatKeyFrameGroup RotationY => _RotationY;
+        public GfxFloatKeyFrameGroup RotationZ => _RotationZ;
 
         public GfxFloatKeyFrameGroup TranslationX => _TranslationX;
         public GfxFloatKeyFrameGroup TranslationY => _TranslationY;
         public GfxFloatKeyFrameGroup TranslationZ => _TranslationZ;
 
-        public bool ScaleExists       => _ScaleX.Exists       || _ScaleY.Exists       || _ScaleZ.Exists;
+        public bool ScaleExists => _ScaleX.Exists || _ScaleY.Exists || _ScaleZ.Exists;
 
-        public bool RotationExists    => _RotationX.Exists    || _RotationY.Exists    || _RotationZ.Exists;
+        public bool RotationExists => _RotationX.Exists || _RotationY.Exists || _RotationZ.Exists;
 
         public bool TranslationExists => _TranslationX.Exists || _TranslationY.Exists || _TranslationZ.Exists;
 
         public GfxAnimTransform()
         {
-            _ScaleX       = new GfxFloatKeyFrameGroup();
-            _ScaleY       = new GfxFloatKeyFrameGroup();
-            _ScaleZ       = new GfxFloatKeyFrameGroup();
+            _ScaleX = new GfxFloatKeyFrameGroup();
+            _ScaleY = new GfxFloatKeyFrameGroup();
+            _ScaleZ = new GfxFloatKeyFrameGroup();
 
-            _RotationX    = new GfxFloatKeyFrameGroup();
-            _RotationY    = new GfxFloatKeyFrameGroup();
-            _RotationZ    = new GfxFloatKeyFrameGroup();
+            _RotationX = new GfxFloatKeyFrameGroup();
+            _RotationY = new GfxFloatKeyFrameGroup();
+            _RotationZ = new GfxFloatKeyFrameGroup();
 
             _TranslationX = new GfxFloatKeyFrameGroup();
             _TranslationY = new GfxFloatKeyFrameGroup();
             _TranslationZ = new GfxFloatKeyFrameGroup();
         }
 
-        void ICustomSerialization.Deserialize(BinaryDeserializer Deserializer)
+        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer)
         {
             long Position = Deserializer.BaseStream.Position;
 
@@ -69,21 +69,21 @@ namespace SPICA.Formats.CtrGfx.Animation
                 Position += 4;
 
                 bool Constant = (Flags & ConstantMask) != 0;
-                bool Exists   = (Flags & NotExistMask) == 0;
+                bool Exists = (Flags & NotExistMask) == 0;
 
                 if (Exists)
                 {
-                    GfxFloatKeyFrameGroup FrameGrp = GfxFloatKeyFrameGroup.ReadGroup(Deserializer, Constant);
+                    GfxFloatKeyFrameGroup FrameGrp = GfxFloatKeyFrameGroup.ReadGroup(ref OutputFile, Deserializer, Constant);
 
                     switch (ElemIndex)
                     {
-                        case 0: _ScaleX       = FrameGrp; break;
-                        case 1: _ScaleY       = FrameGrp; break;
-                        case 2: _ScaleZ       = FrameGrp; break;
+                        case 0: _ScaleX = FrameGrp; break;
+                        case 1: _ScaleY = FrameGrp; break;
+                        case 2: _ScaleZ = FrameGrp; break;
 
-                        case 3: _RotationX    = FrameGrp; break;
-                        case 4: _RotationY    = FrameGrp; break;
-                        case 5: _RotationZ    = FrameGrp; break;
+                        case 3: _RotationX = FrameGrp; break;
+                        case 4: _RotationY = FrameGrp; break;
+                        case 5: _RotationZ = FrameGrp; break;
 
                         case 7: _TranslationX = FrameGrp; break;
                         case 8: _TranslationY = FrameGrp; break;
@@ -113,13 +113,13 @@ namespace SPICA.Formats.CtrGfx.Animation
 
                 switch (ElemIndex)
                 {
-                    case 0: FrameGrp = _ScaleX;       break;
-                    case 1: FrameGrp = _ScaleY;       break;
-                    case 2: FrameGrp = _ScaleZ;       break;
+                    case 0: FrameGrp = _ScaleX; break;
+                    case 1: FrameGrp = _ScaleY; break;
+                    case 2: FrameGrp = _ScaleZ; break;
 
-                    case 3: FrameGrp = _RotationX;    break;
-                    case 4: FrameGrp = _RotationY;    break;
-                    case 5: FrameGrp = _RotationZ;    break;
+                    case 3: FrameGrp = _RotationX; break;
+                    case 4: FrameGrp = _RotationY; break;
+                    case 5: FrameGrp = _RotationZ; break;
 
                     case 7: FrameGrp = _TranslationX; break;
                     case 8: FrameGrp = _TranslationY; break;
@@ -144,7 +144,7 @@ namespace SPICA.Formats.CtrGfx.Animation
                     {
                         Serializer.Sections[(uint)GfxSectionId.Contents].Values.Add(new RefValue()
                         {
-                            Value    = FrameGrp,
+                            Value = FrameGrp,
                             Position = Serializer.BaseStream.Position
                         });
                     }

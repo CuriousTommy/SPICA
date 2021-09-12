@@ -10,7 +10,7 @@ namespace SPICA.Rendering
         public BoundingBox(Vector3 Center, Vector3 Size)
         {
             this.Center = Center;
-            this.Size   = Size;
+            this.Size = Size;
         }
     }
 }

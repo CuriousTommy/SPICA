@@ -2,7 +2,6 @@
 
 using SPICA.Formats.CtrH3D.Camera;
 using SPICA.Rendering.Animation;
-using SPICA.Rendering.SPICA_GL;
 
 using System;
 
@@ -63,7 +62,7 @@ namespace SPICA.Rendering
 
                 if (BaseCamera.View is H3DCameraViewLookAt LookAtView)
                 {
-                    Vector3 Up     = CamState.UpVector;
+                    Vector3 Up = CamState.UpVector;
                     Vector3 Target = CamState.Target;
 
                     if ((BaseCamera.Flags & H3DCameraFlags.IsInheritingUpRotation) != 0)
@@ -87,8 +86,8 @@ namespace SPICA.Rendering
                 {
                     Vector3 Target = CamState.Target;
                     Vector3 EyeDir = Vector3.Normalize(Eye - Target);
-                    Vector3 Twist  = Vector3.Normalize(new Vector3(EyeDir.Z, 0, -EyeDir.X));
-                    Vector3 Cross  = Vector3.Cross(EyeDir, Twist);
+                    Vector3 Twist = Vector3.Normalize(new Vector3(EyeDir.Z, 0, -EyeDir.X));
+                    Vector3 Cross = Vector3.Cross(EyeDir, Twist);
 
                     float ST = (float)Math.Sin(CamState.Twist);
                     float CT = (float)Math.Cos(CamState.Twist);
@@ -100,7 +99,7 @@ namespace SPICA.Rendering
 
                     if ((BaseCamera.Flags & H3DCameraFlags.IsInheritingTargetRotation) != 0)
                     {
-                        Up     = Vector3.Transform(new Matrix3(Transform), Up);
+                        Up = Vector3.Transform(new Matrix3(Transform), Up);
                         Target = Vector3.Transform(new Matrix3(Transform), Target);
                     }
 
@@ -118,12 +117,12 @@ namespace SPICA.Rendering
                         Matrix3.CreateRotationX(CamState.ViewRotation.X) *
                         Matrix3.CreateRotationY(CamState.ViewRotation.Y);
 
-                    Vector3 Up     = Vector3.UnitY;
+                    Vector3 Up = Vector3.UnitY;
                     Vector3 Target = Vector3.Transform(Rotation, new Vector3(0, 0, -1));
 
                     if ((BaseCamera.Flags & H3DCameraFlags.IsInheritingTargetRotation) != 0)
                     {
-                        Up     = Vector3.Transform(new Matrix3(Transform), Up);
+                        Up = Vector3.Transform(new Matrix3(Transform), Up);
                         Target = Vector3.Transform(new Matrix3(Transform), Target);
                     }
 

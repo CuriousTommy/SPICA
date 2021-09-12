@@ -29,13 +29,13 @@ namespace SPICA.WinForms
         private Vector3 Translation;
         private Matrix4 Transform;
 
-        private GLControl      Viewport;
-        private GridLines      UIGrid;
-        private AxisLines      UIAxis;
+        private GLControl Viewport;
+        private GridLines UIGrid;
+        private AxisLines UIAxis;
         private AnimationGroup AnimGrp;
-        private H3D            Scene;
-        private Renderer       Renderer;
-        private Shader         Shader;
+        private H3D Scene;
+        private Renderer Renderer;
+        private Shader Shader;
 
         private float Dimension;
 
@@ -49,24 +49,24 @@ namespace SPICA.WinForms
             //This enables the higher precision Depth Buffer and a Stencil Buffer.
             Viewport = new GLControl(new GraphicsMode(32, 24, 8), 3, 3, GraphicsContextFlags.ForwardCompatible)
             {
-                Dock  = DockStyle.Fill,
-                Name  = "Viewport",
+                Dock = DockStyle.Fill,
+                Name = "Viewport",
                 VSync = true
             };
 
-            Viewport.Load       += Viewport_Load;
-            Viewport.Paint      += Viewport_Paint;
-            Viewport.MouseDown  += Viewport_MouseDown;
-            Viewport.MouseMove  += Viewport_MouseMove;
+            Viewport.Load += Viewport_Load;
+            Viewport.Paint += Viewport_Paint;
+            Viewport.MouseDown += Viewport_MouseDown;
+            Viewport.MouseMove += Viewport_MouseMove;
             Viewport.MouseWheel += Viewport_MouseWheel;
-            Viewport.Resize     += Viewport_Resize;
+            Viewport.Resize += Viewport_Resize;
 
             InitializeComponent();
 
             MainContainer.Panel1.Controls.Add(Viewport);
 
-            TopMenu.Renderer   = new ToolsRenderer(TopMenu.BackColor);
-            TopIcons.Renderer  = new ToolsRenderer(TopIcons.BackColor);
+            TopMenu.Renderer = new ToolsRenderer(TopMenu.BackColor);
+            TopIcons.Renderer = new ToolsRenderer(TopIcons.BackColor);
             SideIcons.Renderer = new ToolsRenderer(SideIcons.BackColor);
         }
 
@@ -78,7 +78,7 @@ namespace SPICA.WinForms
 
             SaveSettings();
         }
-        
+
         private void FileOpen(string[] Files, bool MergeMode)
         {
             if (!MergeMode)
@@ -87,12 +87,12 @@ namespace SPICA.WinForms
 
                 Renderer.Lights.Add(new Light()
                 {
-                    Ambient         = new Color4(0.1f, 0.1f, 0.1f, 1.0f),
-                    Diffuse         = new Color4(0.9f, 0.9f, 0.9f, 1.0f),
-                    Specular0       = new Color4(0.8f, 0.8f, 0.8f, 1.0f),
-                    Specular1       = new Color4(0.4f, 0.4f, 0.4f, 1.0f),
+                    Ambient = new Color4(0.1f, 0.1f, 0.1f, 1.0f),
+                    Diffuse = new Color4(0.9f, 0.9f, 0.9f, 1.0f),
+                    Specular0 = new Color4(0.8f, 0.8f, 0.8f, 1.0f),
+                    Specular1 = new Color4(0.4f, 0.4f, 0.4f, 1.0f),
                     TwoSidedDiffuse = true,
-                    Enabled         = true
+                    Enabled = true
                 });
 
                 ResetTransforms();
@@ -110,13 +110,13 @@ namespace SPICA.WinForms
                 VisAnimsList.Bind(Scene.VisibilityAnimations);
                 CamAnimsList.Bind(Scene.CameraAnimations);
 
-                Animator.Enabled     = false;
-                LblAnimSpeed.Text    = string.Empty;
+                Animator.Enabled = false;
+                LblAnimSpeed.Text = string.Empty;
                 LblAnimLoopMode.Text = string.Empty;
-                AnimSeekBar.Value    = 0;
-                AnimSeekBar.Maximum  = 0;
-                AnimGrp.Frame        = 0;
-                AnimGrp.FramesCount  = 0;
+                AnimSeekBar.Value = 0;
+                AnimSeekBar.Maximum = 0;
+                AnimGrp.Frame = 0;
+                AnimGrp.FramesCount = 0;
 
                 if (Scene.Models.Count > 0)
                 {
@@ -132,7 +132,7 @@ namespace SPICA.WinForms
                 Scene = FileIO.Merge(Files, Renderer, Scene);
             }
         }
-        
+
         private void FrmMain_DragEnter(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
@@ -140,11 +140,11 @@ namespace SPICA.WinForms
                 e.Effect = DragDropEffects.Copy;
             }
         }
-        
+
         private void FrmMain_DragDrop(object sender, DragEventArgs e)
         {
             string[] Files = (string[])e.Data.GetData(DataFormats.FileDrop);
-            
+
             if (Files.Length > 0)
             {
                 FileOpen(Files, ModifierKeys.HasFlag(Keys.Alt) && Scene != null);
@@ -206,7 +206,7 @@ namespace SPICA.WinForms
             {
                 if ((e.Button & MouseButtons.Left) != 0)
                 {
-                    float X = (float)(((e.X - InitialMov.X) / Width)  * Math.PI);
+                    float X = (float)(((e.X - InitialMov.X) / Width) * Math.PI);
                     float Y = (float)(((e.Y - InitialMov.Y) / Height) * Math.PI);
 
                     Transform.Row3.Xyz -= Translation;
@@ -241,7 +241,7 @@ namespace SPICA.WinForms
             if (e.Button != MouseButtons.Right)
             {
                 float Step = e.Delta > 0
-                    ?  Dimension * 0.025f
+                    ? Dimension * 0.025f
                     : -Dimension * 0.025f;
 
                 Translation.Z += Step;
@@ -312,10 +312,12 @@ namespace SPICA.WinForms
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Filter = "GameFreak Pak|*.gfpak";
             ofd.Title = "Select  package";
-            if (ofd.ShowDialog() == DialogResult.OK) {
-                 FolderBrowserDialog folder = new FolderBrowserDialog();
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                FolderBrowserDialog folder = new FolderBrowserDialog();
                 folder.Description = "Select folder to extract to";
-                if (folder.ShowDialog() == DialogResult.OK) {
+                if (folder.ShowDialog() == DialogResult.OK)
+                {
                     ExtractGfpak(ofd.FileName, folder.SelectedPath);
                 }
             }
@@ -364,7 +366,7 @@ namespace SPICA.WinForms
 
             MenuShowGrid.Checked = State;
             TBtnShowGrid.Checked = State;
-            UIGrid.Visible       = State;
+            UIGrid.Visible = State;
 
             UpdateViewport();
         }
@@ -375,7 +377,7 @@ namespace SPICA.WinForms
 
             MenuShowAxis.Checked = State;
             TBtnShowAxis.Checked = State;
-            UIAxis.Visible       = State;
+            UIAxis.Visible = State;
 
             UpdateViewport();
         }
@@ -384,8 +386,8 @@ namespace SPICA.WinForms
         {
             bool State = !MenuShowSide.Checked;
 
-            MenuShowSide.Checked          =  State;
-            TBtnShowSide.Checked          =  State;
+            MenuShowSide.Checked = State;
+            TBtnShowSide.Checked = State;
             MainContainer.Panel2Collapsed = !State;
         }
 
@@ -394,10 +396,13 @@ namespace SPICA.WinForms
             FileIO.Export(Scene, TexturesList.SelectedIndex);
         }
 
-        private void ExtractGfpak(string pak, string outPath) {
+        private void ExtractGfpak(string pak, string outPath)
+        {
             GFLXPack gfpak = new GFLXPack(pak);
-            for (int i = 0; i < gfpak.FileCnt; i++) {
-                using (BinaryWriter bw = new BinaryWriter(new FileStream(outPath + "/" + gfpak.GetName(i), FileMode.CreateNew))) {
+            for (int i = 0; i < gfpak.FileCnt; i++)
+            {
+                using (BinaryWriter bw = new BinaryWriter(new FileStream(outPath + "/" + gfpak.GetName(i), FileMode.CreateNew)))
+                {
                     byte[] file = gfpak.GetFile(i);
                     bw.Write(file);
                     bw.Close();
@@ -434,7 +439,7 @@ namespace SPICA.WinForms
         {
             FileIO.Save(Scene, new SceneState
             {
-                ModelIndex   = ModelsList.SelectedIndex,
+                ModelIndex = ModelsList.SelectedIndex,
                 SklAnimIndex = SklAnimsList.SelectedIndex,
                 MatAnimIndex = MatAnimsList.SelectedIndex
             });
@@ -642,7 +647,7 @@ namespace SPICA.WinForms
 
             AnimGrp.UpdateState();
 
-            AnimSeekBar.Value   = AnimGrp.Frame;
+            AnimSeekBar.Value = AnimGrp.Frame;
             AnimSeekBar.Maximum = AnimGrp.FramesCount;
 
             UpdateAnimationTransforms();

@@ -18,10 +18,10 @@ namespace SPICA.Formats.MTFramework.Shader
         {
             byte DepthStencilTest = Reader.ReadByte();
 
-            DepthTest  = (DepthStencilTest & 1) != 0;
+            DepthTest = (DepthStencilTest & 1) != 0;
             DepthWrite = (DepthStencilTest & 2) != 0;
 
-            DepthFunc   = ((MTTestFunction)((DepthStencilTest >> 2) & 7)).ToPICATestFunc();
+            DepthFunc = ((MTTestFunction)((DepthStencilTest >> 2) & 7)).ToPICATestFunc();
             StencilFunc = ((MTTestFunction)((DepthStencilTest >> 5) & 7)).ToPICATestFunc();
 
             StencilRef = Reader.ReadSByte();

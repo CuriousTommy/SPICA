@@ -7,11 +7,11 @@ namespace SPICA.Formats.MTFramework.Shader
 {
     public class MTFragmentLighting
     {
-        public PICALUTInAbs      LUTInAbs;
-        public PICALUTInSel      LUTInSel;
-        public PICALUTInScale    LUTInScale;
+        public PICALUTInAbs LUTInAbs;
+        public PICALUTInSel LUTInSel;
+        public PICALUTInScale LUTInScale;
         public PICATexEnvStage[] TexEnvStages;
-        public RGBA              TexEnvBufferColor;
+        public RGBA TexEnvBufferColor;
 
         public MTFragmentLighting(BinaryReader Reader)
         {
@@ -27,11 +27,11 @@ namespace SPICA.Formats.MTFramework.Shader
             {
                 TexEnvStages[Stage] = new PICATexEnvStage()
                 {
-                    Source   = new PICATexEnvSource(Reader.ReadUInt32()),
-                    Operand  = new PICATexEnvOperand(Reader.ReadUInt32()),
+                    Source = new PICATexEnvSource(Reader.ReadUInt32()),
+                    Operand = new PICATexEnvOperand(Reader.ReadUInt32()),
                     Combiner = new PICATexEnvCombiner(Reader.ReadUInt32()),
-                    Color    = new RGBA(Reader.ReadUInt32()),
-                    Scale    = new PICATexEnvScale(Reader.ReadUInt32())
+                    Color = new RGBA(Reader.ReadUInt32()),
+                    Scale = new PICATexEnvScale(Reader.ReadUInt32())
                 };
             }
         }

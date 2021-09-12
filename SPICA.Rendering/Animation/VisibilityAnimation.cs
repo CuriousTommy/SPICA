@@ -15,7 +15,7 @@ namespace SPICA.Rendering.Animation
 
         public VisibilityAnimation(H3DPatriciaTree MeshNodeNames, List<bool> MeshNodeVisibilities)
         {
-            this.MeshNodeNames        = MeshNodeNames;
+            this.MeshNodeNames = MeshNodeNames;
             this.MeshNodeVisibilities = MeshNodeVisibilities;
 
             Visibilities = new bool[MeshNodeVisibilities.Count];

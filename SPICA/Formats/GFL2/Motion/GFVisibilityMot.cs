@@ -17,7 +17,7 @@ namespace SPICA.Formats.GFL2.Motion
 
         public GFVisibilityMot(BinaryReader Reader, uint FramesCount) : this()
         {
-            int  MeshNamesCount  = Reader.ReadInt32();
+            int MeshNamesCount = Reader.ReadInt32();
             uint MeshNamesLength = Reader.ReadUInt32();
 
             long Position = Reader.BaseStream.Position;
@@ -36,9 +36,9 @@ namespace SPICA.Formats.GFL2.Motion
         {
             H3DAnimation Output = new H3DAnimation()
             {
-                Name           = "GFMotion",
-                FramesCount    = Motion.FramesCount,
-                AnimationType  = H3DAnimationType.Visibility,
+                Name = "GFMotion",
+                FramesCount = Motion.FramesCount,
+                AnimationType = H3DAnimationType.Visibility,
                 AnimationFlags = Motion.IsLooping ? H3DAnimationFlags.IsLooping : 0
             };
 
@@ -49,7 +49,7 @@ namespace SPICA.Formats.GFL2.Motion
                 H3DAnimBoolean Anim = new H3DAnimBoolean();
 
                 Anim.StartFrame = 0;
-                Anim.EndFrame   = Motion.FramesCount;
+                Anim.EndFrame = Motion.FramesCount;
                 Anim.CurveIndex = Index++;
 
                 foreach (bool Visibility in Vis.Values)
@@ -59,10 +59,10 @@ namespace SPICA.Formats.GFL2.Motion
 
                 Output.Elements.Add(new H3DAnimationElement()
                 {
-                    Name          = Vis.Name,
+                    Name = Vis.Name,
                     PrimitiveType = H3DPrimitiveType.Boolean,
-                    TargetType    = H3DTargetType.MeshNodeVisibility,
-                    Content       = Anim
+                    TargetType = H3DTargetType.MeshNodeVisibility,
+                    Content = Anim
                 });
             }
 

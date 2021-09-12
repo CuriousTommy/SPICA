@@ -1,5 +1,6 @@
 ﻿using SPICA.Serialization;
 using SPICA.Serialization.Attributes;
+using System.IO;
 
 namespace SPICA.Formats.CtrH3D.Animation
 {
@@ -23,9 +24,9 @@ namespace SPICA.Formats.CtrH3D.Animation
             };
         }
 
-        void ICustomSerialization.Deserialize(BinaryDeserializer Deserializer)
+        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer)
         {
-            H3DAnimVector.SetVector(Deserializer, Vector);
+            H3DAnimVector.SetVector(ref OutputFile, Deserializer, Vector);
         }
 
         bool ICustomSerialization.Serialize(BinarySerializer Serializer)

@@ -3,7 +3,6 @@ using SPICA.Formats.CtrH3D;
 using SPICA.Formats.CtrH3D.Model;
 using SPICA.Formats.Generic.COLLADA;
 using SPICA.Formats.Generic.StudioMdl;
-using SPICA.Formats.GFL2.Model;
 using SPICA.Rendering;
 
 using System.IO;
@@ -69,7 +68,7 @@ namespace SPICA.WinForms.Formats
 
             using (SaveFileDialog SaveDlg = new SaveFileDialog())
             {
-                SaveDlg.Filter = 
+                SaveDlg.Filter =
                     "COLLADA 1.4.1|*.dae|" +
                     "Valve StudioMdl|*.smd|" +
                     "Binary Ctr H3D|*.bch";
@@ -78,7 +77,7 @@ namespace SPICA.WinForms.Formats
 
                 if (SaveDlg.ShowDialog() == DialogResult.OK)
                 {
-                    int MdlIndex  = State.ModelIndex;
+                    int MdlIndex = State.ModelIndex;
                     int AnimIndex = State.SklAnimIndex;
 
                     switch (SaveDlg.FilterIndex)
@@ -98,20 +97,21 @@ namespace SPICA.WinForms.Formats
                 //Export one
                 using (SaveFileDialog SaveDlg = new SaveFileDialog())
                 {
-                    SaveDlg.Filter = "Portable Network Graphics|*.png|"	+
-									 "GFTexture|*.*;*.pc;*.bin";
+                    SaveDlg.Filter = "Portable Network Graphics|*.png|" +
+                                     "GFTexture|*.*;*.pc;*.bin";
                     SaveDlg.FileName = Scene.Textures[Index].Name;
 
-					if (SaveDlg.ShowDialog() == DialogResult.OK)
+                    if (SaveDlg.ShowDialog() == DialogResult.OK)
                     {
-						switch (SaveDlg.FilterIndex) {
-							case 1:	//PNG
-								TextureManager.GetTexture(Index).Save(SaveDlg.FileName);
-								break;
-							case 2:	//GFTexture
-								new GFPackedTexture(Scene, Index).Save(SaveDlg.FileName);
-								break;
-						}
+                        switch (SaveDlg.FilterIndex)
+                        {
+                            case 1: //PNG
+                                TextureManager.GetTexture(Index).Save(SaveDlg.FileName);
+                                break;
+                            case 2: //GFTexture
+                                new GFPackedTexture(Scene, Index).Save(SaveDlg.FileName);
+                                break;
+                        }
                     }
                 }
             }

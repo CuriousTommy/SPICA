@@ -17,8 +17,8 @@ namespace SPICA.Formats.CtrGfx.Light
 
             Output.IsEnabled = IsEnabled;
 
-            Output.TransformScale       = TransformScale;
-            Output.TransformRotation    = TransformRotation;
+            Output.TransformScale = TransformScale;
+            Output.TransformRotation = TransformRotation;
             Output.TransformTranslation = TransformTranslation;
 
             if (this is GfxHemisphereLight HemisphereLight)
@@ -27,10 +27,10 @@ namespace SPICA.Formats.CtrGfx.Light
 
                 Output.Content = new H3DHemisphereLight()
                 {
-                    SkyColor    = HemisphereLight.SkyColor,
+                    SkyColor = HemisphereLight.SkyColor,
                     GroundColor = HemisphereLight.GroundColor,
-                    Direction   = HemisphereLight.Direction,
-                    LerpFactor  = HemisphereLight.LerpFactor
+                    Direction = HemisphereLight.Direction,
+                    LerpFactor = HemisphereLight.LerpFactor
                 };
             }
             else if (this is GfxAmbientLight AmbientLight)
@@ -48,14 +48,14 @@ namespace SPICA.Formats.CtrGfx.Light
 
                 Output.Content = new H3DVertexLight()
                 {
-                    AmbientColor         = VertexLight.AmbientColor,
-                    DiffuseColor         = VertexLight.DiffuseColor,
-                    Direction            = VertexLight.Direction,
-                    AttenuationConstant  = VertexLight.AttenuationConstant,
-                    AttenuationLinear    = VertexLight.AttenuationLinear,
+                    AmbientColor = VertexLight.AmbientColor,
+                    DiffuseColor = VertexLight.DiffuseColor,
+                    Direction = VertexLight.Direction,
+                    AttenuationConstant = VertexLight.AttenuationConstant,
+                    AttenuationLinear = VertexLight.AttenuationLinear,
                     AttenuationQuadratic = VertexLight.AttenuationQuadratic,
-                    SpotExponent         = VertexLight.SpotExponent,
-                    SpotCutOffAngle      = VertexLight.SpotCutOffAngle
+                    SpotExponent = VertexLight.SpotExponent,
+                    SpotCutOffAngle = VertexLight.SpotCutOffAngle
                 };
             }
             else if (this is GfxFragmentLight FragmentLight)
@@ -67,17 +67,17 @@ namespace SPICA.Formats.CtrGfx.Light
 
                 Output.Content = new H3DFragmentLight()
                 {
-                    AmbientColor           = FragmentLight.AmbientColor,
-                    DiffuseColor           = FragmentLight.DiffuseColor,
-                    Specular0Color         = FragmentLight.Specular0Color,
-                    Specular1Color         = FragmentLight.Specular1Color,
-                    Direction              = FragmentLight.Direction,
-                    AttenuationStart       = FragmentLight.AttenuationStart,
-                    AttenuationEnd         = FragmentLight.AttenuationEnd,
-                    DistanceLUTTableName   = FragmentLight.DistanceSampler?.TableName,
+                    AmbientColor = FragmentLight.AmbientColor,
+                    DiffuseColor = FragmentLight.DiffuseColor,
+                    Specular0Color = FragmentLight.Specular0Color,
+                    Specular1Color = FragmentLight.Specular1Color,
+                    Direction = FragmentLight.Direction,
+                    AttenuationStart = FragmentLight.AttenuationStart,
+                    AttenuationEnd = FragmentLight.AttenuationEnd,
+                    DistanceLUTTableName = FragmentLight.DistanceSampler?.TableName,
                     DistanceLUTSamplerName = FragmentLight.DistanceSampler?.SamplerName,
-                    AngleLUTTableName      = FragmentLight.AngleSampler?.Sampler.TableName,
-                    AngleLUTSamplerName    = FragmentLight.AngleSampler?.Sampler.SamplerName
+                    AngleLUTTableName = FragmentLight.AngleSampler?.Sampler.TableName,
+                    AngleLUTSamplerName = FragmentLight.AngleSampler?.Sampler.SamplerName
                 };
             }
 

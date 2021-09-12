@@ -6,7 +6,7 @@ namespace SPICA.Formats.CtrH3D.Animation
 {
     static class H3DAnimVector
     {
-        public static void SetVector(BinaryDeserializer Deserializer, H3DFloatKeyFrameGroup[] Vector)
+        public static void SetVector(ref StreamWriter OutputFile, BinaryDeserializer Deserializer, H3DFloatKeyFrameGroup[] Vector)
         {
             uint Flags = Deserializer.Reader.ReadUInt32();
 
@@ -22,11 +22,11 @@ namespace SPICA.Formats.CtrH3D.Animation
                 Position += 4;
 
                 bool Constant = (Flags & ConstantMask) != 0;
-                bool Exists   = (Flags & NotExistMask) == 0;
+                bool Exists = (Flags & NotExistMask) == 0;
 
                 if (Exists)
                 {
-                    Vector[Axis] = H3DFloatKeyFrameGroup.ReadGroup(Deserializer, Constant);
+                    Vector[Axis] = H3DFloatKeyFrameGroup.ReadGroup(ref OutputFile, Deserializer, Constant);
                 }
 
                 ConstantMask <<= 1;
@@ -34,16 +34,16 @@ namespace SPICA.Formats.CtrH3D.Animation
             }
         }
 
-        public static void SetVector(BinaryDeserializer Deserializer, ref H3DFloatKeyFrameGroup Vector)
+        public static void SetVector(ref StreamWriter OutputFile, BinaryDeserializer Deserializer, ref H3DFloatKeyFrameGroup Vector)
         {
             H3DAnimVectorFlags Flags = (H3DAnimVectorFlags)Deserializer.Reader.ReadUInt32();
 
-            bool Constant = (Flags & H3DAnimVectorFlags.IsXConstant)   != 0;
-            bool Exists   = (Flags & H3DAnimVectorFlags.IsXInexistent) == 0;
+            bool Constant = (Flags & H3DAnimVectorFlags.IsXConstant) != 0;
+            bool Exists = (Flags & H3DAnimVectorFlags.IsXInexistent) == 0;
 
             if (Exists)
             {
-                Vector = H3DFloatKeyFrameGroup.ReadGroup(Deserializer, Constant);
+                Vector = H3DFloatKeyFrameGroup.ReadGroup(ref OutputFile, Deserializer, Constant);
             }
         }
 
@@ -64,7 +64,7 @@ namespace SPICA.Formats.CtrH3D.Animation
                 {
                     Serializer.Sections[(uint)H3DSectionId.Contents].Values.Add(new RefValue()
                     {
-                        Value    = Vector[ElemIndex],
+                        Value = Vector[ElemIndex],
                         Position = Serializer.BaseStream.Position
                     });
 

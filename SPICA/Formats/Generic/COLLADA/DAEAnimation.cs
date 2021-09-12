@@ -11,7 +11,7 @@ namespace SPICA.Formats.Generic.COLLADA
         [XmlElement("source")] public List<DAESource> src = new List<DAESource>();
 
         public DAESamplers sampler = new DAESamplers();
-        public DAEChannel  channel = new DAEChannel();
+        public DAEChannel channel = new DAEChannel();
     }
 
     public class DAESamplers
@@ -25,7 +25,7 @@ namespace SPICA.Formats.Generic.COLLADA
             input.Add(new DAEInput()
             {
                 semantic = semantic,
-                source   = source
+                source = source
             });
         }
     }

@@ -21,10 +21,10 @@ namespace SPICA.Formats.MTFramework.Model
         {
             string Magic = Reader.ReadPaddedString(4);
 
-            uint Version        = Reader.ReadUInt32();
+            uint Version = Reader.ReadUInt32();
             uint MaterialsCount = Reader.ReadUInt32();
-            uint TexLUTsCount   = Reader.ReadUInt32();
-            uint MFXShaderHash  = Reader.ReadUInt32();
+            uint TexLUTsCount = Reader.ReadUInt32();
+            uint MFXShaderHash = Reader.ReadUInt32();
 
             if (Version == 0xc)
             {
@@ -33,7 +33,7 @@ namespace SPICA.Formats.MTFramework.Model
                 Reader.ReadUInt32();
             }
 
-            uint TexLUTsAddress   = Reader.ReadUInt32();
+            uint TexLUTsAddress = Reader.ReadUInt32();
             uint MaterialsAddress = Reader.ReadUInt32();
 
             for (int Index = 0; Index < MaterialsCount; Index++)
@@ -47,19 +47,19 @@ namespace SPICA.Formats.MTFramework.Model
                  */
                 Reader.BaseStream.Seek(BaseAddr + 4, SeekOrigin.Begin);
 
-                uint MaterialNameHash  = Reader.ReadUInt32();
+                uint MaterialNameHash = Reader.ReadUInt32();
                 uint TextureDescLength = Reader.ReadUInt32();
 
                 Reader.BaseStream.Seek(BaseAddr + 0x34, SeekOrigin.Begin);
 
                 uint TextureDescAddress = Reader.ReadUInt32();
-                uint MatConfig1Address  = Reader.ReadUInt32();
+                uint MatConfig1Address = Reader.ReadUInt32();
 
                 Reader.BaseStream.Seek(BaseAddr + (Version < 0x20 ? 0x10 : 0xc), SeekOrigin.Begin);
 
-                uint AlphaBlendHash   = Reader.ReadUInt32(); //Alpha blending related config
+                uint AlphaBlendHash = Reader.ReadUInt32(); //Alpha blending related config
                 uint DepthStencilHash = Reader.ReadUInt32(); //Depth Buffer and Stencil Buffer config
-                uint MeshScissorHash  = Reader.ReadUInt32(); //Mesh and Scissor stuff (Culling, Z-Bias, ...)
+                uint MeshScissorHash = Reader.ReadUInt32(); //Mesh and Scissor stuff (Culling, Z-Bias, ...)
                 byte TextureDescCount = Reader.ReadByte();
 
                 string DiffuseName = null;
@@ -98,13 +98,13 @@ namespace SPICA.Formats.MTFramework.Model
 
                                 switch (TextureMap.Type)
                                 {
-                                    case "BaseMap":       DiffuseName = Reader.ReadPaddedString(0x40); break;
-                                    case "LutToon":       ReadLUT(Reader); break;
-                                    case "LutShininess":  ReadLUT(Reader); break;
+                                    case "BaseMap": DiffuseName = Reader.ReadPaddedString(0x40); break;
+                                    case "LutToon": ReadLUT(Reader); break;
+                                    case "LutShininess": ReadLUT(Reader); break;
                                     case "LutShininessR": ReadLUT(Reader); break;
                                     case "LutShininessG": ReadLUT(Reader); break;
                                     case "LutShininessB": ReadLUT(Reader); break;
-                                    case "LutFresnel":    ReadLUT(Reader); break;
+                                    case "LutFresnel": ReadLUT(Reader); break;
                                 }
                             }
                             break;
@@ -113,10 +113,10 @@ namespace SPICA.Formats.MTFramework.Model
 
                 Materials.Add(new MTMaterial()
                 {
-                    NameHash         = MaterialNameHash,
-                    AlphaBlend       = Shader.GetDescriptor<MTAlphaBlend>(AlphaBlendHash),
-                    DepthStencil     = Shader.GetDescriptor<MTDepthStencil>(DepthStencilHash),
-                    Texture0Name     = DiffuseName
+                    NameHash = MaterialNameHash,
+                    AlphaBlend = Shader.GetDescriptor<MTAlphaBlend>(AlphaBlendHash),
+                    DepthStencil = Shader.GetDescriptor<MTDepthStencil>(DepthStencilHash),
+                    Texture0Name = DiffuseName
                 });
             }
         }

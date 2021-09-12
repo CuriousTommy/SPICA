@@ -2,6 +2,7 @@
 using SPICA.PICA;
 using SPICA.Serialization;
 using SPICA.Serialization.Attributes;
+using System.IO;
 
 namespace SPICA.Formats.CtrGfx.LUT
 {
@@ -46,15 +47,15 @@ namespace SPICA.Formats.CtrGfx.LUT
             _Table = new float[256];
         }
 
-        void ICustomSerialization.Deserialize(BinaryDeserializer Deserializer)
+        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer)
         {
             uint[] Commands = new uint[RawCommands.Length >> 2];
 
             for (int i = 0; i < RawCommands.Length; i += 4)
             {
                 Commands[i >> 2] = (uint)(
-                    RawCommands[i + 0] <<  0 |
-                    RawCommands[i + 1] <<  8 |
+                    RawCommands[i + 0] << 0 |
+                    RawCommands[i + 1] << 8 |
                     RawCommands[i + 2] << 16 |
                     RawCommands[i + 3] << 24);
             }

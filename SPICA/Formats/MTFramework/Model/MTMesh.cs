@@ -16,11 +16,11 @@ namespace SPICA.Formats.MTFramework.Model
 
         public List<PICAAttribute> Attributes;
 
-        public uint  MaterialIndex;
-        public uint  MeshGroupIndex;
+        public uint MaterialIndex;
+        public uint MeshGroupIndex;
         public sbyte RenderType;
-        public byte  RenderPriority;
-        public byte  BoneIndicesIndex;
+        public byte RenderPriority;
+        public byte BoneIndicesIndex;
 
         public MTMesh(
             BinaryReader Reader,
@@ -28,29 +28,29 @@ namespace SPICA.Formats.MTFramework.Model
             uint VerticesBufferAddress,
             uint IndicesBufferAddress)
         {
-            ushort MeshTypeFlags  = Reader.ReadUInt16(); //?
-            ushort VerticesCount  = Reader.ReadUInt16();
-            uint MatMeshIndices   = Reader.ReadUInt32();
-            byte MeshFlags        = Reader.ReadByte(); //?
-            byte RenderPriority   = Reader.ReadByte();
-            byte VertexStride     = Reader.ReadByte();
-            byte AttributesCount  = Reader.ReadByte();
-            uint VerticesIndex    = Reader.ReadUInt32();
-            uint VerticesOffset   = Reader.ReadUInt32();
+            ushort MeshTypeFlags = Reader.ReadUInt16(); //?
+            ushort VerticesCount = Reader.ReadUInt16();
+            uint MatMeshIndices = Reader.ReadUInt32();
+            byte MeshFlags = Reader.ReadByte(); //?
+            byte RenderPriority = Reader.ReadByte();
+            byte VertexStride = Reader.ReadByte();
+            byte AttributesCount = Reader.ReadByte();
+            uint VerticesIndex = Reader.ReadUInt32();
+            uint VerticesOffset = Reader.ReadUInt32();
             uint VertexFormatHash = Reader.ReadUInt32();
-            uint IndicesIndex     = Reader.ReadUInt32();
-            uint IndicesCount     = Reader.ReadUInt32();
-            uint IndicesOffset    = Reader.ReadUInt32();
+            uint IndicesIndex = Reader.ReadUInt32();
+            uint IndicesCount = Reader.ReadUInt32();
+            uint IndicesOffset = Reader.ReadUInt32();
             byte BoneIndicesCount = Reader.ReadByte(); //Always 0? Probably wrong
             byte BoneIndicesIndex = Reader.ReadByte();
-            ushort MeshIndex      = Reader.ReadUInt16();
+            ushort MeshIndex = Reader.ReadUInt16();
 
-            this.VertexStride     = VertexStride;
-            this.RenderPriority   = RenderPriority;
+            this.VertexStride = VertexStride;
+            this.RenderPriority = RenderPriority;
             this.BoneIndicesIndex = BoneIndicesIndex;
 
-            MeshGroupIndex = (MatMeshIndices >>  0) & 0xfff; //?
-            MaterialIndex  = (MatMeshIndices >> 12) & 0xfff;
+            MeshGroupIndex = (MatMeshIndices >> 0) & 0xfff; //?
+            MaterialIndex = (MatMeshIndices >> 12) & 0xfff;
             RenderType = (sbyte)(MatMeshIndices >> 24);
 
             Attributes = Shader.GetDescriptor<MTAttributesGroup>(VertexFormatHash).Attributes;

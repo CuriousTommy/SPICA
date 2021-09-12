@@ -22,7 +22,7 @@
             uint Param = 0;
 
             Param |= Enabled ? 1u : 0u;
-            
+
             Param |= ((uint)Function & 7) << 4;
 
             Param |= (uint)Reference << 8;

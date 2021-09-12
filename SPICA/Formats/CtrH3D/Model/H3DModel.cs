@@ -12,7 +12,7 @@ namespace SPICA.Formats.CtrH3D.Model
 {
     public class H3DModel : INamed
     {
-        public H3DModelFlags  Flags;
+        public H3DModelFlags Flags;
         public H3DBoneScaling BoneScaling;
 
         public ushort SilhouetteMaterialsCount;
@@ -74,7 +74,7 @@ namespace SPICA.Formats.CtrH3D.Model
 
         public void AddMesh(H3DMesh Mesh)
         {
-            Mesh.Parent= this;
+            Mesh.Parent = this;
 
             Meshes.Add(Mesh);
 

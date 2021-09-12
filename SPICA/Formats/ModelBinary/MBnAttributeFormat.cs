@@ -20,7 +20,7 @@ namespace SPICA.Formats.ModelBinary
             {
                 case MBnAttributeFormat.Float: return PICAAttributeFormat.Float;
                 case MBnAttributeFormat.Ubyte: return PICAAttributeFormat.Ubyte;
-                case MBnAttributeFormat.Byte:  return PICAAttributeFormat.Byte;
+                case MBnAttributeFormat.Byte: return PICAAttributeFormat.Byte;
                 case MBnAttributeFormat.Short: return PICAAttributeFormat.Short;
 
                 default: throw new ArgumentException($"Invalid MBn Attribute format {AttrFmt}!");

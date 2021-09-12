@@ -1,5 +1,6 @@
 ﻿using SPICA.Serialization;
 using SPICA.Serialization.Attributes;
+using System.IO;
 
 namespace SPICA.Formats.CtrH3D.Animation
 {
@@ -14,9 +15,9 @@ namespace SPICA.Formats.CtrH3D.Animation
             _Value = new H3DFloatKeyFrameGroup();
         }
 
-        void ICustomSerialization.Deserialize(BinaryDeserializer Deserializer)
+        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer)
         {
-            H3DAnimVector.SetVector(Deserializer, ref _Value);
+            H3DAnimVector.SetVector(ref OutputFile, Deserializer, ref _Value);
         }
 
         bool ICustomSerialization.Serialize(BinarySerializer Serializer)

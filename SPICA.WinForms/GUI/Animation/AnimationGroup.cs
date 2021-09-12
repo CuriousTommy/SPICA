@@ -11,7 +11,7 @@ namespace SPICA.WinForms.GUI.Animation
     {
         public AnimationState State { get; set; }
 
-        public bool  IsLooping   { get; set; }
+        public bool IsLooping { get; set; }
         public float FramesCount { get; set; }
 
         private float _Frame;
@@ -87,7 +87,7 @@ namespace SPICA.WinForms.GUI.Animation
             Target.SetAnimations(Animations);
 
             Target.State = State;
-            Target.Step  = _Step;
+            Target.Step = _Step;
             Target.Frame = _Frame;
         }
 

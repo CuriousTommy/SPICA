@@ -11,9 +11,9 @@ namespace SPICA.Rendering.Shaders
 {
     class FragmentShaderGenerator
     {
-        public const string EmissionUniform  = "u_EmissionColor";
-        public const string AmbientUniform   = "u_AmbientColor";
-        public const string DiffuseUniform   = "u_DiffuseColor";
+        public const string EmissionUniform = "u_EmissionColor";
+        public const string AmbientUniform = "u_AmbientColor";
+        public const string DiffuseUniform = "u_DiffuseColor";
         public const string Specular0Uniform = "u_Specular0Color";
         public const string Specular1Uniform = "u_Specular1Color";
         public const string Constant0Uniform = "u_Constant0Color";
@@ -124,17 +124,17 @@ namespace SPICA.Rendering.Shaders
                     switch ((PICATextureCombinerColorOp)((int)Stage.Operand.Color[Param] & ~1))
                     {
                         case PICATextureCombinerColorOp.Alpha: ColorArg = $"{ColorArg}.aaaa"; break;
-                        case PICATextureCombinerColorOp.Red:   ColorArg = $"{ColorArg}.rrrr"; break;
+                        case PICATextureCombinerColorOp.Red: ColorArg = $"{ColorArg}.rrrr"; break;
                         case PICATextureCombinerColorOp.Green: ColorArg = $"{ColorArg}.gggg"; break;
-                        case PICATextureCombinerColorOp.Blue:  ColorArg = $"{ColorArg}.bbbb"; break;
+                        case PICATextureCombinerColorOp.Blue: ColorArg = $"{ColorArg}.bbbb"; break;
                     }
 
                     switch ((PICATextureCombinerAlphaOp)((int)Stage.Operand.Alpha[Param] & ~1))
                     {
                         case PICATextureCombinerAlphaOp.Alpha: AlphaArg = $"{AlphaArg}.a"; break;
-                        case PICATextureCombinerAlphaOp.Red:   AlphaArg = $"{AlphaArg}.r"; break;
+                        case PICATextureCombinerAlphaOp.Red: AlphaArg = $"{AlphaArg}.r"; break;
                         case PICATextureCombinerAlphaOp.Green: AlphaArg = $"{AlphaArg}.g"; break;
-                        case PICATextureCombinerAlphaOp.Blue:  AlphaArg = $"{AlphaArg}.b"; break;
+                        case PICATextureCombinerAlphaOp.Blue: AlphaArg = $"{AlphaArg}.b"; break;
                     }
 
                     if (((int)Stage.Operand.Color[Param] & 1) != 0)
@@ -179,13 +179,13 @@ namespace SPICA.Rendering.Shaders
                 //Note: This is the condition to pass the test, so we actually test the inverse to discard
                 switch (Params.AlphaTest.Function)
                 {
-                    case PICATestFunc.Never:    SB.AppendLine("\tdiscard;");                               break;
-                    case PICATestFunc.Equal:    SB.AppendLine($"\tif (Output.a != {Reference}) discard;"); break;
+                    case PICATestFunc.Never: SB.AppendLine("\tdiscard;"); break;
+                    case PICATestFunc.Equal: SB.AppendLine($"\tif (Output.a != {Reference}) discard;"); break;
                     case PICATestFunc.Notequal: SB.AppendLine($"\tif (Output.a == {Reference}) discard;"); break;
-                    case PICATestFunc.Less:     SB.AppendLine($"\tif (Output.a >= {Reference}) discard;"); break;
-                    case PICATestFunc.Lequal:   SB.AppendLine($"\tif (Output.a > {Reference}) discard;");  break;
-                    case PICATestFunc.Greater:  SB.AppendLine($"\tif (Output.a <= {Reference}) discard;"); break;
-                    case PICATestFunc.Gequal:   SB.AppendLine($"\tif (Output.a < {Reference}) discard;");  break;
+                    case PICATestFunc.Less: SB.AppendLine($"\tif (Output.a >= {Reference}) discard;"); break;
+                    case PICATestFunc.Lequal: SB.AppendLine($"\tif (Output.a > {Reference}) discard;"); break;
+                    case PICATestFunc.Greater: SB.AppendLine($"\tif (Output.a <= {Reference}) discard;"); break;
+                    case PICATestFunc.Gequal: SB.AppendLine($"\tif (Output.a < {Reference}) discard;"); break;
                 }
             }
 
@@ -197,8 +197,8 @@ namespace SPICA.Rendering.Shaders
         private void GenFragColors()
         {
             //See Model and Mesh class for the LUT mappings
-            string Dist0   = GetLUTInput(Params.LUTInputSelection.Dist0,   Params.LUTInputScale.Dist0,   0);
-            string Dist1   = GetLUTInput(Params.LUTInputSelection.Dist1,   Params.LUTInputScale.Dist1,   1);
+            string Dist0 = GetLUTInput(Params.LUTInputSelection.Dist0, Params.LUTInputScale.Dist0, 0);
+            string Dist1 = GetLUTInput(Params.LUTInputSelection.Dist1, Params.LUTInputScale.Dist1, 1);
             string Fresnel = GetLUTInput(Params.LUTInputSelection.Fresnel, Params.LUTInputScale.Fresnel, 2);
             string ReflecR = GetLUTInput(Params.LUTInputSelection.ReflecR, Params.LUTInputScale.ReflecR, 3);
             string ReflecG = GetLUTInput(Params.LUTInputSelection.ReflecG, Params.LUTInputScale.ReflecG, 4);
@@ -250,7 +250,7 @@ namespace SPICA.Rendering.Shaders
             string HalfProj = "Half - Normal / dot(Normal, Normal) * dot(Normal, Half)";
 
             string QuatNormal = $"{ShaderOutputRegName.QuatNormal}";
-            string View       = $"{ShaderOutputRegName.View}";
+            string View = $"{ShaderOutputRegName.View}";
 
             SB.AppendLine($"\tvec4 NormQuat = normalize({QuatNormal});");
             SB.AppendLine($"\tvec3 Normal = QuatRotate(NormQuat, SurfNormal);");
@@ -388,12 +388,12 @@ namespace SPICA.Rendering.Shaders
             switch (Input)
             {
                 default:
-                case PICALUTInput.CosNormalHalf:  InputStr = "CosNormalHalf";  break;
-                case PICALUTInput.CosViewHalf:    InputStr = "CosViewHalf";    break;
-                case PICALUTInput.CosNormalView:  InputStr = "CosNormalView";  break;
+                case PICALUTInput.CosNormalHalf: InputStr = "CosNormalHalf"; break;
+                case PICALUTInput.CosViewHalf: InputStr = "CosViewHalf"; break;
+                case PICALUTInput.CosNormalView: InputStr = "CosNormalView"; break;
                 case PICALUTInput.CosLightNormal: InputStr = "CosLightNormal"; break;
-                case PICALUTInput.CosLightSpot:   InputStr = "CosLightSpot";   break;
-                case PICALUTInput.CosPhi:         InputStr = "CosPhi";         break;
+                case PICALUTInput.CosLightSpot: InputStr = "CosLightSpot"; break;
+                case PICALUTInput.CosPhi: InputStr = "CosPhi"; break;
             }
 
             string Output = $"texture(LUTs[{LUT}], vec2(({InputStr} + 1) * 0.5, 0)).r";
@@ -538,15 +538,15 @@ namespace SPICA.Rendering.Shaders
             switch (Source)
             {
                 default:
-                case PICATextureCombinerSource.PrimaryColor:           return $"{ShaderOutputRegName.Color}";
-                case PICATextureCombinerSource.FragmentPrimaryColor:   return "FragPriColor";
+                case PICATextureCombinerSource.PrimaryColor: return $"{ShaderOutputRegName.Color}";
+                case PICATextureCombinerSource.FragmentPrimaryColor: return "FragPriColor";
                 case PICATextureCombinerSource.FragmentSecondaryColor: return "FragSecColor";
-                case PICATextureCombinerSource.Texture0:               return "Color0";
-                case PICATextureCombinerSource.Texture1:               return "Color1";
-                case PICATextureCombinerSource.Texture2:               return "Color2";
-                case PICATextureCombinerSource.PreviousBuffer:         return "CombBuffer";
-                case PICATextureCombinerSource.Constant:               return Constant;
-                case PICATextureCombinerSource.Previous:               return "Previous";
+                case PICATextureCombinerSource.Texture0: return "Color0";
+                case PICATextureCombinerSource.Texture1: return "Color1";
+                case PICATextureCombinerSource.Texture2: return "Color2";
+                case PICATextureCombinerSource.PreviousBuffer: return "CombBuffer";
+                case PICATextureCombinerSource.Constant: return Constant;
+                case PICATextureCombinerSource.Previous: return "Previous";
             }
         }
 

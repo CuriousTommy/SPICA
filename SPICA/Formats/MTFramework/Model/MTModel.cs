@@ -17,8 +17,8 @@ namespace SPICA.Formats.MTFramework.Model
     public class MTModel
     {
         public readonly List<MTMaterial> Materials;
-        public readonly List<MTMesh>     Meshes;
-        public readonly List<MTBone>     Skeleton;
+        public readonly List<MTMesh> Meshes;
+        public readonly List<MTBone> Skeleton;
 
         public Vector4 BoundingSphere;
         public Vector4 BoundingBoxMin;
@@ -29,32 +29,32 @@ namespace SPICA.Formats.MTFramework.Model
         public MTModel()
         {
             Materials = new List<MTMaterial>();
-            Meshes    = new List<MTMesh>();
-            Skeleton  = new List<MTBone>();
+            Meshes = new List<MTMesh>();
+            Skeleton = new List<MTBone>();
         }
 
         public MTModel(BinaryReader Reader, MTMaterials MRLData, MTShaderEffects Shader) : this()
         {
             string Magic = Reader.ReadPaddedString(4);
 
-            ushort Version               = Reader.ReadUInt16();
-            ushort BonesCount            = Reader.ReadUInt16();
-            ushort MeshesCount           = Reader.ReadUInt16();
-            ushort MaterialsCount        = Reader.ReadUInt16();
-            uint   TotalVerticesCount    = Reader.ReadUInt32();
-            uint   TotalIndicesCount     = Reader.ReadUInt32();
-            uint   TotalTrianglesCount   = Reader.ReadUInt32();
-            uint   VerticesBufferLength  = Reader.ReadUInt32();
-            uint   HeaderPadding1c       = Reader.ReadUInt32(); //?
-            uint   MeshGroupsCount       = Reader.ReadUInt32();
-            uint   BoneIndicesCount      = Reader.ReadUInt32();
-            uint   SkeletonAddress       = Reader.ReadUInt32();
-            uint   MeshGroupsAddr        = Reader.ReadUInt32();
-            uint   MaterialNamesAddress  = Reader.ReadUInt32();
-            uint   MeshesAddress         = Reader.ReadUInt32();
-            uint   VerticesBufferAddress = Reader.ReadUInt32();
-            uint   IndicesBufferAddress  = Reader.ReadUInt32();
-            uint   ModelFileLength       = Reader.ReadUInt32();
+            ushort Version = Reader.ReadUInt16();
+            ushort BonesCount = Reader.ReadUInt16();
+            ushort MeshesCount = Reader.ReadUInt16();
+            ushort MaterialsCount = Reader.ReadUInt16();
+            uint TotalVerticesCount = Reader.ReadUInt32();
+            uint TotalIndicesCount = Reader.ReadUInt32();
+            uint TotalTrianglesCount = Reader.ReadUInt32();
+            uint VerticesBufferLength = Reader.ReadUInt32();
+            uint HeaderPadding1c = Reader.ReadUInt32(); //?
+            uint MeshGroupsCount = Reader.ReadUInt32();
+            uint BoneIndicesCount = Reader.ReadUInt32();
+            uint SkeletonAddress = Reader.ReadUInt32();
+            uint MeshGroupsAddr = Reader.ReadUInt32();
+            uint MaterialNamesAddress = Reader.ReadUInt32();
+            uint MeshesAddress = Reader.ReadUInt32();
+            uint VerticesBufferAddress = Reader.ReadUInt32();
+            uint IndicesBufferAddress = Reader.ReadUInt32();
+            uint ModelFileLength = Reader.ReadUInt32();
 
             BoundingSphere = Reader.ReadVector4();
             BoundingBoxMin = Reader.ReadVector4();
@@ -113,22 +113,22 @@ namespace SPICA.Formats.MTFramework.Model
                 Reader.BaseStream.Seek(SkeletonAddress + Index * 0x18, SeekOrigin.Begin);
 
                 sbyte BoneIndex = Reader.ReadSByte();
-                sbyte Parent    = Reader.ReadSByte();
-                sbyte Opposite  = Reader.ReadSByte();
-                byte  Padding   = Reader.ReadByte();
+                sbyte Parent = Reader.ReadSByte();
+                sbyte Opposite = Reader.ReadSByte();
+                byte Padding = Reader.ReadByte();
 
-                float ChildDistance  = Reader.ReadSingle();
+                float ChildDistance = Reader.ReadSingle();
                 float ParentDistance = Reader.ReadSingle();
 
                 Vector3 Position = Reader.ReadVector3();
 
                 Skeleton.Add(new MTBone()
                 {
-                    ParentIndex    = Parent,
-                    OppositeIndex  = Opposite,
-                    ChildDistance  = ChildDistance,
+                    ParentIndex = Parent,
+                    OppositeIndex = Opposite,
+                    ChildDistance = ChildDistance,
                     ParentDistance = ParentDistance,
-                    Position       = Position
+                    Position = Position
                 });
             }
 
@@ -179,15 +179,15 @@ namespace SPICA.Formats.MTFramework.Model
                     Mat.Name,
                     Path.GetFileNameWithoutExtension(Mat.Texture0Name));
 
-                Mtl.MaterialParams.ColorOperation.BlendMode  = Mat.AlphaBlend.BlendMode;
-                Mtl.MaterialParams.BlendFunction             = Mat.AlphaBlend.BlendFunction;
-                Mtl.MaterialParams.DepthColorMask.RedWrite   = Mat.AlphaBlend.RedWrite;
+                Mtl.MaterialParams.ColorOperation.BlendMode = Mat.AlphaBlend.BlendMode;
+                Mtl.MaterialParams.BlendFunction = Mat.AlphaBlend.BlendFunction;
+                Mtl.MaterialParams.DepthColorMask.RedWrite = Mat.AlphaBlend.RedWrite;
                 Mtl.MaterialParams.DepthColorMask.GreenWrite = Mat.AlphaBlend.GreenWrite;
-                Mtl.MaterialParams.DepthColorMask.BlueWrite  = Mat.AlphaBlend.BlueWrite;
+                Mtl.MaterialParams.DepthColorMask.BlueWrite = Mat.AlphaBlend.BlueWrite;
                 Mtl.MaterialParams.DepthColorMask.AlphaWrite = Mat.AlphaBlend.AlphaWrite;
-                Mtl.MaterialParams.DepthColorMask.Enabled    = Mat.DepthStencil.DepthTest;
+                Mtl.MaterialParams.DepthColorMask.Enabled = Mat.DepthStencil.DepthTest;
                 Mtl.MaterialParams.DepthColorMask.DepthWrite = Mat.DepthStencil.DepthWrite;
-                Mtl.MaterialParams.DepthColorMask.DepthFunc  = Mat.DepthStencil.DepthFunc;
+                Mtl.MaterialParams.DepthColorMask.DepthFunc = Mat.DepthStencil.DepthFunc;
 
                 Model.Materials.Add(Mtl);
             }
@@ -206,15 +206,15 @@ namespace SPICA.Formats.MTFramework.Model
                     null)
                 {
                     MaterialIndex = (ushort)Mesh.MaterialIndex,
-                    NodeIndex     = Index,
-                    Priority      = Mesh.RenderPriority
+                    NodeIndex = Index,
+                    Priority = Mesh.RenderPriority
                 };
 
                 byte[] BoneIndices = BoneIndicesGroups[Mesh.BoneIndicesIndex];
 
                 if ((Model.Flags & H3DModelFlags.HasSkeleton) != 0 && BoneIndices.Length > 0)
                 {
-                    M.Skinning  = H3DMeshSkinning.Smooth;
+                    M.Skinning = H3DMeshSkinning.Smooth;
 
                     PICAVertex[] Vertices = M.GetVertices();
 
@@ -270,7 +270,7 @@ namespace SPICA.Formats.MTFramework.Model
                         int Count = IndicesQueue.Count / 3;
 
                         List<ushort> Indices = new List<ushort>();
-                        List<int>    Bones   = new List<int>();
+                        List<int> Bones = new List<int>();
 
                         while (Count-- > 0)
                         {
@@ -310,7 +310,7 @@ namespace SPICA.Formats.MTFramework.Model
                         H3DSubMesh SM = new H3DSubMesh();
 
                         SM.Skinning = H3DSubMeshSkinning.Smooth;
-                        SM.Indices  = Indices.ToArray();
+                        SM.Indices = Indices.ToArray();
                         SM.BoneIndicesCount = (ushort)Bones.Count;
 
                         for (int i = 0; i < Bones.Count; i++)
@@ -329,7 +329,7 @@ namespace SPICA.Formats.MTFramework.Model
                                 Vertices[i].Indices[0] = Bones.IndexOf(Vertices[i].Indices[0]);
                                 Vertices[i].Indices[1] = Bones.IndexOf(Vertices[i].Indices[1]);
                                 Vertices[i].Indices[2] = Bones.IndexOf(Vertices[i].Indices[2]);
-                                Vertices[i].Indices[3] = Bones.IndexOf(Vertices[i].Indices[3]); 
+                                Vertices[i].Indices[3] = Bones.IndexOf(Vertices[i].Indices[3]);
                             }
                         }
 
@@ -356,10 +356,10 @@ namespace SPICA.Formats.MTFramework.Model
             {
                 Model.Skeleton.Add(new H3DBone()
                 {
-                    Name        = $"Bone_{BoneIndex++}",
+                    Name = $"Bone_{BoneIndex++}",
                     ParentIndex = Bone.ParentIndex,
                     Translation = Bone.Position,
-                    Scale       = Vector3.One
+                    Scale = Vector3.One
                 });
             }
 

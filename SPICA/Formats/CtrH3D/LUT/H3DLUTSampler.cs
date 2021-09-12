@@ -2,6 +2,7 @@
 using SPICA.PICA;
 using SPICA.Serialization;
 using SPICA.Serialization.Attributes;
+using System.IO;
 
 namespace SPICA.Formats.CtrH3D.LUT
 {
@@ -46,7 +47,7 @@ namespace SPICA.Formats.CtrH3D.LUT
             _Table = new float[256];
         }
 
-        void ICustomSerialization.Deserialize(BinaryDeserializer Deserializer)
+        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer)
         {
             uint Index = 0;
 
@@ -86,7 +87,7 @@ namespace SPICA.Formats.CtrH3D.LUT
                 }
 
                 int Value = (int)(_Table[Index] * 0xfff);
-                int Diff  = (int)(Difference    * 0x7ff);
+                int Diff = (int)(Difference * 0x7ff);
 
                 QuantizedValues[Index] = (uint)(Value | (Diff << 12)) & 0xffffff;
             }

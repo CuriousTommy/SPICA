@@ -10,19 +10,19 @@ namespace SPICA.Formats.CtrH3D
     public struct H3DVertexData : ICustomSerialization
     {
         [Ignore] public H3DVertexDataAttribute[] Attributes;
-        [Ignore] public H3DVertexDataIndices[]   Indices;
+        [Ignore] public H3DVertexDataIndices[] Indices;
 
         public int VertexStride { get; private set; }
 
         [Ignore] public byte[] RawBuffer;
 
-        void ICustomSerialization.Deserialize(BinaryDeserializer Deserializer)
+        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer)
         {
             Attributes = new H3DVertexDataAttribute[(byte)Deserializer.Reader.ReadUInt16()];
-            Indices    = new H3DVertexDataIndices[Deserializer.Reader.ReadUInt16()];
+            Indices = new H3DVertexDataIndices[Deserializer.Reader.ReadUInt16()];
 
             uint AttributesAddress = Deserializer.Reader.ReadUInt32();
-            uint IndicesAddress    = Deserializer.Reader.ReadUInt32();
+            uint IndicesAddress = Deserializer.Reader.ReadUInt32();
 
             Deserializer.BaseStream.Seek(AttributesAddress, SeekOrigin.Begin);
 
@@ -30,8 +30,8 @@ namespace SPICA.Formats.CtrH3D
 
             for (int Index = 0; Index < Attributes.Length; Index++)
             {
-                Attributes[Index] = Deserializer.Deserialize<H3DVertexDataAttribute>();
-                
+                Attributes[Index] = Deserializer.Deserialize<H3DVertexDataAttribute>(ref OutputFile);
+
                 if (!Attributes[Index].IsFixed &&
                      Attributes[Index].Offset < BaseAddress)
                 {
@@ -63,7 +63,7 @@ namespace SPICA.Formats.CtrH3D
 
             for (int Index = 0; Index < Indices.Length; Index++)
             {
-                Indices[Index] = Deserializer.Deserialize<H3DVertexDataIndices>();
+                Indices[Index] = Deserializer.Deserialize<H3DVertexDataIndices>(ref OutputFile);
             }
 
             int BufferCount = 0;
@@ -96,13 +96,13 @@ namespace SPICA.Formats.CtrH3D
             Serializer.Sections[(uint)H3DSectionId.Contents].Values.Add(new RefValue()
             {
                 Position = Serializer.BaseStream.Position,
-                Value    = Attributes
+                Value = Attributes
             });
 
             Serializer.Sections[(uint)H3DSectionId.Contents].Values.Add(new RefValue()
             {
                 Position = Serializer.BaseStream.Position + 4,
-                Value    = Indices
+                Value = Indices
             });
 
             Serializer.BaseStream.Seek(8, SeekOrigin.Current);

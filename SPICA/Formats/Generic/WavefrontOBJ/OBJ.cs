@@ -38,7 +38,7 @@ namespace SPICA.Formats.Generic.WavefrontOBJ
             Meshes = new List<OBJMesh>();
 
             List<Vector4> Positions = new List<Vector4>();
-            List<Vector4> Normals   = new List<Vector4>();
+            List<Vector4> Normals = new List<Vector4>();
             List<Vector4> TexCoords = new List<Vector4>();
 
             OBJMesh Mesh = new OBJMesh();
@@ -118,7 +118,7 @@ namespace SPICA.Formats.Generic.WavefrontOBJ
 
                                 Vertex.Normal = Normals[GetIndex(Indices[Index][2], TexCoords.Count)];
                             }
-                            
+
                             Vertex.Weights[0] = 1;
 
                             Vertex.Color = Vector4.One;
@@ -175,7 +175,7 @@ namespace SPICA.Formats.Generic.WavefrontOBJ
             public Vector4 Diffuse;
             public Vector4 Specular;
 
-            public string DiffuseTexture; 
+            public string DiffuseTexture;
         }
 
         public H3D ToH3D(string TextureAndMtlSearchPath = null)
@@ -247,8 +247,8 @@ namespace SPICA.Formats.Generic.WavefrontOBJ
 
                                     switch (Params[0])
                                     {
-                                        case "Ka": Material.Ambient  = Color; break;
-                                        case "Kd": Material.Diffuse  = Color; break;
+                                        case "Ka": Material.Ambient = Color; break;
+                                        case "Kd": Material.Diffuse = Color; break;
                                         case "Ks": Material.Specular = Color; break;
                                     }
                                 }
@@ -271,7 +271,7 @@ namespace SPICA.Formats.Generic.WavefrontOBJ
 
             ushort MaterialIndex = 0;
 
-            Model.Flags       = H3DModelFlags.HasSkeleton;
+            Model.Flags = H3DModelFlags.HasSkeleton;
             Model.BoneScaling = H3DBoneScaling.Maya;
             Model.MeshNodesVisibility.Add(true);
 
@@ -327,8 +327,8 @@ namespace SPICA.Formats.Generic.WavefrontOBJ
                     H3DSubMesh SM = new H3DSubMesh();
 
                     SM.BoneIndices = new ushort[] { 0 };
-                    SM.Skinning    = H3DSubMeshSkinning.Smooth;
-                    SM.Indices     = Indices.ToArray();
+                    SM.Skinning = H3DSubMeshSkinning.Smooth;
+                    SM.Indices = Indices.ToArray();
 
                     SubMeshes.Add(SM);
                 }
@@ -344,8 +344,8 @@ namespace SPICA.Formats.Generic.WavefrontOBJ
 
                 H3DMesh M = new H3DMesh(Vertices.Keys, Attributes, SubMeshes)
                 {
-                    Skinning      = H3DMeshSkinning.Smooth,
-                    MeshCenter    = (MinVector + MaxVector) * 0.5f,
+                    Skinning = H3DMeshSkinning.Smooth,
+                    MeshCenter = (MinVector + MaxVector) * 0.5f,
                     MaterialIndex = MaterialIndex
                 };
 

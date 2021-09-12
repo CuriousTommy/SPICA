@@ -1,8 +1,10 @@
-﻿namespace SPICA.Serialization
+﻿using System.IO;
+
+namespace SPICA.Serialization
 {
     interface ICustomSerialization
     {
-        void Deserialize(BinaryDeserializer Deserializer);
+        void Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer);
         bool Serialize(BinarySerializer Serializer);
     }
 }

@@ -25,9 +25,9 @@ namespace SPICA.Rendering.Shaders
 
             Output.AppendLine();
 
-            GenVec4Uniforms (Output, Program.Vec4Uniforms);
+            GenVec4Uniforms(Output, Program.Vec4Uniforms);
             GenIVec4Uniforms(Output, Program.IVec4Uniforms);
-            GenBoolUniforms (Output, Program.BoolUniforms);
+            GenBoolUniforms(Output, Program.BoolUniforms);
 
             Output.AppendLine();
 

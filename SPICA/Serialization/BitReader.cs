@@ -1,24 +1,25 @@
-﻿using System.IO;
+﻿using SPICA.Misc;
+using System.IO;
 
 namespace SPICA.Serialization
 {
     class BitReader
     {
-        private BinaryReader Reader;
+        private LogReader Reader;
 
         private uint Bools;
-        private int  Index;
+        private int Index;
 
-        public BitReader(BinaryReader Reader)
+        public BitReader(LogReader Reader)
         {
             this.Reader = Reader;
         }
 
-        public bool ReadBit()
+        public bool ReadBit(ref StreamWriter outputFile)
         {
             if ((Index++ & 0x1f) == 0)
             {
-                Bools = Reader.ReadUInt32();
+                Bools = Reader.ReadUInt32(ref outputFile);
             }
 
             bool Value = (Bools & 1) != 0;

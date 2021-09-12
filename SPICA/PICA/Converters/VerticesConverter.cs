@@ -39,9 +39,9 @@ namespace SPICA.PICA.Converters
                         {
                             switch (Attrib.Format)
                             {
-                                case PICAAttributeFormat.Byte:  Elems[Elem] = Reader.ReadSByte();  break;
-                                case PICAAttributeFormat.Ubyte: Elems[Elem] = Reader.ReadByte();   break;
-                                case PICAAttributeFormat.Short: Elems[Elem] = Reader.ReadInt16();  break;
+                                case PICAAttributeFormat.Byte: Elems[Elem] = Reader.ReadSByte(); break;
+                                case PICAAttributeFormat.Ubyte: Elems[Elem] = Reader.ReadByte(); break;
+                                case PICAAttributeFormat.Short: Elems[Elem] = Reader.ReadInt16(); break;
                                 case PICAAttributeFormat.Float: Elems[Elem] = Reader.ReadSingle(); break;
                             }
                         }
@@ -57,10 +57,10 @@ namespace SPICA.PICA.Converters
 
                         switch (Attrib.Name)
                         {
-                            case PICAAttributeName.Position:  Out.Position  = v; break;
-                            case PICAAttributeName.Normal:    Out.Normal    = v; break;
-                            case PICAAttributeName.Tangent:   Out.Tangent   = v; break;
-                            case PICAAttributeName.Color:     Out.Color     = v; break;
+                            case PICAAttributeName.Position: Out.Position = v; break;
+                            case PICAAttributeName.Normal: Out.Normal = v; break;
+                            case PICAAttributeName.Tangent: Out.Tangent = v; break;
+                            case PICAAttributeName.Color: Out.Color = v; break;
                             case PICAAttributeName.TexCoord0: Out.TexCoord0 = v; break;
                             case PICAAttributeName.TexCoord1: Out.TexCoord1 = v; break;
                             case PICAAttributeName.TexCoord2: Out.TexCoord2 = v; break;
@@ -69,13 +69,13 @@ namespace SPICA.PICA.Converters
                                 Out.Indices[bi++] = (int)v.X; if (Attrib.Elements == 1) break;
                                 Out.Indices[bi++] = (int)v.Y; if (Attrib.Elements == 2) break;
                                 Out.Indices[bi++] = (int)v.Z; if (Attrib.Elements == 3) break;
-                                Out.Indices[bi++] = (int)v.W;                           break;
+                                Out.Indices[bi++] = (int)v.W; break;
 
                             case PICAAttributeName.BoneWeight:
-                                Out.Weights[wi++] =      v.X; if (Attrib.Elements == 1) break;
-                                Out.Weights[wi++] =      v.Y; if (Attrib.Elements == 2) break;
-                                Out.Weights[wi++] =      v.Z; if (Attrib.Elements == 3) break;
-                                Out.Weights[wi++] =      v.W;                           break;
+                                Out.Weights[wi++] = v.X; if (Attrib.Elements == 1) break;
+                                Out.Weights[wi++] = v.Y; if (Attrib.Elements == 2) break;
+                                Out.Weights[wi++] = v.Z; if (Attrib.Elements == 3) break;
+                                Out.Weights[wi++] = v.W; break;
                         }
                     }
 
@@ -97,9 +97,9 @@ namespace SPICA.PICA.Converters
                                         break;
 
                                     case PICAAttributeName.BoneWeight:
-                                        Out.Weights[0] =      Attr.Value.X;
-                                        Out.Weights[1] =      Attr.Value.Y;
-                                        Out.Weights[2] =      Attr.Value.Z;
+                                        Out.Weights[0] = Attr.Value.X;
+                                        Out.Weights[1] = Attr.Value.Y;
+                                        Out.Weights[2] = Attr.Value.Z;
                                         break;
                                 }
                             }
@@ -132,17 +132,17 @@ namespace SPICA.PICA.Converters
                         {
                             switch (Attrib.Name)
                             {
-                                case PICAAttributeName.Position:   Write(Writer, Attrib, Vertex.Position,  i);  break;
-                                case PICAAttributeName.Normal:     Write(Writer, Attrib, Vertex.Normal,    i);  break;
-                                case PICAAttributeName.Tangent:    Write(Writer, Attrib, Vertex.Tangent,   i);  break;
-                                case PICAAttributeName.Color:      Write(Writer, Attrib, Vertex.Color,     i);  break;
-                                case PICAAttributeName.TexCoord0:  Write(Writer, Attrib, Vertex.TexCoord0, i);  break;
-                                case PICAAttributeName.TexCoord1:  Write(Writer, Attrib, Vertex.TexCoord1, i);  break;
-                                case PICAAttributeName.TexCoord2:  Write(Writer, Attrib, Vertex.TexCoord2, i);  break;
-                                case PICAAttributeName.BoneIndex:  Write(Writer, Attrib, Vertex.Indices[bi++]); break;
+                                case PICAAttributeName.Position: Write(Writer, Attrib, Vertex.Position, i); break;
+                                case PICAAttributeName.Normal: Write(Writer, Attrib, Vertex.Normal, i); break;
+                                case PICAAttributeName.Tangent: Write(Writer, Attrib, Vertex.Tangent, i); break;
+                                case PICAAttributeName.Color: Write(Writer, Attrib, Vertex.Color, i); break;
+                                case PICAAttributeName.TexCoord0: Write(Writer, Attrib, Vertex.TexCoord0, i); break;
+                                case PICAAttributeName.TexCoord1: Write(Writer, Attrib, Vertex.TexCoord1, i); break;
+                                case PICAAttributeName.TexCoord2: Write(Writer, Attrib, Vertex.TexCoord2, i); break;
+                                case PICAAttributeName.BoneIndex: Write(Writer, Attrib, Vertex.Indices[bi++]); break;
                                 case PICAAttributeName.BoneWeight: Write(Writer, Attrib, Vertex.Weights[wi++]); break;
 
-								default: Write(Writer, Attrib, 0); break;
+                                default: Write(Writer, Attrib, 0); break;
                             }
                         }
                     }
@@ -177,10 +177,10 @@ namespace SPICA.PICA.Converters
 
             switch (Attrib.Format)
             {
-                case PICAAttributeFormat.Byte:  Writer.Write((sbyte)Value); break;
-                case PICAAttributeFormat.Ubyte: Writer.Write((byte)Value);  break;
+                case PICAAttributeFormat.Byte: Writer.Write((sbyte)Value); break;
+                case PICAAttributeFormat.Ubyte: Writer.Write((byte)Value); break;
                 case PICAAttributeFormat.Short: Writer.Write((short)Value); break;
-                case PICAAttributeFormat.Float: Writer.Write(Value);        break;
+                case PICAAttributeFormat.Float: Writer.Write(Value); break;
             }
         }
 

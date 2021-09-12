@@ -1,7 +1,5 @@
 ﻿using SPICA.Formats.CtrH3D.Model.Material;
 using SPICA.PICA.Commands;
-
-using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
@@ -77,10 +75,10 @@ namespace SPICA.Formats.Generic.COLLADA
             switch (Wrap)
             {
                 default:
-                case PICATextureWrap.ClampToEdge:   return DAEWrap.CLAMP;
+                case PICATextureWrap.ClampToEdge: return DAEWrap.CLAMP;
                 case PICATextureWrap.ClampToBorder: return DAEWrap.BORDER;
-                case PICATextureWrap.Repeat:        return DAEWrap.WRAP;
-                case PICATextureWrap.Mirror:        return DAEWrap.MIRROR;
+                case PICATextureWrap.Repeat: return DAEWrap.WRAP;
+                case PICATextureWrap.Mirror: return DAEWrap.MIRROR;
             }
         }
     }
@@ -92,12 +90,12 @@ namespace SPICA.Formats.Generic.COLLADA
             switch (Filter)
             {
                 default:
-                case H3DTextureMinFilter.Nearest:              return DAEFilter.NEAREST;
+                case H3DTextureMinFilter.Nearest: return DAEFilter.NEAREST;
                 case H3DTextureMinFilter.NearestMipmapNearest: return DAEFilter.NEAREST_MIPMAP_NEAREST;
-                case H3DTextureMinFilter.NearestMipmapLinear:  return DAEFilter.NEAREST_MIPMAP_LINEAR;
-                case H3DTextureMinFilter.Linear:               return DAEFilter.LINEAR;
-                case H3DTextureMinFilter.LinearMipmapNearest:  return DAEFilter.LINEAR_MIPMAP_NEAREST;
-                case H3DTextureMinFilter.LinearMipmapLinear:   return DAEFilter.LINEAR_MIPMAP_LINEAR;
+                case H3DTextureMinFilter.NearestMipmapLinear: return DAEFilter.NEAREST_MIPMAP_LINEAR;
+                case H3DTextureMinFilter.Linear: return DAEFilter.LINEAR;
+                case H3DTextureMinFilter.LinearMipmapNearest: return DAEFilter.LINEAR_MIPMAP_NEAREST;
+                case H3DTextureMinFilter.LinearMipmapLinear: return DAEFilter.LINEAR_MIPMAP_LINEAR;
             }
         }
 
@@ -107,7 +105,7 @@ namespace SPICA.Formats.Generic.COLLADA
             {
                 default:
                 case H3DTextureMagFilter.Nearest: return DAEFilter.NEAREST;
-                case H3DTextureMagFilter.Linear:  return DAEFilter.LINEAR;
+                case H3DTextureMagFilter.Linear: return DAEFilter.LINEAR;
             }
         }
     }

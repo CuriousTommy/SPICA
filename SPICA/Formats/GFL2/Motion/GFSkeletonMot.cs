@@ -19,7 +19,7 @@ namespace SPICA.Formats.GFL2.Motion
 
         public GFSkeletonMot(BinaryReader Reader, uint FramesCount) : this()
         {
-            int  BoneNamesCount  = Reader.ReadInt32();
+            int BoneNamesCount = Reader.ReadInt32();
             uint BoneNamesLength = Reader.ReadUInt32();
 
             long Position = Reader.BaseStream.Position;
@@ -38,9 +38,9 @@ namespace SPICA.Formats.GFL2.Motion
         {
             H3DAnimation Output = new H3DAnimation()
             {
-                Name           = "GFMotion",
-                FramesCount    = Motion.FramesCount,
-                AnimationType  = H3DAnimationType.Skeletal,
+                Name = "GFMotion",
+                FramesCount = Motion.FramesCount,
+                AnimationType = H3DAnimationType.Skeletal,
                 AnimationFlags = Motion.IsLooping ? H3DAnimationFlags.IsLooping : 0
             };
 
@@ -54,17 +54,17 @@ namespace SPICA.Formats.GFL2.Motion
 
                 for (float Frame = 0; Frame < Motion.FramesCount; Frame++)
                 {
-                    Vector3 Scale       = Skeleton[BoneIndex].Scale;
-                    Vector3 Rotation    = Skeleton[BoneIndex].Rotation;
+                    Vector3 Scale = Skeleton[BoneIndex].Scale;
+                    Vector3 Rotation = Skeleton[BoneIndex].Rotation;
                     Vector3 Translation = Skeleton[BoneIndex].Translation;
 
-                    GFMotBoneTransform.SetFrameValue(Bone.ScaleX,       Frame, ref Scale.X);
-                    GFMotBoneTransform.SetFrameValue(Bone.ScaleY,       Frame, ref Scale.Y);
-                    GFMotBoneTransform.SetFrameValue(Bone.ScaleZ,       Frame, ref Scale.Z);
+                    GFMotBoneTransform.SetFrameValue(Bone.ScaleX, Frame, ref Scale.X);
+                    GFMotBoneTransform.SetFrameValue(Bone.ScaleY, Frame, ref Scale.Y);
+                    GFMotBoneTransform.SetFrameValue(Bone.ScaleZ, Frame, ref Scale.Z);
 
-                    GFMotBoneTransform.SetFrameValue(Bone.RotationX,    Frame, ref Rotation.X);
-                    GFMotBoneTransform.SetFrameValue(Bone.RotationY,    Frame, ref Rotation.Y);
-                    GFMotBoneTransform.SetFrameValue(Bone.RotationZ,    Frame, ref Rotation.Z);
+                    GFMotBoneTransform.SetFrameValue(Bone.RotationX, Frame, ref Rotation.X);
+                    GFMotBoneTransform.SetFrameValue(Bone.RotationY, Frame, ref Rotation.Y);
+                    GFMotBoneTransform.SetFrameValue(Bone.RotationZ, Frame, ref Rotation.Z);
 
                     GFMotBoneTransform.SetFrameValue(Bone.TranslationX, Frame, ref Translation.X);
                     GFMotBoneTransform.SetFrameValue(Bone.TranslationY, Frame, ref Translation.Y);
@@ -103,9 +103,9 @@ namespace SPICA.Formats.GFL2.Motion
 
                 Output.Elements.Add(new H3DAnimationElement()
                 {
-                    Name          = Bone.Name,
-                    Content       = QuatTransform,
-                    TargetType    = H3DTargetType.Bone,
+                    Name = Bone.Name,
+                    Content = QuatTransform,
+                    TargetType = H3DTargetType.Bone,
                     PrimitiveType = H3DPrimitiveType.QuatTransform
                 });
             }

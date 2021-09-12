@@ -34,8 +34,8 @@ namespace SPICA.Formats.GFL.Motion
 
             uint[] Octals = new uint[OctalsCount];
 
-            int  KeyFramesCount = 0;
-            uint CurrentOctal   = 0;
+            int KeyFramesCount = 0;
+            uint CurrentOctal = 0;
 
             for (int i = 0; i < OctalsCount; i++)
             {
@@ -78,10 +78,10 @@ namespace SPICA.Formats.GFL.Motion
 
             GF1MotBoneTransform CurrentBone = null;
 
-            int CurrentKFL =  0;
-            int OctalIndex =  2;
-            int ElemIndex  =  0;
-            int OldIndex   = -1;
+            int CurrentKFL = 0;
+            int OctalIndex = 2;
+            int ElemIndex = 0;
+            int OldIndex = -1;
 
             while (OctalIndex < OctalsCount)
             {
@@ -95,7 +95,7 @@ namespace SPICA.Formats.GFL.Motion
                     {
                         CurrentBone = new GF1MotBoneTransform()
                         {
-                            Name         =  Skeleton[BoneIndex].Name,
+                            Name = Skeleton[BoneIndex].Name,
                             IsWorldSpace = (Skeleton[BoneIndex].Flags & 8) != 0
                         };
 
@@ -116,20 +116,20 @@ namespace SPICA.Formats.GFL.Motion
                         case 1: KFs = CurrentBone.TranslationY; break;
                         case 2: KFs = CurrentBone.TranslationZ; break;
 
-                        case 3: KFs = CurrentBone.RotationX;    break;
-                        case 4: KFs = CurrentBone.RotationY;    break;
-                        case 5: KFs = CurrentBone.RotationZ;    break;
+                        case 3: KFs = CurrentBone.RotationX; break;
+                        case 4: KFs = CurrentBone.RotationY; break;
+                        case 5: KFs = CurrentBone.RotationZ; break;
 
-                        case 6: KFs = CurrentBone.ScaleX;       break;
-                        case 7: KFs = CurrentBone.ScaleY;       break;
-                        case 8: KFs = CurrentBone.ScaleZ;       break;
+                        case 6: KFs = CurrentBone.ScaleX; break;
+                        case 7: KFs = CurrentBone.ScaleY; break;
+                        case 8: KFs = CurrentBone.ScaleZ; break;
                     }
 
                     switch (CurrentOctal)
                     {
                         case 0: KFs.Add(new GF1MotKeyFrame(0, 0)); break; //Constant Zero (0 deg)
-                        case 2: KFs.Add(new GF1MotKeyFrame(0, (float)Math.PI *  0.5f)); break; //Constant +Half PI (90 deg)
-                        case 3: KFs.Add(new GF1MotKeyFrame(0, (float)Math.PI *  1.0f)); break; //Constant +PI (180 deg)
+                        case 2: KFs.Add(new GF1MotKeyFrame(0, (float)Math.PI * 0.5f)); break; //Constant +Half PI (90 deg)
+                        case 3: KFs.Add(new GF1MotKeyFrame(0, (float)Math.PI * 1.0f)); break; //Constant +PI (180 deg)
                         case 4: KFs.Add(new GF1MotKeyFrame(0, (float)Math.PI * -0.5f)); break; //Constant -Half PI (-90/270 deg)
                         case 5: KFs.Add(new GF1MotKeyFrame(0, Reader.ReadSingle())); break; //Constant value (stored as Float)
 
@@ -165,8 +165,8 @@ namespace SPICA.Formats.GFL.Motion
         {
             H3DAnimation Output = new H3DAnimation()
             {
-                Name          = "GFMotion",
-                FramesCount   = FramesCount,
+                Name = "GFMotion",
+                FramesCount = FramesCount,
                 AnimationType = H3DAnimationType.Skeletal
             };
 
@@ -178,19 +178,19 @@ namespace SPICA.Formats.GFL.Motion
                 SetKeyFrameGroup(Bone.TranslationY, Transform.TranslationY, 1);
                 SetKeyFrameGroup(Bone.TranslationZ, Transform.TranslationZ, 2);
 
-                SetKeyFrameGroup(Bone.RotationX,    Transform.RotationX,    3);
-                SetKeyFrameGroup(Bone.RotationY,    Transform.RotationY,    4);
-                SetKeyFrameGroup(Bone.RotationZ,    Transform.RotationZ,    5);
+                SetKeyFrameGroup(Bone.RotationX, Transform.RotationX, 3);
+                SetKeyFrameGroup(Bone.RotationY, Transform.RotationY, 4);
+                SetKeyFrameGroup(Bone.RotationZ, Transform.RotationZ, 5);
 
-                SetKeyFrameGroup(Bone.ScaleX,       Transform.ScaleX,       6);
-                SetKeyFrameGroup(Bone.ScaleY,       Transform.ScaleY,       7);
-                SetKeyFrameGroup(Bone.ScaleZ,       Transform.ScaleZ,       8);
+                SetKeyFrameGroup(Bone.ScaleX, Transform.ScaleX, 6);
+                SetKeyFrameGroup(Bone.ScaleY, Transform.ScaleY, 7);
+                SetKeyFrameGroup(Bone.ScaleZ, Transform.ScaleZ, 8);
 
                 Output.Elements.Add(new H3DAnimationElement()
                 {
-                    Name          = Bone.Name,
-                    Content       = Transform,
-                    TargetType    = H3DTargetType.Bone,
+                    Name = Bone.Name,
+                    Content = Transform,
+                    TargetType = H3DTargetType.Bone,
                     PrimitiveType = H3DPrimitiveType.Transform
                 });
             }
@@ -218,11 +218,11 @@ namespace SPICA.Formats.GFL.Motion
                     H3DBone PoseBone = Skeleton[Bone.Name];
 
                     Vector3[] LocalTrans = new Vector3[FramesCount + 1];
-                    Vector3[] ParentRot  = new Vector3[FramesCount + 1];
+                    Vector3[] ParentRot = new Vector3[FramesCount + 1];
 
-                    int    BoneIndex   = Skeleton.Find(Bone.Name);
-                    int    ParentIndex = Skeleton[BoneIndex].ParentIndex;
-                    string ParentName  = Skeleton[ParentIndex].Name;
+                    int BoneIndex = Skeleton.Find(Bone.Name);
+                    int ParentIndex = Skeleton[BoneIndex].ParentIndex;
+                    string ParentName = Skeleton[ParentIndex].Name;
 
                     for (int Frame = 0; Frame < FramesCount + 1; Frame++)
                     {
@@ -280,9 +280,9 @@ namespace SPICA.Formats.GFL.Motion
                     {
                         P_Anim = new H3DAnimationElement()
                         {
-                            Name          = ParentName,
-                            Content       = new H3DAnimTransform(),
-                            TargetType    = H3DTargetType.Bone,
+                            Name = ParentName,
+                            Content = new H3DAnimTransform(),
+                            TargetType = H3DTargetType.Bone,
                             PrimitiveType = H3DPrimitiveType.Transform
                         };
 
@@ -307,16 +307,16 @@ namespace SPICA.Formats.GFL.Motion
         }
 
         private bool GetBoneRT(
-            H3DAnimation     Anim,
+            H3DAnimation Anim,
             H3DDict<H3DBone> Skeleton,
-            string           Name,
-            int              Frame,
-            out Vector3      Rotation,
-            out Vector3      Translation)
+            string Name,
+            int Frame,
+            out Vector3 Rotation,
+            out Vector3 Translation)
         {
             if (!Skeleton.Contains(Name))
             {
-                Rotation    = Vector3.Zero;
+                Rotation = Vector3.Zero;
                 Translation = Vector3.Zero;
 
                 return false;
@@ -324,7 +324,7 @@ namespace SPICA.Formats.GFL.Motion
 
             H3DBone PoseBone = Skeleton[Name];
 
-            Rotation    = PoseBone.Rotation;
+            Rotation = PoseBone.Rotation;
             Translation = PoseBone.Translation;
 
             H3DAnimationElement Bone = Anim.Elements.Find(x => x.Name == Name);
@@ -333,9 +333,9 @@ namespace SPICA.Formats.GFL.Motion
             {
                 H3DAnimTransform Transform = (H3DAnimTransform)Bone.Content;
 
-                if (Transform.RotationX.Exists)    Rotation.X    = Transform.RotationX.GetFrameValue(Frame);
-                if (Transform.RotationY.Exists)    Rotation.Y    = Transform.RotationY.GetFrameValue(Frame);
-                if (Transform.RotationZ.Exists)    Rotation.Z    = Transform.RotationZ.GetFrameValue(Frame);
+                if (Transform.RotationX.Exists) Rotation.X = Transform.RotationX.GetFrameValue(Frame);
+                if (Transform.RotationY.Exists) Rotation.Y = Transform.RotationY.GetFrameValue(Frame);
+                if (Transform.RotationZ.Exists) Rotation.Z = Transform.RotationZ.GetFrameValue(Frame);
 
                 if (Transform.TranslationX.Exists) Translation.X = Transform.TranslationX.GetFrameValue(Frame);
                 if (Transform.TranslationY.Exists) Translation.Y = Transform.TranslationY.GetFrameValue(Frame);
@@ -346,7 +346,7 @@ namespace SPICA.Formats.GFL.Motion
         }
 
         private void AddVectors(
-            Vector3[]             Vectors,
+            Vector3[] Vectors,
             H3DFloatKeyFrameGroup X,
             H3DFloatKeyFrameGroup Y,
             H3DFloatKeyFrameGroup Z)
@@ -375,9 +375,9 @@ namespace SPICA.Formats.GFL.Motion
 
         private void SetKeyFrameGroup(List<GF1MotKeyFrame> Source, H3DFloatKeyFrameGroup Target, ushort CurveIndex)
         {
-            Target.StartFrame        = 0;
-            Target.EndFrame          = FramesCount;
-            Target.CurveIndex        = CurveIndex;
+            Target.StartFrame = 0;
+            Target.EndFrame = FramesCount;
+            Target.CurveIndex = CurveIndex;
             Target.InterpolationType = H3DInterpolationType.Hermite;
 
             foreach (GF1MotKeyFrame KF in Source)

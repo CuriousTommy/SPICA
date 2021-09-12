@@ -7,7 +7,7 @@ namespace SPICA.Formats.CtrGfx.Animation
 {
     static class GfxAnimVector
     {
-        public static void SetVector(BinaryDeserializer Deserializer, GfxFloatKeyFrameGroup[] Vector)
+        public static void SetVector(ref StreamWriter OutputFile, BinaryDeserializer Deserializer, GfxFloatKeyFrameGroup[] Vector)
         {
             long Position = Deserializer.BaseStream.Position;
 
@@ -23,11 +23,11 @@ namespace SPICA.Formats.CtrGfx.Animation
                 Position += 4;
 
                 bool Constant = (Flags & ConstantMask) != 0;
-                bool Exists   = (Flags & NotExistMask) == 0;
+                bool Exists = (Flags & NotExistMask) == 0;
 
                 if (Exists)
                 {
-                    Vector[Axis] = GfxFloatKeyFrameGroup.ReadGroup(Deserializer, Constant);
+                    Vector[Axis] = GfxFloatKeyFrameGroup.ReadGroup(ref OutputFile, Deserializer, Constant);
                 }
 
                 ConstantMask <<= 1;
@@ -35,16 +35,16 @@ namespace SPICA.Formats.CtrGfx.Animation
             }
         }
 
-        public static void SetVector(BinaryDeserializer Deserializer, GfxFloatKeyFrameGroup Vector)
+        public static void SetVector(ref StreamWriter OutputFile, BinaryDeserializer Deserializer, GfxFloatKeyFrameGroup Vector)
         {
             uint Flags = GetFlagsFromElem(Deserializer, Deserializer.BaseStream.Position);
 
             bool Constant = (Flags & 1) != 0;
-            bool Exists   = (Flags & 2) == 0;
+            bool Exists = (Flags & 2) == 0;
 
             if (Exists)
             {
-                Vector = GfxFloatKeyFrameGroup.ReadGroup(Deserializer, Constant);
+                Vector = GfxFloatKeyFrameGroup.ReadGroup(ref OutputFile, Deserializer, Constant);
             }
         }
 
@@ -79,7 +79,7 @@ namespace SPICA.Formats.CtrGfx.Animation
                 {
                     Serializer.Sections[(uint)GfxSectionId.Contents].Values.Add(new RefValue()
                     {
-                        Value    = Vector[ElemIndex],
+                        Value = Vector[ElemIndex],
                         Position = Serializer.BaseStream.Position
                     });
 

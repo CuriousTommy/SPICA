@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 
 namespace SPICA.Formats.GFLX
 {
     class GFbmdl
     {
-        public GFbmdl(BinaryReader br) {
+        public GFbmdl(BinaryReader br)
+        {
             //
         }
     }

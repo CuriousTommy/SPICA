@@ -28,8 +28,8 @@ namespace SPICA.Formats.CtrGfx
 
         [Inline]
         [TypeChoiceName("Format")]
-        [TypeChoice((uint)GfxStringFormat.Ascii,   typeof(List<string>))]
-        [TypeChoice((uint)GfxStringFormat.Utf8,    typeof(List<GfxStringUtf8>))]
+        [TypeChoice((uint)GfxStringFormat.Ascii, typeof(List<string>))]
+        [TypeChoice((uint)GfxStringFormat.Utf8, typeof(List<GfxStringUtf8>))]
         [TypeChoice((uint)GfxStringFormat.Utf16LE, typeof(List<GfxStringUtf16LE>))]
         [TypeChoice((uint)GfxStringFormat.Utf16BE, typeof(List<GfxStringUtf16BE>))]
         public readonly IList Values;

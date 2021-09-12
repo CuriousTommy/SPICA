@@ -19,10 +19,10 @@ namespace SPICA.Formats.GFL2.Motion
 
         public GFMotUVTransform()
         {
-            ScaleX       = new List<GFMotKeyFrame>();
-            ScaleY       = new List<GFMotKeyFrame>();
+            ScaleX = new List<GFMotKeyFrame>();
+            ScaleY = new List<GFMotKeyFrame>();
 
-            Rotation     = new List<GFMotKeyFrame>();
+            Rotation = new List<GFMotKeyFrame>();
 
             TranslationX = new List<GFMotKeyFrame>();
             TranslationY = new List<GFMotKeyFrame>();
@@ -34,17 +34,17 @@ namespace SPICA.Formats.GFL2.Motion
 
             UnitIndex = Reader.ReadUInt32();
 
-            uint Flags  = Reader.ReadUInt32();
+            uint Flags = Reader.ReadUInt32();
             uint Length = Reader.ReadUInt32();
 
             for (int ElemIndex = 0; ElemIndex < 5; ElemIndex++)
             {
                 switch (ElemIndex)
                 {
-                    case 0: GFMotKeyFrame.SetList(ScaleX,       Reader, Flags, FramesCount); break;
-                    case 1: GFMotKeyFrame.SetList(ScaleY,       Reader, Flags, FramesCount); break;
+                    case 0: GFMotKeyFrame.SetList(ScaleX, Reader, Flags, FramesCount); break;
+                    case 1: GFMotKeyFrame.SetList(ScaleY, Reader, Flags, FramesCount); break;
 
-                    case 2: GFMotKeyFrame.SetList(Rotation,     Reader, Flags, FramesCount); break;
+                    case 2: GFMotKeyFrame.SetList(Rotation, Reader, Flags, FramesCount); break;
 
                     case 3: GFMotKeyFrame.SetList(TranslationX, Reader, Flags, FramesCount); break;
                     case 4: GFMotKeyFrame.SetList(TranslationY, Reader, Flags, FramesCount); break;

@@ -1,6 +1,5 @@
 ﻿using SPICA.Formats.CtrH3D;
 using SPICA.Formats.CtrH3D.Animation;
-using SPICA.Formats.CtrH3D.Model;
 using SPICA.Formats.GFL;
 using SPICA.Formats.GFL.Motion;
 

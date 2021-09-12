@@ -13,7 +13,7 @@ using SPICA.Formats.ModelBinary;
 using SPICA.Formats.MTFramework.Model;
 using SPICA.Formats.MTFramework.Shader;
 using SPICA.Formats.MTFramework.Texture;
-
+using SPICA.Misc;
 using System;
 using System.IO;
 using System.Text;
@@ -50,7 +50,7 @@ namespace SPICA.WinForms.Formats
             {
                 if (FS.Length > 4)
                 {
-                    BinaryReader Reader = new BinaryReader(FS);
+                    LogReader Reader = new LogReader(FS);
 
                     uint MagicNum = Reader.ReadUInt32();
 
@@ -89,16 +89,17 @@ namespace SPICA.WinForms.Formats
                         if (GFPackage.IsValidPackage(FS))
                         {
                             GFPackage.Header PackHeader = GFPackage.GetPackageHeader(FS);
+                            StreamWriter outputFile = WriteManager.CreateOutputFile("SPICA_FS.txt");
 
                             switch (PackHeader.Magic)
                             {
                                 case "AD": Output = GFPackedTexture.OpenAsH3D(FS, PackHeader, 1); break;
-                                case "BG": Output = GFL2OverWorld.OpenAsH3D(FS, PackHeader, Skeleton); break;
+                                case "BG": Output = GFL2OverWorld.OpenAsH3D(ref outputFile, FS, PackHeader, Skeleton); break;
                                 case "BS": Output = GFBtlSklAnim.OpenAsH3D(FS, PackHeader, Skeleton); break;
-                                case "CM": Output = GFCharaModel.OpenAsH3D(FS, PackHeader); break;
+                                case "CM": Output = GFCharaModel.OpenAsH3D(ref outputFile, FS, PackHeader); break;
                                 case "GR": Output = GFOWMapModel.OpenAsH3D(FS, PackHeader); break;
                                 case "MM": Output = GFOWCharaModel.OpenAsH3D(FS, PackHeader); break;
-                                case "PC": Output = GFPkmnModel.OpenAsH3D(FS, PackHeader, Skeleton); break;
+                                case "PC": Output = GFPkmnModel.OpenAsH3D(ref outputFile, FS, PackHeader, Skeleton); break;
                                 case "PT": Output = GFPackedTexture.OpenAsH3D(FS, PackHeader, 0); break;
                                 case "PK":
                                 case "PB":
@@ -107,23 +108,29 @@ namespace SPICA.WinForms.Formats
                         }
                         else
                         {
+                            StreamWriter outputFile;
                             switch (MagicNum)
                             {
                                 case 0x15122117:
+                                    outputFile = WriteManager.CreateOutputFile("SPICA_0x15122117.txt");
+                                    
                                     Output = new H3D();
-
-                                    Output.Models.Add(new GFModel(Reader, "Model").ToH3DModel());
+                                    Output.Models.Add(new GFModel(ref outputFile, Reader, "Model").ToH3DModel());
 
                                     break;
 
                                 case 0x15041213:
+                                    outputFile = WriteManager.CreateOutputFile("SPICA_0x15122117.txt");
+                                    
                                     Output = new H3D();
-
-                                    Output.Textures.Add(new GFTexture(Reader).ToH3DTexture());
+                                    Output.Textures.Add(new GFTexture(ref outputFile, Reader).ToH3DTexture());
 
                                     break;
 
-                                case 0x00010000: Output = new GFModelPack(Reader).ToH3D(); break;
+                                case 0x00010000:
+                                    outputFile = WriteManager.CreateOutputFile("SPICA_0x00010000.txt");
+                                    Output = new GFModelPack(ref outputFile, Reader).ToH3D(); break;
+
                                 case 0x00060000:
                                     if (Skeleton != null)
                                     {
@@ -131,9 +138,9 @@ namespace SPICA.WinForms.Formats
 
                                         GFMotion Motion = new GFMotion(Reader, 0);
 
-                                        H3DAnimation    SklAnim = Motion.ToH3DSkeletalAnimation(Skeleton);
+                                        H3DAnimation SklAnim = Motion.ToH3DSkeletalAnimation(Skeleton);
                                         H3DMaterialAnim MatAnim = Motion.ToH3DMaterialAnimation();
-                                        H3DAnimation    VisAnim = Motion.ToH3DVisibilityAnimation();
+                                        H3DAnimation VisAnim = Motion.ToH3DVisibilityAnimation();
 
                                         if (SklAnim != null) Output.SkeletalAnimations.Add(SklAnim);
                                         if (MatAnim != null) Output.MaterialAnimations.Add(MatAnim);
@@ -220,7 +227,8 @@ namespace SPICA.WinForms.Formats
             }
         }
 
-        private static H3D LoadGflxPak(BinaryReader br) {
+        private static H3D LoadGflxPak(BinaryReader br)
+        {
             H3D h3d = new GFLXPack(br).ToH3D();
             return h3d;
         }

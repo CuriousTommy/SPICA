@@ -31,7 +31,7 @@ namespace SPICA.Formats.CtrH3D.Animation
             KeyFrames = new List<KeyFrame>();
         }
 
-        void ICustomSerialization.Deserialize(BinaryDeserializer Deserializer)
+        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer)
         {
             if (Deserializer.FileVersion < 0x20)
             {
@@ -43,17 +43,17 @@ namespace SPICA.Formats.CtrH3D.Animation
 
                 //We don't need this since it's already stored on Curve
                 float StartFrame = Deserializer.Reader.ReadSingle();
-                float EndFrame   = Deserializer.Reader.ReadSingle();
+                float EndFrame = Deserializer.Reader.ReadSingle();
 
                 InterpolationType = (H3DInterpolationType)Deserializer.Reader.ReadByte();
-                Quantization      = (KeyFrameQuantization)Deserializer.Reader.ReadByte();
+                Quantization = (KeyFrameQuantization)Deserializer.Reader.ReadByte();
 
                 Count = Deserializer.Reader.ReadUInt16();
 
                 InvDuration = Deserializer.Reader.ReadSingle();
-                ValueScale  = Deserializer.Reader.ReadSingle();
+                ValueScale = Deserializer.Reader.ReadSingle();
                 ValueOffset = Deserializer.Reader.ReadSingle();
-                FrameScale  = Deserializer.Reader.ReadSingle();
+                FrameScale = Deserializer.Reader.ReadSingle();
             }
 
             Deserializer.BaseStream.Seek(Deserializer.Reader.ReadUInt32(), SeekOrigin.Begin);
@@ -64,14 +64,14 @@ namespace SPICA.Formats.CtrH3D.Animation
 
                 switch (Quantization)
                 {
-                    case KeyFrameQuantization.Hermite128:       KF = Deserializer.Reader.ReadHermite128();       break;
-                    case KeyFrameQuantization.Hermite64:        KF = Deserializer.Reader.ReadHermite64();        break;
-                    case KeyFrameQuantization.Hermite48:        KF = Deserializer.Reader.ReadHermite48();        break;
+                    case KeyFrameQuantization.Hermite128: KF = Deserializer.Reader.ReadHermite128(); break;
+                    case KeyFrameQuantization.Hermite64: KF = Deserializer.Reader.ReadHermite64(); break;
+                    case KeyFrameQuantization.Hermite48: KF = Deserializer.Reader.ReadHermite48(); break;
                     case KeyFrameQuantization.UnifiedHermite96: KF = Deserializer.Reader.ReadUnifiedHermite96(); break;
                     case KeyFrameQuantization.UnifiedHermite48: KF = Deserializer.Reader.ReadUnifiedHermite48(); break;
                     case KeyFrameQuantization.UnifiedHermite32: KF = Deserializer.Reader.ReadUnifiedHermite32(); break;
-                    case KeyFrameQuantization.StepLinear64:     KF = Deserializer.Reader.ReadStepLinear64();     break;
-                    case KeyFrameQuantization.StepLinear32:     KF = Deserializer.Reader.ReadStepLinear32();     break;
+                    case KeyFrameQuantization.StepLinear64: KF = Deserializer.Reader.ReadStepLinear64(); break;
+                    case KeyFrameQuantization.StepLinear32: KF = Deserializer.Reader.ReadStepLinear32(); break;
 
                     default: throw new InvalidOperationException($"Invalid Segment quantization {Quantization}!");
                 }
@@ -102,8 +102,8 @@ namespace SPICA.Formats.CtrH3D.Animation
                 if (KF.Value > MaxValue) MaxValue = KF.Value;
             }
 
-            ValueScale  = KeyFrameQuantizationHelper.GetValueScale(Quantization, MaxValue - MinValue);
-            FrameScale  = KeyFrameQuantizationHelper.GetFrameScale(Quantization, MaxFrame - MinFrame);
+            ValueScale = KeyFrameQuantizationHelper.GetValueScale(Quantization, MaxValue - MinValue);
+            FrameScale = KeyFrameQuantizationHelper.GetFrameScale(Quantization, MaxFrame - MinFrame);
             ValueOffset = MinValue;
             InvDuration = 1f / EndFrame;
 
@@ -161,18 +161,18 @@ namespace SPICA.Formats.CtrH3D.Animation
                 KeyFrame KF = Key;
 
                 KF.Frame = (KF.Frame / FrameScale);
-                KF.Value = (KF.Value - ValueOffset) / ValueScale;                   
+                KF.Value = (KF.Value - ValueOffset) / ValueScale;
 
                 switch (Quantization)
                 {
-                    case KeyFrameQuantization.Hermite128:       Serializer.Writer.WriteHermite128(KF);       break;
-                    case KeyFrameQuantization.Hermite64:        Serializer.Writer.WriteHermite64(KF);        break;
-                    case KeyFrameQuantization.Hermite48:        Serializer.Writer.WriteHermite48(KF);        break;
+                    case KeyFrameQuantization.Hermite128: Serializer.Writer.WriteHermite128(KF); break;
+                    case KeyFrameQuantization.Hermite64: Serializer.Writer.WriteHermite64(KF); break;
+                    case KeyFrameQuantization.Hermite48: Serializer.Writer.WriteHermite48(KF); break;
                     case KeyFrameQuantization.UnifiedHermite96: Serializer.Writer.WriteUnifiedHermite96(KF); break;
                     case KeyFrameQuantization.UnifiedHermite48: Serializer.Writer.WriteUnifiedHermite48(KF); break;
                     case KeyFrameQuantization.UnifiedHermite32: Serializer.Writer.WriteUnifiedHermite32(KF); break;
-                    case KeyFrameQuantization.StepLinear64:     Serializer.Writer.WriteStepLinear64(KF);     break;
-                    case KeyFrameQuantization.StepLinear32:     Serializer.Writer.WriteStepLinear32(KF);     break;
+                    case KeyFrameQuantization.StepLinear64: Serializer.Writer.WriteStepLinear64(KF); break;
+                    case KeyFrameQuantization.StepLinear32: Serializer.Writer.WriteStepLinear32(KF); break;
                 }
             }
 
@@ -181,7 +181,7 @@ namespace SPICA.Formats.CtrH3D.Animation
             return true;
         }
 
-        internal static H3DFloatKeyFrameGroup ReadGroup(BinaryDeserializer Deserializer, bool Constant)
+        internal static H3DFloatKeyFrameGroup ReadGroup(ref StreamWriter OutputFile, BinaryDeserializer Deserializer, bool Constant)
         {
             H3DFloatKeyFrameGroup FrameGrp = new H3DFloatKeyFrameGroup();
 
@@ -195,7 +195,7 @@ namespace SPICA.Formats.CtrH3D.Animation
 
                 Deserializer.BaseStream.Seek(Address, SeekOrigin.Begin);
 
-                FrameGrp = Deserializer.Deserialize<H3DFloatKeyFrameGroup>();
+                FrameGrp = Deserializer.Deserialize<H3DFloatKeyFrameGroup>(ref OutputFile);
             }
 
             return FrameGrp;
@@ -218,7 +218,7 @@ namespace SPICA.Formats.CtrH3D.Animation
             if (LHS.Frame != RHS.Frame)
             {
                 float FrameDiff = Frame - LHS.Frame;
-                float Weight    = FrameDiff / (RHS.Frame - LHS.Frame);
+                float Weight = FrameDiff / (RHS.Frame - LHS.Frame);
 
                 switch (InterpolationType)
                 {
@@ -226,7 +226,7 @@ namespace SPICA.Formats.CtrH3D.Animation
                     case H3DInterpolationType.Linear: return Interpolation.Lerp(LHS.Value, RHS.Value, Weight);
                     case H3DInterpolationType.Hermite:
                         return Interpolation.Herp(
-                            LHS.Value,    RHS.Value,
+                            LHS.Value, RHS.Value,
                             LHS.OutSlope, RHS.InSlope,
                             FrameDiff,
                             Weight);

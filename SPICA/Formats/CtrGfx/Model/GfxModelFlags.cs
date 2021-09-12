@@ -2,7 +2,7 @@
 {
     public enum GfxModelFlags : uint
     {
-        IsVisible            = 1 << 0,
+        IsVisible = 1 << 0,
         IsNonUniformScalable = 1 << 1
     }
 }

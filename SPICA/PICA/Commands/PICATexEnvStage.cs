@@ -4,11 +4,11 @@ namespace SPICA.PICA.Commands
 {
     public class PICATexEnvStage
     {
-        public PICATexEnvSource   Source;
-        public PICATexEnvOperand  Operand;
+        public PICATexEnvSource Source;
+        public PICATexEnvOperand Operand;
         public PICATexEnvCombiner Combiner;
-        public RGBA               Color;
-        public PICATexEnvScale    Scale;
+        public RGBA Color;
+        public PICATexEnvScale Scale;
 
         public bool UpdateColorBuffer;
         public bool UpdateAlphaBuffer;
@@ -18,10 +18,10 @@ namespace SPICA.PICA.Commands
             get
             {
                 return
-                    Combiner.Color   == PICATextureCombinerMode.Replace    &&
-                    Source.Color[0]  == PICATextureCombinerSource.Previous &&
-                    Operand.Color[0] == PICATextureCombinerColorOp.Color   &&
-                    Scale.Color      == PICATextureCombinerScale.One       &&
+                    Combiner.Color == PICATextureCombinerMode.Replace &&
+                    Source.Color[0] == PICATextureCombinerSource.Previous &&
+                    Operand.Color[0] == PICATextureCombinerColorOp.Color &&
+                    Scale.Color == PICATextureCombinerScale.One &&
                     !UpdateColorBuffer;
             }
         }
@@ -31,10 +31,10 @@ namespace SPICA.PICA.Commands
             get
             {
                 return
-                    Combiner.Alpha   == PICATextureCombinerMode.Replace    &&
-                    Source.Alpha[0]  == PICATextureCombinerSource.Previous &&
-                    Operand.Alpha[0] == PICATextureCombinerAlphaOp.Alpha   &&
-                    Scale.Alpha      == PICATextureCombinerScale.One       &&
+                    Combiner.Alpha == PICATextureCombinerMode.Replace &&
+                    Source.Alpha[0] == PICATextureCombinerSource.Previous &&
+                    Operand.Alpha[0] == PICATextureCombinerAlphaOp.Alpha &&
+                    Scale.Alpha == PICATextureCombinerScale.One &&
                     !UpdateAlphaBuffer;
             }
         }
@@ -70,19 +70,19 @@ namespace SPICA.PICA.Commands
 
         public PICATexEnvStage()
         {
-            Source   = new PICATexEnvSource();
-            Operand  = new PICATexEnvOperand();
+            Source = new PICATexEnvSource();
+            Operand = new PICATexEnvOperand();
             Combiner = new PICATexEnvCombiner();
-            Color    = new RGBA();
-            Scale    = new PICATexEnvScale();
+            Color = new RGBA();
+            Scale = new PICATexEnvScale();
         }
 
         public static void SetUpdateBuffer(PICATexEnvStage[] TexEnvStages, uint Param)
         {
-            TexEnvStages[1].UpdateColorBuffer = (Param & 0x100)  != 0;
-            TexEnvStages[2].UpdateColorBuffer = (Param & 0x200)  != 0;
-            TexEnvStages[3].UpdateColorBuffer = (Param & 0x400)  != 0;
-            TexEnvStages[4].UpdateColorBuffer = (Param & 0x800)  != 0;
+            TexEnvStages[1].UpdateColorBuffer = (Param & 0x100) != 0;
+            TexEnvStages[2].UpdateColorBuffer = (Param & 0x200) != 0;
+            TexEnvStages[3].UpdateColorBuffer = (Param & 0x400) != 0;
+            TexEnvStages[4].UpdateColorBuffer = (Param & 0x800) != 0;
 
             TexEnvStages[1].UpdateAlphaBuffer = (Param & 0x1000) != 0;
             TexEnvStages[2].UpdateAlphaBuffer = (Param & 0x2000) != 0;

@@ -26,15 +26,15 @@ namespace SPICA.Formats.GFL2.Model.Mesh
 
         public PICAPrimitiveMode PrimitiveMode;
 
-        public readonly List<PICAAttribute>      Attributes;
+        public readonly List<PICAAttribute> Attributes;
         public readonly List<PICAFixedAttribute> FixedAttributes;
 
         public GFSubMesh()
         {
             BoneIndices = new byte[0x1f];
 
-            Attributes      = new List<PICAAttribute>();
-            FixedAttributes = new List<PICAFixedAttribute>();            
+            Attributes = new List<PICAAttribute>();
+            FixedAttributes = new List<PICAFixedAttribute>();
         }
     }
 }

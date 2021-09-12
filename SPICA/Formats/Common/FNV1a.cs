@@ -33,8 +33,8 @@ namespace SPICA.Formats.Common
 
         public void Hash(uint Value)
         {
-            Hash((byte)(Value >>  0));
-            Hash((byte)(Value >>  8));
+            Hash((byte)(Value >> 0));
+            Hash((byte)(Value >> 8));
             Hash((byte)(Value >> 16));
             Hash((byte)(Value >> 24));
         }

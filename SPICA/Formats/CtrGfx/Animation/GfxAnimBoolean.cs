@@ -21,17 +21,17 @@ namespace SPICA.Formats.CtrGfx.Animation
             Values = new List<bool>();
         }
 
-        void ICustomSerialization.Deserialize(BinaryDeserializer Deserializer)
+        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer)
         {
             Deserializer.BaseStream.Seek(Deserializer.ReadPointer(), SeekOrigin.Begin);
 
-            StartFrame = Deserializer.Reader.ReadSingle();
-            EndFrame   = Deserializer.Reader.ReadSingle();
+            StartFrame = Deserializer.Reader.ReadSingle(ref OutputFile);
+            EndFrame = Deserializer.Reader.ReadSingle(ref OutputFile);
 
-            PreRepeat  = (GfxLoopType)Deserializer.Reader.ReadByte();
-            PostRepeat = (GfxLoopType)Deserializer.Reader.ReadByte();
+            PreRepeat = (GfxLoopType)Deserializer.Reader.ReadByte(ref OutputFile);
+            PostRepeat = (GfxLoopType)Deserializer.Reader.ReadByte(ref OutputFile);
 
-            ushort Padding = Deserializer.Reader.ReadUInt16();
+            ushort Padding = Deserializer.Reader.ReadUInt16(ref OutputFile);
 
             Deserializer.BaseStream.Seek(Deserializer.ReadPointer(), SeekOrigin.Begin);
 
@@ -39,7 +39,7 @@ namespace SPICA.Formats.CtrGfx.Animation
 
             for (int i = 0; i < EndFrame - StartFrame; i++)
             {
-                Values.Add(BR.ReadBit());
+                Values.Add(BR.ReadBit(ref OutputFile));
             }
         }
 

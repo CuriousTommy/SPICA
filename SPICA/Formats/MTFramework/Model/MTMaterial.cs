@@ -6,7 +6,7 @@ namespace SPICA.Formats.MTFramework.Model
     {
         public uint NameHash;
 
-        public MTAlphaBlend   AlphaBlend;
+        public MTAlphaBlend AlphaBlend;
         public MTDepthStencil DepthStencil;
 
         public string Texture0Name;

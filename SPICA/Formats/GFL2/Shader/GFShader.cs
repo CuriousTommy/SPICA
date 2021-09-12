@@ -1,5 +1,6 @@
 ﻿using SPICA.Formats.Common;
 using SPICA.Math3D;
+using SPICA.Misc;
 using SPICA.PICA;
 using SPICA.PICA.Commands;
 using SPICA.PICA.Shader;
@@ -21,7 +22,7 @@ namespace SPICA.Formats.GFL2.Shader
         public ShaderProgram VtxShader;
         public ShaderProgram GeoShader;
 
-        public uint[]  Executable;
+        public uint[] Executable;
         public ulong[] Swizzles;
 
         public bool HasVertexShader => VtxShader != null;
@@ -39,7 +40,7 @@ namespace SPICA.Formats.GFL2.Shader
             }
         }
 
-        public GFShader(BinaryReader Reader) : this()
+        public GFShader(ref StreamWriter outputFile, LogReader Reader) : this()
         {
             uint MagicNumber = Reader.ReadUInt32();
             uint ShaderCount = Reader.ReadUInt32();
@@ -50,15 +51,15 @@ namespace SPICA.Formats.GFL2.Shader
 
             Name = Reader.ReadPaddedString(0x40);
 
-            uint Hash  = Reader.ReadUInt32();
+            uint Hash = Reader.ReadUInt32();
             uint Count = Reader.ReadUInt32();
 
             GFSection.SkipPadding(Reader.BaseStream);
 
             uint CommandsLength = Reader.ReadUInt32();
-            uint CommandsCount  = Reader.ReadUInt32();
-            uint CommandsHash   = Reader.ReadUInt32();
-            uint Padding        = Reader.ReadUInt32();
+            uint CommandsCount = Reader.ReadUInt32();
+            uint CommandsHash = Reader.ReadUInt32();
+            uint Padding = Reader.ReadUInt32();
 
             string FileName = Reader.ReadPaddedString(0x40);
 
@@ -71,8 +72,8 @@ namespace SPICA.Formats.GFL2.Shader
 
             uint[] OutMap = new uint[7];
 
-            List<uint>  ShaderExecutable = new List<uint>();
-            List<ulong> ShaderSwizzles   = new List<ulong>();
+            List<uint> ShaderExecutable = new List<uint>();
+            List<ulong> ShaderSwizzles = new List<ulong>();
 
             PICACommandReader CmdReader = new PICACommandReader(Commands);
 
@@ -195,7 +196,7 @@ namespace SPICA.Formats.GFL2.Shader
             }
 
             Executable = ShaderExecutable.ToArray();
-            Swizzles   = ShaderSwizzles.ToArray();
+            Swizzles = ShaderSwizzles.ToArray();
 
             for (int i = 0; i < OutMap.Length; i++)
             {
@@ -265,10 +266,10 @@ namespace SPICA.Formats.GFL2.Shader
 
                         ShaderLabel Label = new ShaderLabel()
                         {
-                            Id     = LblId++,
+                            Id = LblId++,
                             Offset = Dst,
                             Length = 0,
-                            Name   = Name
+                            Name = Name
                         };
 
                         if (VtxShader != null)
@@ -299,9 +300,9 @@ namespace SPICA.Formats.GFL2.Shader
             {
                 for (int i = 0; i < Uniforms.Length; i++)
                 {
-                    Uniforms[i].Name        = Name;
-                    Uniforms[i].IsArray     = true;
-                    Uniforms[i].ArrayIndex  = i;
+                    Uniforms[i].Name = Name;
+                    Uniforms[i].IsArray = true;
+                    Uniforms[i].ArrayIndex = i;
                     Uniforms[i].ArrayLength = Uniforms.Length;
                 }
             }
@@ -328,7 +329,7 @@ namespace SPICA.Formats.GFL2.Shader
             ShaderBinary Output = new ShaderBinary();
 
             Output.Executable = Executable;
-            Output.Swizzles   = Swizzles;
+            Output.Swizzles = Swizzles;
 
             if (VtxShader != null) Output.Programs.Add(VtxShader);
             if (GeoShader != null) Output.Programs.Add(GeoShader);

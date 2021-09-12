@@ -26,12 +26,12 @@ namespace SPICA.Formats.Generic.COLLADA
 
         public DAEAsset asset = new DAEAsset();
 
-        [XmlArrayItem("animation")]    public List<DAEAnimation>   library_animations;
-        [XmlArrayItem("image")]        public List<DAEImage>       library_images;
-        [XmlArrayItem("material")]     public List<DAEMaterial>    library_materials;
-        [XmlArrayItem("effect")]       public List<DAEEffect>      library_effects;
-        [XmlArrayItem("geometry")]     public List<DAEGeometry>    library_geometries;
-        [XmlArrayItem("controller")]   public List<DAEController>  library_controllers;
+        [XmlArrayItem("animation")] public List<DAEAnimation> library_animations;
+        [XmlArrayItem("image")] public List<DAEImage> library_images;
+        [XmlArrayItem("material")] public List<DAEMaterial> library_materials;
+        [XmlArrayItem("effect")] public List<DAEEffect> library_effects;
+        [XmlArrayItem("geometry")] public List<DAEGeometry> library_geometries;
+        [XmlArrayItem("controller")] public List<DAEController> library_controllers;
         [XmlArrayItem("visual_scene")] public List<DAEVisualScene> library_visual_scenes;
 
         public DAEScene scene = new DAEScene();
@@ -49,13 +49,13 @@ namespace SPICA.Formats.Generic.COLLADA
                 DAEVisualScene VN = new DAEVisualScene();
 
                 VN.name = $"{Mdl.Name}_{MdlIndex.ToString("D2")}";
-                VN.id   = $"{VN.name}_id";
+                VN.id = $"{VN.name}_id";
 
                 //Materials
                 if (Mdl.Materials.Count > 0)
                 {
                     library_materials = new List<DAEMaterial>();
-                    library_effects   = new List<DAEEffect>();
+                    library_effects = new List<DAEEffect>();
                 }
 
                 foreach (H3DMaterial Mtl in Mdl.Materials)
@@ -70,7 +70,7 @@ namespace SPICA.Formats.Generic.COLLADA
                     DAEEffectParam ImgSurface = new DAEEffectParam();
                     DAEEffectParam ImgSampler = new DAEEffectParam();
 
-                    ImgSurface.surface   = new DAEEffectParamSurfaceElement();
+                    ImgSurface.surface = new DAEEffectParamSurfaceElement();
                     ImgSampler.sampler2D = new DAEEffectParamSampler2DElement();
 
                     ImgSurface.sid = $"{Mtl.Name}_surf";
@@ -123,9 +123,9 @@ namespace SPICA.Formats.Generic.COLLADA
 
                         H3DBone Bone = Bone_Node.Item1;
 
-                        Bone_Node.Item2.id   = $"{Bone.Name}_bone_id";
+                        Bone_Node.Item2.id = $"{Bone.Name}_bone_id";
                         Bone_Node.Item2.name = Bone.Name;
-                        Bone_Node.Item2.sid  = Bone.Name;
+                        Bone_Node.Item2.sid = Bone.Name;
                         Bone_Node.Item2.type = DAENodeType.JOINT;
                         Bone_Node.Item2.SetBoneEuler(Bone.Translation, Bone.Rotation, Bone.Scale);
 
@@ -206,10 +206,10 @@ namespace SPICA.Formats.Generic.COLLADA
 
                                 switch (Attr.Name)
                                 {
-                                    case PICAAttributeName.Position:  Values[Index] = DAEUtils.Vector3Str(v.Position);  break;
-                                    case PICAAttributeName.Normal:    Values[Index] = DAEUtils.Vector3Str(v.Normal);    break;
-                                    case PICAAttributeName.Tangent:   Values[Index] = DAEUtils.Vector3Str(v.Tangent);   break;
-                                    case PICAAttributeName.Color:     Values[Index] = DAEUtils.Vector4Str(v.Color);     break;
+                                    case PICAAttributeName.Position: Values[Index] = DAEUtils.Vector3Str(v.Position); break;
+                                    case PICAAttributeName.Normal: Values[Index] = DAEUtils.Vector3Str(v.Normal); break;
+                                    case PICAAttributeName.Tangent: Values[Index] = DAEUtils.Vector3Str(v.Tangent); break;
+                                    case PICAAttributeName.Color: Values[Index] = DAEUtils.Vector4Str(v.Color); break;
                                     case PICAAttributeName.TexCoord0: Values[Index] = DAEUtils.Vector2Str(v.TexCoord0); break;
                                     case PICAAttributeName.TexCoord1: Values[Index] = DAEUtils.Vector2Str(v.TexCoord1); break;
                                     case PICAAttributeName.TexCoord2: Values[Index] = DAEUtils.Vector2Str(v.TexCoord2); break;
@@ -220,10 +220,10 @@ namespace SPICA.Formats.Generic.COLLADA
 
                             switch (Attr.Name)
                             {
-                                case PICAAttributeName.Position:  Elements = 3; break;
-                                case PICAAttributeName.Normal:    Elements = 3; break;
-                                case PICAAttributeName.Tangent:   Elements = 3; break;
-                                case PICAAttributeName.Color:     Elements = 4; break;
+                                case PICAAttributeName.Position: Elements = 3; break;
+                                case PICAAttributeName.Normal: Elements = 3; break;
+                                case PICAAttributeName.Tangent: Elements = 3; break;
+                                case PICAAttributeName.Color: Elements = 4; break;
                                 case PICAAttributeName.TexCoord0: Elements = 2; break;
                                 case PICAAttributeName.TexCoord1: Elements = 2; break;
                                 case PICAAttributeName.TexCoord2: Elements = 2; break;
@@ -232,26 +232,26 @@ namespace SPICA.Formats.Generic.COLLADA
                             DAESource Source = new DAESource();
 
                             Source.name = $"{MeshName}_{Attr.Name}";
-                            Source.id   = $"{Source.name}_id";
+                            Source.id = $"{Source.name}_id";
 
                             Source.float_array = new DAEArray()
                             {
-                                id    = $"{Source.name}_array_id",
+                                id = $"{Source.name}_array_id",
                                 count = (uint)(Vertices.Length * Elements),
-                                data  = string.Join(" ", Values)
+                                data = string.Join(" ", Values)
                             };
 
                             DAEAccessor Accessor = new DAEAccessor()
                             {
                                 source = $"#{Source.float_array.id}",
-                                count  = (uint)Vertices.Length,
+                                count = (uint)Vertices.Length,
                                 stride = (uint)Elements
                             };
 
                             switch (Elements)
                             {
-                                case 2: Accessor.AddParams("float", "S", "T");           break;
-                                case 3: Accessor.AddParams("float", "X", "Y", "Z");      break;
+                                case 2: Accessor.AddParams("float", "S", "T"); break;
+                                case 3: Accessor.AddParams("float", "X", "Y", "Z"); break;
                                 case 4: Accessor.AddParams("float", "R", "G", "B", "A"); break;
                             }
 
@@ -266,8 +266,8 @@ namespace SPICA.Formats.Generic.COLLADA
                                 switch (Attr.Name)
                                 {
                                     case PICAAttributeName.Position: Semantic = "POSITION"; break;
-                                    case PICAAttributeName.Normal:   Semantic = "NORMAL";   break;
-                                    case PICAAttributeName.Tangent:  Semantic = "TANGENT";  break;
+                                    case PICAAttributeName.Normal: Semantic = "NORMAL"; break;
+                                    case PICAAttributeName.Tangent: Semantic = "TANGENT"; break;
                                 }
 
                                 Geometry.mesh.vertices.AddInput(Semantic, $"#{Source.id}");
@@ -312,7 +312,7 @@ namespace SPICA.Formats.Generic.COLLADA
                             }
 
                             //4 is the max number of bones per vertex
-                            int[] v      = new int[Vertices.Length * 4 * 2];
+                            int[] v = new int[Vertices.Length * 4 * 2];
                             int[] vcount = new int[Vertices.Length];
 
                             Dictionary<string, int> Weights = new Dictionary<string, int>();
@@ -327,7 +327,7 @@ namespace SPICA.Formats.Generic.COLLADA
 
                                     for (int Index = 0; Index < 4; Index++)
                                     {
-                                        int   BIndex = Vertex.Indices[Index];
+                                        int BIndex = Vertex.Indices[Index];
                                         float Weight = Vertex.Weights[Index];
 
                                         if (Weight == 0) break;
@@ -391,7 +391,7 @@ namespace SPICA.Formats.Generic.COLLADA
                             Controller.skin.vertex_weights.AddInput("WEIGHT", $"#{Controller.skin.src[2].id}", 1);
 
                             Controller.skin.vertex_weights.vcount = string.Join(" ", vcount);
-                            Controller.skin.vertex_weights.v      = string.Join(" ", v);
+                            Controller.skin.vertex_weights.v = string.Join(" ", v);
 
                             library_controllers.Add(Controller);
                         }
@@ -399,8 +399,8 @@ namespace SPICA.Formats.Generic.COLLADA
                         //Mesh node
                         DAENode Node = new DAENode();
 
-                        Node.name   = $"{MeshName}_node";
-                        Node.id     = $"{Node.name}_id";
+                        Node.name = $"{MeshName}_node";
+                        Node.id = $"{Node.name}_id";
                         Node.matrix = DAEMatrix.Identity;
 
                         DAENodeInstance NodeInstance = new DAENodeInstance();
@@ -439,7 +439,7 @@ namespace SPICA.Formats.Generic.COLLADA
                 {
                     library_images.Add(new DAEImage()
                     {
-                        id        = Tex.Name,
+                        id = Tex.Name,
                         init_from = $"./{Tex.Name}.png"
                     });
                 }
@@ -489,10 +489,10 @@ namespace SPICA.Formats.Generic.COLLADA
                                 switch (i)
                                 {
                                     case 0: Skip = !Transform.TranslationExists; break;
-                                    case 1: Skip = !Transform.RotationX.Exists;  break;
-                                    case 2: Skip = !Transform.RotationY.Exists;  break;
-                                    case 3: Skip = !Transform.RotationZ.Exists;  break;
-                                    case 4: Skip = !Transform.ScaleExists;       break;
+                                    case 1: Skip = !Transform.RotationX.Exists; break;
+                                    case 2: Skip = !Transform.RotationY.Exists; break;
+                                    case 3: Skip = !Transform.RotationZ.Exists; break;
+                                    case 4: Skip = !Transform.ScaleExists; break;
                                 }
                             }
                             else if (Elem.Content is H3DAnimQuatTransform QuatTransform)
@@ -500,10 +500,10 @@ namespace SPICA.Formats.Generic.COLLADA
                                 switch (i)
                                 {
                                     case 0: Skip = !QuatTransform.HasTranslation; break;
-                                    case 1: Skip = !QuatTransform.HasRotation;    break;
-                                    case 2: Skip = !QuatTransform.HasRotation;    break;
-                                    case 3: Skip = !QuatTransform.HasRotation;    break;
-                                    case 4: Skip = !QuatTransform.HasScale;       break;
+                                    case 1: Skip = !QuatTransform.HasRotation; break;
+                                    case 2: Skip = !QuatTransform.HasRotation; break;
+                                    case 3: Skip = !QuatTransform.HasRotation; break;
+                                    case 4: Skip = !QuatTransform.HasScale; break;
                                 }
                             }
                         }
@@ -581,11 +581,11 @@ namespace SPICA.Formats.Generic.COLLADA
 
                                 switch (i)
                                 {
-                                    case 0: StrTrans = DAEUtils.VectorStr(QuatTransform.GetTranslationValue(Frame));            break;
+                                    case 0: StrTrans = DAEUtils.VectorStr(QuatTransform.GetTranslationValue(Frame)); break;
                                     case 1: StrTrans = DAEUtils.RadToDegStr(QuatTransform.GetRotationValue(Frame).ToEuler().X); break;
                                     case 2: StrTrans = DAEUtils.RadToDegStr(QuatTransform.GetRotationValue(Frame).ToEuler().Y); break;
                                     case 3: StrTrans = DAEUtils.RadToDegStr(QuatTransform.GetRotationValue(Frame).ToEuler().Z); break;
-                                    case 4: StrTrans = DAEUtils.VectorStr(InvScale * QuatTransform.GetScaleValue(Frame));       break;
+                                    case 4: StrTrans = DAEUtils.VectorStr(InvScale * QuatTransform.GetScaleValue(Frame)); break;
                                 }
                             }
 
@@ -598,9 +598,9 @@ namespace SPICA.Formats.Generic.COLLADA
                         DAEAnimation Anim = new DAEAnimation();
 
                         Anim.name = $"{SklAnim.Name}_{Elem.Name}_{AnimElemNames[i]}";
-                        Anim.id   = $"{Anim.name}_id";
+                        Anim.id = $"{Anim.name}_id";
 
-                        Anim.src.Add(new DAESource($"{Anim.name}_frame",  1, AnimTimes, "TIME",          "float"));
+                        Anim.src.Add(new DAESource($"{Anim.name}_frame", 1, AnimTimes, "TIME", "float"));
                         Anim.src.Add(new DAESource($"{Anim.name}_interp", 1, AnimLerps, "INTERPOLATION", "Name"));
 
                         Anim.src.Add(IsRotation
@@ -610,11 +610,11 @@ namespace SPICA.Formats.Generic.COLLADA
                             "Y", "float",
                             "Z", "float"));
 
-                        Anim.sampler.AddInput("INPUT",         $"#{Anim.src[0].id}");
+                        Anim.sampler.AddInput("INPUT", $"#{Anim.src[0].id}");
                         Anim.sampler.AddInput("INTERPOLATION", $"#{Anim.src[1].id}");
-                        Anim.sampler.AddInput("OUTPUT",        $"#{Anim.src[2].id}");
+                        Anim.sampler.AddInput("OUTPUT", $"#{Anim.src[2].id}");
 
-                        Anim.sampler.id     = $"{Anim.name}_samp_id";
+                        Anim.sampler.id = $"{Anim.name}_samp_id";
                         Anim.channel.source = $"#{Anim.sampler.id}";
                         Anim.channel.target = $"{Elem.Name}_bone_id/{AnimElemNames[i]}";
 

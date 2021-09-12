@@ -1,12 +1,12 @@
 ﻿using SPICA.Formats.Common;
-
+using SPICA.Misc;
 using System.IO;
 
 namespace SPICA.Formats.GFL2.Model
 {
     public struct GFHashName
     {
-        public uint   Hash;
+        public uint Hash;
         public string Name;
 
         public GFHashName(string Name)
@@ -20,9 +20,9 @@ namespace SPICA.Formats.GFL2.Model
             this.Name = Name;
         }
 
-        public GFHashName(BinaryReader Reader)
+        public GFHashName(ref StreamWriter outputFile, LogReader Reader)
         {
-            Hash = Reader.ReadUInt32();
+            Hash = Reader.ReadUInt32(ref outputFile);
             Name = Reader.ReadByteLengthString();
         }
 

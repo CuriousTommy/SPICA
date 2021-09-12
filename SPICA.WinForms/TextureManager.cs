@@ -2,7 +2,6 @@
 using SPICA.Formats.CtrH3D.Texture;
 
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Drawing;
 
 namespace SPICA.WinForms

@@ -26,13 +26,13 @@ namespace SPICA.Formats.GFL2.Motion
 
         public GFMotBoneTransform()
         {
-            ScaleX       = new List<GFMotKeyFrame>();
-            ScaleY       = new List<GFMotKeyFrame>();
-            ScaleZ       = new List<GFMotKeyFrame>();
+            ScaleX = new List<GFMotKeyFrame>();
+            ScaleY = new List<GFMotKeyFrame>();
+            ScaleZ = new List<GFMotKeyFrame>();
 
-            RotationX    = new List<GFMotKeyFrame>();
-            RotationY    = new List<GFMotKeyFrame>();
-            RotationZ    = new List<GFMotKeyFrame>();
+            RotationX = new List<GFMotKeyFrame>();
+            RotationY = new List<GFMotKeyFrame>();
+            RotationZ = new List<GFMotKeyFrame>();
 
             TranslationX = new List<GFMotKeyFrame>();
             TranslationY = new List<GFMotKeyFrame>();
@@ -43,7 +43,7 @@ namespace SPICA.Formats.GFL2.Motion
         {
             this.Name = Name;
 
-            uint Flags  = Reader.ReadUInt32();
+            uint Flags = Reader.ReadUInt32();
             uint Length = Reader.ReadUInt32();
 
             IsAxisAngle = (Flags >> 31) == 0;
@@ -52,13 +52,13 @@ namespace SPICA.Formats.GFL2.Motion
             {
                 switch (ElemIndex)
                 {
-                    case 0: GFMotKeyFrame.SetList(ScaleX,       Reader, Flags, FramesCount); break;
-                    case 1: GFMotKeyFrame.SetList(ScaleY,       Reader, Flags, FramesCount); break;
-                    case 2: GFMotKeyFrame.SetList(ScaleZ,       Reader, Flags, FramesCount); break;
+                    case 0: GFMotKeyFrame.SetList(ScaleX, Reader, Flags, FramesCount); break;
+                    case 1: GFMotKeyFrame.SetList(ScaleY, Reader, Flags, FramesCount); break;
+                    case 2: GFMotKeyFrame.SetList(ScaleZ, Reader, Flags, FramesCount); break;
 
-                    case 3: GFMotKeyFrame.SetList(RotationX,    Reader, Flags, FramesCount); break;
-                    case 4: GFMotKeyFrame.SetList(RotationY,    Reader, Flags, FramesCount); break;
-                    case 5: GFMotKeyFrame.SetList(RotationZ,    Reader, Flags, FramesCount); break;
+                    case 3: GFMotKeyFrame.SetList(RotationX, Reader, Flags, FramesCount); break;
+                    case 4: GFMotKeyFrame.SetList(RotationY, Reader, Flags, FramesCount); break;
+                    case 5: GFMotKeyFrame.SetList(RotationZ, Reader, Flags, FramesCount); break;
 
                     case 6: GFMotKeyFrame.SetList(TranslationX, Reader, Flags, FramesCount); break;
                     case 7: GFMotKeyFrame.SetList(TranslationY, Reader, Flags, FramesCount); break;

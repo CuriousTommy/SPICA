@@ -30,19 +30,19 @@ namespace SPICA.Rendering.Animation
         {
             if (BaseCamera != null)
             {
-                CamState.Scale       = BaseCamera.TransformScale      .ToVector3();
-                CamState.Rotation    = BaseCamera.TransformRotation   .ToVector3();
+                CamState.Scale = BaseCamera.TransformScale.ToVector3();
+                CamState.Rotation = BaseCamera.TransformRotation.ToVector3();
                 CamState.Translation = BaseCamera.TransformTranslation.ToVector3();
 
                 if (BaseCamera.View is H3DCameraViewLookAt LookAtView)
                 {
-                    CamState.Target   = LookAtView.Target  .ToVector3();
+                    CamState.Target = LookAtView.Target.ToVector3();
                     CamState.UpVector = LookAtView.UpVector.ToVector3();
                 }
                 else if (BaseCamera.View is H3DCameraViewAim AimView)
                 {
                     CamState.Target = AimView.Target.ToVector3();
-                    CamState.Twist  = AimView.Twist;
+                    CamState.Twist = AimView.Twist;
                 }
                 else if (BaseCamera.View is H3DCameraViewRotation RotView)
                 {
@@ -52,12 +52,12 @@ namespace SPICA.Rendering.Animation
                 if (BaseCamera.Projection is H3DCameraProjectionPerspective PerspProj)
                 {
                     CamState.ZNear = PerspProj.ZNear;
-                    CamState.ZFar  = PerspProj.ZFar;
+                    CamState.ZFar = PerspProj.ZFar;
                 }
                 else if (BaseCamera.Projection is H3DCameraProjectionOrthogonal OrthoProj)
                 {
                     CamState.ZNear = OrthoProj.ZNear;
-                    CamState.ZFar  = OrthoProj.ZFar;
+                    CamState.ZFar = OrthoProj.ZFar;
                 }
             }
         }
@@ -108,8 +108,8 @@ namespace SPICA.Rendering.Animation
 
                     switch (Elem.TargetType)
                     {
-                        case H3DTargetType.CameraUpVector:     SetVector3(Vector, ref CamState.UpVector);     break;
-                        case H3DTargetType.CameraTargetPos:    SetVector3(Vector, ref CamState.Target);       break;
+                        case H3DTargetType.CameraUpVector: SetVector3(Vector, ref CamState.UpVector); break;
+                        case H3DTargetType.CameraTargetPos: SetVector3(Vector, ref CamState.Target); break;
                         case H3DTargetType.CameraViewRotation: SetVector3(Vector, ref CamState.ViewRotation); break;
                     }
                 }
@@ -124,7 +124,7 @@ namespace SPICA.Rendering.Animation
                     switch (Elem.TargetType)
                     {
                         case H3DTargetType.CameraZNear: CamState.ZNear = Value; break;
-                        case H3DTargetType.CameraZFar:  CamState.ZFar  = Value; break;
+                        case H3DTargetType.CameraZFar: CamState.ZFar = Value; break;
                         case H3DTargetType.CameraTwist: CamState.Twist = Value; break;
                     }
                 }
@@ -135,13 +135,13 @@ namespace SPICA.Rendering.Animation
 
         private void SetStateTransform(H3DAnimTransform Transform)
         {
-            TrySetFrameValue(Transform.ScaleX,       ref CamState.Scale.X);
-            TrySetFrameValue(Transform.ScaleY,       ref CamState.Scale.Y);
-            TrySetFrameValue(Transform.ScaleZ,       ref CamState.Scale.Z);
+            TrySetFrameValue(Transform.ScaleX, ref CamState.Scale.X);
+            TrySetFrameValue(Transform.ScaleY, ref CamState.Scale.Y);
+            TrySetFrameValue(Transform.ScaleZ, ref CamState.Scale.Z);
 
-            TrySetFrameValue(Transform.RotationX,    ref CamState.Rotation.X);
-            TrySetFrameValue(Transform.RotationY,    ref CamState.Rotation.Y);
-            TrySetFrameValue(Transform.RotationZ,    ref CamState.Rotation.Z);
+            TrySetFrameValue(Transform.RotationX, ref CamState.Rotation.X);
+            TrySetFrameValue(Transform.RotationY, ref CamState.Rotation.Y);
+            TrySetFrameValue(Transform.RotationZ, ref CamState.Rotation.Z);
 
             TrySetFrameValue(Transform.TranslationX, ref CamState.Translation.X);
             TrySetFrameValue(Transform.TranslationY, ref CamState.Translation.Y);

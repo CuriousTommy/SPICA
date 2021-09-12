@@ -26,9 +26,9 @@ namespace SPICA.Rendering.Animation
             }
         }
 
-        public float Step        { get; set; }
+        public float Step { get; set; }
         public float FramesCount { get; protected set; }
-        public bool  IsLooping   { get; protected set; }
+        public bool IsLooping { get; protected set; }
 
         protected List<int> Indices;
 

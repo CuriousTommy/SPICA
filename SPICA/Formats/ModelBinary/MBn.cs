@@ -1,7 +1,6 @@
 ﻿using SPICA.Formats.CtrH3D;
 using SPICA.Formats.CtrH3D.Model;
 using SPICA.Formats.CtrH3D.Model.Mesh;
-using SPICA.PICA.Commands;
 
 using System.Collections.Generic;
 using System.IO;
@@ -14,14 +13,14 @@ namespace SPICA.Formats.ModelBinary
     {
         public ushort Type;
 
-        public readonly List<MBnIndicesDesc>  IndicesDesc;
+        public readonly List<MBnIndicesDesc> IndicesDesc;
         public readonly List<MBnVerticesDesc> VerticesDesc;
 
         public H3D BaseScene;
 
         public MBn()
         {
-            IndicesDesc  = new List<MBnIndicesDesc>();
+            IndicesDesc = new List<MBnIndicesDesc>();
             VerticesDesc = new List<MBnVerticesDesc>();
         }
 
@@ -31,9 +30,9 @@ namespace SPICA.Formats.ModelBinary
 
             Type = (ushort)Reader.ReadUInt32();
 
-            uint MeshFlags   = Reader.ReadUInt32();
+            uint MeshFlags = Reader.ReadUInt32();
             uint VertexFlags = Reader.ReadUInt32();
-            int  MeshesCount = Reader.ReadInt32();
+            int MeshesCount = Reader.ReadInt32();
 
             bool HasSingleVerticesDesc = (VertexFlags & 1) != 0;
             bool HasBuiltInDataBuffer = Type == 4;
@@ -112,14 +111,14 @@ namespace SPICA.Formats.ModelBinary
                 Mesh.Attributes.Clear();
                 Mesh.Attributes.AddRange(VerticesDesc[i].Attributes);
 
-                Mesh.RawBuffer    = VerticesDesc[i].RawBuffer;
+                Mesh.RawBuffer = VerticesDesc[i].RawBuffer;
                 Mesh.VertexStride = VerticesDesc[i].VertexStride;
 
                 for (int j = 0; j < Mesh.SubMeshes.Count; j++)
                 {
                     H3DSubMesh SM = Mesh.SubMeshes[j];
 
-                    SM.Indices     = IndicesDesc[IndicesIndex].Indices;
+                    SM.Indices = IndicesDesc[IndicesIndex].Indices;
                     SM.BoneIndices = IndicesDesc[IndicesIndex].BoneIndices;
 
                     IndicesIndex++;

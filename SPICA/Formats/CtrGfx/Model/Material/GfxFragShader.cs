@@ -2,7 +2,7 @@
 using SPICA.PICA;
 using SPICA.Serialization;
 using SPICA.Serialization.Attributes;
-
+using System.IO;
 using System.Numerics;
 
 namespace SPICA.Formats.CtrGfx.Model.Material
@@ -11,7 +11,7 @@ namespace SPICA.Formats.CtrGfx.Model.Material
     {
         private Vector4 TexEnvBufferColorF;
 
-        public GfxFragLight     Lighting;
+        public GfxFragLight Lighting;
         public GfxFragLightLUTs LUTs;
 
         [Inline, FixedLength(6)] public readonly GfxTexEnv[] TextureEnvironments;
@@ -29,7 +29,7 @@ namespace SPICA.Formats.CtrGfx.Model.Material
             TextureEnvironments = new GfxTexEnv[6];
         }
 
-        void ICustomSerialization.Deserialize(BinaryDeserializer Deserializer)
+        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer)
         {
             PICACommandReader Reader = new PICACommandReader(Commands);
 
@@ -42,10 +42,10 @@ namespace SPICA.Formats.CtrGfx.Model.Material
                 switch (Cmd.Register)
                 {
                     case PICARegister.GPUREG_TEXENV_UPDATE_BUFFER:
-                        TextureEnvironments[1].Stage.UpdateColorBuffer = (Param & 0x100)  != 0;
-                        TextureEnvironments[2].Stage.UpdateColorBuffer = (Param & 0x200)  != 0;
-                        TextureEnvironments[3].Stage.UpdateColorBuffer = (Param & 0x400)  != 0;
-                        TextureEnvironments[4].Stage.UpdateColorBuffer = (Param & 0x800)  != 0;
+                        TextureEnvironments[1].Stage.UpdateColorBuffer = (Param & 0x100) != 0;
+                        TextureEnvironments[2].Stage.UpdateColorBuffer = (Param & 0x200) != 0;
+                        TextureEnvironments[3].Stage.UpdateColorBuffer = (Param & 0x400) != 0;
+                        TextureEnvironments[4].Stage.UpdateColorBuffer = (Param & 0x800) != 0;
 
                         TextureEnvironments[1].Stage.UpdateAlphaBuffer = (Param & 0x1000) != 0;
                         TextureEnvironments[2].Stage.UpdateAlphaBuffer = (Param & 0x2000) != 0;

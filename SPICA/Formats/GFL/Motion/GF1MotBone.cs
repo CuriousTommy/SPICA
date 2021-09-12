@@ -11,11 +11,11 @@ namespace SPICA.Formats.GFL.Motion
     {
         public string Name;
 
-        public int  ParentIndex;
+        public int ParentIndex;
         public byte Flags;
         public byte ChildsCount;
 
-        public Vector3    Translation;
+        public Vector3 Translation;
         public Quaternion QuatRotation;
 
         public static List<GF1MotBone> ReadSkeleton(BinaryReader Reader)
@@ -30,7 +30,7 @@ namespace SPICA.Formats.GFL.Motion
 
             Output.Add(new GF1MotBone()
             {
-                Name        = "Origin",
+                Name = "Origin",
                 ParentIndex = -1
             });
 
@@ -39,7 +39,7 @@ namespace SPICA.Formats.GFL.Motion
                 Output.Add(new GF1MotBone()
                 {
                     ParentIndex = Reader.ReadByte(),
-                    Flags       = Reader.ReadByte(),
+                    Flags = Reader.ReadByte(),
                     ChildsCount = Reader.ReadByte()
                 });
             }
@@ -53,7 +53,7 @@ namespace SPICA.Formats.GFL.Motion
 
             for (int Index = 0; Index < BonesCount; Index++)
             {
-                Output[Index].Translation  = Reader.ReadVector3();
+                Output[Index].Translation = Reader.ReadVector3();
                 Output[Index].QuatRotation = Reader.ReadQuaternion();
             }
 

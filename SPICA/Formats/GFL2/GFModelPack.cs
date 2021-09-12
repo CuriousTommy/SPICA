@@ -6,7 +6,7 @@ using SPICA.Formats.CtrH3D.Model.Material;
 using SPICA.Formats.GFL2.Model;
 using SPICA.Formats.GFL2.Shader;
 using SPICA.Formats.GFL2.Texture;
-
+using SPICA.Misc;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,20 +26,20 @@ namespace SPICA.Formats.GFL2
             Shader
         }
 
-        public readonly List<GFModel>   Models;
+        public readonly List<GFModel> Models;
         public readonly List<GFTexture> Textures;
-        public readonly List<GFShader>  Shaders;
+        public readonly List<GFShader> Shaders;
 
         public GFModelPack()
         {
-            Models   = new List<GFModel>();
+            Models = new List<GFModel>();
             Textures = new List<GFTexture>();
-            Shaders  = new List<GFShader>();
+            Shaders = new List<GFShader>();
         }
 
-        public GFModelPack(Stream Input) : this(new BinaryReader(Input)) { }
+        public GFModelPack(ref StreamWriter outputFile, Stream Input) : this(ref outputFile, new LogReader(Input)) { }
 
-        public GFModelPack(BinaryReader Reader) : this()
+        public GFModelPack(ref StreamWriter outputFile, LogReader Reader) : this()
         {
             long Position = Reader.BaseStream.Position;
 
@@ -68,9 +68,9 @@ namespace SPICA.Formats.GFL2
 
                     switch ((Section)Sect)
                     {
-                        case Section.Model:   Models.Add(new GFModel(Reader, Name)); break;
-                        case Section.Texture: Textures.Add(new GFTexture(Reader));   break;
-                        case Section.Shader:  Shaders.Add(new GFShader(Reader));     break;
+                        case Section.Model: Models.Add(new GFModel(ref outputFile, Reader, Name)); break;
+                        case Section.Texture: Textures.Add(new GFTexture(ref outputFile, Reader)); break;
+                        case Section.Shader: Shaders.Add(new GFShader(ref outputFile, Reader)); break;
                     }
                 }
 
@@ -88,18 +88,18 @@ namespace SPICA.Formats.GFL2
 
             for (int MdlIndex = 0; MdlIndex < Models.Count; MdlIndex++)
             {
-                GFModel  Model = Models[MdlIndex];
-                H3DModel Mdl   = Model.ToH3DModel();
+                GFModel Model = Models[MdlIndex];
+                H3DModel Mdl = Model.ToH3DModel();
 
                 for (int MatIndex = 0; MatIndex < Model.Materials.Count; MatIndex++)
                 {
                     H3DMaterialParams Params = Mdl.Materials[MatIndex].MaterialParams;
 
                     string FragShaderName = Model.Materials[MatIndex].FragShaderName;
-                    string VtxShaderName  = Model.Materials[MatIndex].VtxShaderName;
+                    string VtxShaderName = Model.Materials[MatIndex].VtxShaderName;
 
                     GFShader FragShader = Shaders.FirstOrDefault(x => x.Name == FragShaderName);
-                    GFShader VtxShader  = Shaders.FirstOrDefault(x => x.Name == VtxShaderName);
+                    GFShader VtxShader = Shaders.FirstOrDefault(x => x.Name == VtxShaderName);
 
                     if (FragShader != null)
                     {
@@ -126,7 +126,7 @@ namespace SPICA.Formats.GFL2
                 {
                     L.Samplers.Add(new H3DLUTSampler()
                     {
-                        Name  = LUT.Name,
+                        Name = LUT.Name,
                         Table = LUT.Table
                     });
                 }

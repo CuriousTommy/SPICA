@@ -78,7 +78,7 @@ namespace SPICA.Formats.CtrH3D.Texture
 
         public H3DTexture(string Name, Bitmap Img, PICATextureFormat Format = 0)
         {
-            this.Name   = Name;
+            this.Name = Name;
             this.Format = Format;
 
             H3DTextureImpl(Img);
@@ -88,10 +88,10 @@ namespace SPICA.Formats.CtrH3D.Texture
         {
             MipmapSize = 1;
 
-            Width  = (int)BitUtils.Pow2RoundDown((uint)Img.Width);
+            Width = (int)BitUtils.Pow2RoundDown((uint)Img.Width);
             Height = (int)BitUtils.Pow2RoundDown((uint)Img.Height);
 
-            if (Img.Width  != Width ||
+            if (Img.Width != Width ||
                 Img.Height != Height)
             {
                 /*
@@ -142,11 +142,11 @@ namespace SPICA.Formats.CtrH3D.Texture
 
             RawBufferXPos = Texture.RawBufferXPos;
 
-            Width  = Texture.Width;
+            Width = Texture.Width;
             Height = Texture.Height;
         }
 
-        void ICustomSerialization.Deserialize(BinaryDeserializer Deserializer)
+        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer)
         {
             PICACommandReader Reader = new PICACommandReader(Texture0Commands);
 
@@ -161,8 +161,8 @@ namespace SPICA.Formats.CtrH3D.Texture
                 switch (Cmd.Register)
                 {
                     case PICARegister.GPUREG_TEXUNIT0_DIM:
-                        Height = (int)(Param >>  0) & 0x7ff;
-                        Width  = (int)(Param >> 16) & 0x7ff;
+                        Height = (int)(Param >> 0) & 0x7ff;
+                        Width = (int)(Param >> 16) & 0x7ff;
                         break;
                     case PICARegister.GPUREG_TEXUNIT0_ADDR1: Address[0] = Param; break;
                     case PICARegister.GPUREG_TEXUNIT0_ADDR2: Address[1] = Param; break;
@@ -257,8 +257,8 @@ namespace SPICA.Formats.CtrH3D.Texture
 
             Serializer.Sections[(uint)H3DSectionId.RawData].Values.Add(new RefValue()
             {
-                Parent   = this,
-                Value    = RawBufferXPos,
+                Parent = this,
+                Value = RawBufferXPos,
                 Position = Position
             });
         }

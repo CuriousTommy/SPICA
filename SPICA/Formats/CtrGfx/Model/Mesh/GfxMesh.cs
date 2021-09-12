@@ -48,6 +48,6 @@ namespace SPICA.Formats.CtrGfx.Model.Mesh
         }
 
         private ulong RenderKeyCache;
-        private uint  CommandAlloc;
+        private uint CommandAlloc;
     }
 }

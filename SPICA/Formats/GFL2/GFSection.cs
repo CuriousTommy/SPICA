@@ -1,14 +1,14 @@
 ﻿using SPICA.Formats.Common;
-
+using SPICA.Misc;
 using System.IO;
 
 namespace SPICA.Formats.GFL2
 {
     class GFSection
     {
-        public  string Magic;
-        public  uint   Length;
-        private uint   Padding;
+        public string Magic;
+        public uint Length;
+        private uint Padding;
 
         public GFSection()
         {
@@ -22,14 +22,14 @@ namespace SPICA.Formats.GFL2
 
         public GFSection(string Magic, uint Length) : this()
         {
-            this.Magic  = Magic;
+            this.Magic = Magic;
             this.Length = Length;
         }
 
-        public GFSection(BinaryReader Reader)
+        public GFSection(LogReader Reader)
         {
-            Magic   = Reader.ReadPaddedString(8);
-            Length  = Reader.ReadUInt32();
+            Magic = Reader.ReadPaddedString(8);
+            Length = Reader.ReadUInt32();
             Padding = Reader.ReadUInt32();
         }
 

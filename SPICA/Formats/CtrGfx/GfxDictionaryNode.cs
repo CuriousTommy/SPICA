@@ -4,7 +4,7 @@ namespace SPICA.Formats.CtrGfx
 {
     struct GfxDictionaryNode<T> : IPatriciaTreeNode
     {
-        private uint   _ReferenceBit;
+        private uint _ReferenceBit;
         private ushort _LeftNodeIndex;
         private ushort _RightNodeIndex;
         private string _Name;

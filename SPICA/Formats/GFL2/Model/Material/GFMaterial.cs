@@ -1,10 +1,10 @@
 ﻿using SPICA.Formats.Common;
 using SPICA.Math3D;
+using SPICA.Misc;
 using SPICA.PICA;
 using SPICA.PICA.Commands;
 
 using System.IO;
-using System.Numerics;
 
 namespace SPICA.Formats.GFL2.Model.Material
 {
@@ -72,7 +72,7 @@ namespace SPICA.Formats.GFL2.Model.Material
         public int BakeConstant2;
         public int BakeConstant3;
         public int BakeConstant4;
-        public int BakeConstant5; 
+        public int BakeConstant5;
 
         public int VertexShaderType;
 
@@ -100,8 +100,8 @@ namespace SPICA.Formats.GFL2.Model.Material
 
         public PICAFaceCulling FaceCulling;
 
-        public PICALUTInAbs   LUTInputAbsolute;
-        public PICALUTInSel   LUTInputSelection;
+        public PICALUTInAbs LUTInputAbsolute;
+        public PICALUTInSel LUTInputSelection;
         public PICALUTInScale LUTInputScale;
 
         public bool ColorBufferRead;
@@ -121,110 +121,110 @@ namespace SPICA.Formats.GFL2.Model.Material
 
         public GFMaterial()
         {
-            TextureCoords  = new GFTextureCoord[3];
+            TextureCoords = new GFTextureCoord[3];
 
             BorderColor = new RGBA[3];
 
             TextureSources = new float[4];
         }
 
-        public GFMaterial(BinaryReader Reader) : this()
+        public GFMaterial(ref StreamWriter outputFile, LogReader Reader) : this()
         {
             GFSection MaterialSection = new GFSection(Reader);
 
             long Position = Reader.BaseStream.Position;
 
-            MaterialName   = new GFHashName(Reader).Name;
-            ShaderName     = new GFHashName(Reader).Name;
-            VtxShaderName  = new GFHashName(Reader).Name;
-            FragShaderName = new GFHashName(Reader).Name;
+            MaterialName = new GFHashName(ref outputFile, Reader).Name;
+            ShaderName = new GFHashName(ref outputFile, Reader).Name;
+            VtxShaderName = new GFHashName(ref outputFile, Reader).Name;
+            FragShaderName = new GFHashName(ref outputFile, Reader).Name;
 
-            LUT0HashId = Reader.ReadUInt32();
-            LUT1HashId = Reader.ReadUInt32();
-            LUT2HashId = Reader.ReadUInt32();
+            LUT0HashId = Reader.ReadUInt32(ref outputFile);
+            LUT1HashId = Reader.ReadUInt32(ref outputFile);
+            LUT2HashId = Reader.ReadUInt32(ref outputFile);
 
-            Reader.ReadUInt32(); //16 bytes padding
+            Reader.ReadUInt32(ref outputFile); //16 bytes padding
 
-            BumpTexture = Reader.ReadSByte();
+            BumpTexture = Reader.ReadSByte(ref outputFile);
 
-            Constant0Assignment = Reader.ReadByte();
-            Constant1Assignment = Reader.ReadByte();
-            Constant2Assignment = Reader.ReadByte();
-            Constant3Assignment = Reader.ReadByte();
-            Constant4Assignment = Reader.ReadByte();
-            Constant5Assignment = Reader.ReadByte();
+            Constant0Assignment = Reader.ReadByte(ref outputFile);
+            Constant1Assignment = Reader.ReadByte(ref outputFile);
+            Constant2Assignment = Reader.ReadByte(ref outputFile);
+            Constant3Assignment = Reader.ReadByte(ref outputFile);
+            Constant4Assignment = Reader.ReadByte(ref outputFile);
+            Constant5Assignment = Reader.ReadByte(ref outputFile);
 
-            Reader.ReadByte(); //8 bytes padding
+            Reader.ReadByte(ref outputFile); //8 bytes padding
 
-            Constant0Color = new RGBA(Reader);
-            Constant1Color = new RGBA(Reader);
-            Constant2Color = new RGBA(Reader);
-            Constant3Color = new RGBA(Reader);
-            Constant4Color = new RGBA(Reader);
-            Constant5Color = new RGBA(Reader);
-            Specular0Color = new RGBA(Reader);
-            Specular1Color = new RGBA(Reader);
-            BlendColor     = new RGBA(Reader);
-            EmissionColor  = new RGBA(Reader);
-            AmbientColor   = new RGBA(Reader);
-            DiffuseColor   = new RGBA(Reader);
+            Constant0Color = new RGBA(ref outputFile, Reader);
+            Constant1Color = new RGBA(ref outputFile, Reader);
+            Constant2Color = new RGBA(ref outputFile, Reader);
+            Constant3Color = new RGBA(ref outputFile, Reader);
+            Constant4Color = new RGBA(ref outputFile, Reader);
+            Constant5Color = new RGBA(ref outputFile, Reader);
+            Specular0Color = new RGBA(ref outputFile, Reader);
+            Specular1Color = new RGBA(ref outputFile, Reader);
+            BlendColor = new RGBA(ref outputFile, Reader);
+            EmissionColor = new RGBA(ref outputFile, Reader);
+            AmbientColor = new RGBA(ref outputFile, Reader);
+            DiffuseColor = new RGBA(ref outputFile, Reader);
 
-            EdgeType     = Reader.ReadInt32();
-            IDEdgeEnable = Reader.ReadInt32();
-            EdgeID       = Reader.ReadInt32();
+            EdgeType = Reader.ReadInt32(ref outputFile);
+            IDEdgeEnable = Reader.ReadInt32(ref outputFile);
+            EdgeID = Reader.ReadInt32(ref outputFile);
 
-            ProjectionType = Reader.ReadInt32();
+            ProjectionType = Reader.ReadInt32(ref outputFile);
 
-            RimPower   = Reader.ReadSingle();
-            RimScale   = Reader.ReadSingle();
-            PhongPower = Reader.ReadSingle();
-            PhongScale = Reader.ReadSingle();
+            RimPower = Reader.ReadSingle(ref outputFile);
+            RimScale = Reader.ReadSingle(ref outputFile);
+            PhongPower = Reader.ReadSingle(ref outputFile);
+            PhongScale = Reader.ReadSingle(ref outputFile);
 
-            IDEdgeOffsetEnable = Reader.ReadInt32();
+            IDEdgeOffsetEnable = Reader.ReadInt32(ref outputFile);
 
-            EdgeMapAlphaMask = Reader.ReadInt32();
+            EdgeMapAlphaMask = Reader.ReadInt32(ref outputFile);
 
-            BakeTexture0  = Reader.ReadInt32();
-            BakeTexture1  = Reader.ReadInt32();
-            BakeTexture2  = Reader.ReadInt32();
-            BakeConstant0 = Reader.ReadInt32();
-            BakeConstant1 = Reader.ReadInt32();
-            BakeConstant2 = Reader.ReadInt32();
-            BakeConstant3 = Reader.ReadInt32();
-            BakeConstant4 = Reader.ReadInt32();
-            BakeConstant5 = Reader.ReadInt32();
+            BakeTexture0 = Reader.ReadInt32(ref outputFile);
+            BakeTexture1 = Reader.ReadInt32(ref outputFile);
+            BakeTexture2 = Reader.ReadInt32(ref outputFile);
+            BakeConstant0 = Reader.ReadInt32(ref outputFile);
+            BakeConstant1 = Reader.ReadInt32(ref outputFile);
+            BakeConstant2 = Reader.ReadInt32(ref outputFile);
+            BakeConstant3 = Reader.ReadInt32(ref outputFile);
+            BakeConstant4 = Reader.ReadInt32(ref outputFile);
+            BakeConstant5 = Reader.ReadInt32(ref outputFile);
 
-            VertexShaderType = Reader.ReadInt32();
+            VertexShaderType = Reader.ReadInt32(ref outputFile);
 
-            ShaderParam0 = Reader.ReadSingle();
-            ShaderParam1 = Reader.ReadSingle();
-            ShaderParam2 = Reader.ReadSingle();
-            ShaderParam3 = Reader.ReadSingle();
+            ShaderParam0 = Reader.ReadSingle(ref outputFile);
+            ShaderParam1 = Reader.ReadSingle(ref outputFile);
+            ShaderParam2 = Reader.ReadSingle(ref outputFile);
+            ShaderParam3 = Reader.ReadSingle(ref outputFile);
 
-            uint UnitsCount = Reader.ReadUInt32();
+            uint UnitsCount = Reader.ReadUInt32(ref outputFile);
 
             for (int Unit = 0; Unit < UnitsCount; Unit++)
             {
-                TextureCoords[Unit] = new GFTextureCoord(Reader);
+                TextureCoords[Unit] = new GFTextureCoord(ref outputFile, Reader);
             }
 
             GFSection.SkipPadding(Reader.BaseStream);
 
-            uint CommandsLength = Reader.ReadUInt32();
+            uint CommandsLength = Reader.ReadUInt32(ref outputFile);
 
-            RenderPriority = Reader.ReadInt32();
-            Reader.ReadUInt32(); //Seems to be a 24 bits value.
-            RenderLayer = Reader.ReadInt32();
-            Reader.ReadUInt32(); //LUT 0 (Reflection R?) hash again?
-            Reader.ReadUInt32(); //LUT 1 (Reflection G?) hash again?
-            Reader.ReadUInt32(); //LUT 2 (Reflection B?) hash again?
-            Reader.ReadUInt32(); //Another hash?
+            RenderPriority = Reader.ReadInt32(ref outputFile);
+            Reader.ReadUInt32(ref outputFile); //Seems to be a 24 bits value.
+            RenderLayer = Reader.ReadInt32(ref outputFile);
+            Reader.ReadUInt32(ref outputFile); //LUT 0 (Reflection R?) hash again?
+            Reader.ReadUInt32(ref outputFile); //LUT 1 (Reflection G?) hash again?
+            Reader.ReadUInt32(ref outputFile); //LUT 2 (Reflection B?) hash again?
+            Reader.ReadUInt32(ref outputFile); //Another hash?
 
             uint[] Commands = new uint[CommandsLength >> 2];
 
             for (int Index = 0; Index < Commands.Length; Index++)
             {
-                Commands[Index] = Reader.ReadUInt32();
+                Commands[Index] = Reader.ReadUInt32(ref outputFile);
             }
 
             PICACommandReader CmdReader = new PICACommandReader(Commands);
@@ -257,22 +257,22 @@ namespace SPICA.Formats.GFL2.Model.Material
 
                     case PICARegister.GPUREG_FACECULLING_CONFIG: FaceCulling = (PICAFaceCulling)(Param & 3); break;
 
-                    case PICARegister.GPUREG_COLORBUFFER_READ:  ColorBufferRead  = (Param & 0xf) == 0xf; break;
+                    case PICARegister.GPUREG_COLORBUFFER_READ: ColorBufferRead = (Param & 0xf) == 0xf; break;
                     case PICARegister.GPUREG_COLORBUFFER_WRITE: ColorBufferWrite = (Param & 0xf) == 0xf; break;
 
                     case PICARegister.GPUREG_DEPTHBUFFER_READ:
                         StencilBufferRead = (Param & 1) != 0;
-                        DepthBufferRead   = (Param & 2) != 0;
+                        DepthBufferRead = (Param & 2) != 0;
                         break;
 
                     case PICARegister.GPUREG_DEPTHBUFFER_WRITE:
                         StencilBufferWrite = (Param & 1) != 0;
-                        DepthBufferWrite   = (Param & 2) != 0;
+                        DepthBufferWrite = (Param & 2) != 0;
                         break;
 
-                    case PICARegister.GPUREG_LIGHTING_LUTINPUT_ABS:    LUTInputAbsolute  = new PICALUTInAbs(Param);   break;
-                    case PICARegister.GPUREG_LIGHTING_LUTINPUT_SELECT: LUTInputSelection = new PICALUTInSel(Param);   break;
-                    case PICARegister.GPUREG_LIGHTING_LUTINPUT_SCALE:  LUTInputScale     = new PICALUTInScale(Param); break;
+                    case PICARegister.GPUREG_LIGHTING_LUTINPUT_ABS: LUTInputAbsolute = new PICALUTInAbs(Param); break;
+                    case PICARegister.GPUREG_LIGHTING_LUTINPUT_SELECT: LUTInputSelection = new PICALUTInSel(Param); break;
+                    case PICARegister.GPUREG_LIGHTING_LUTINPUT_SCALE: LUTInputScale = new PICALUTInScale(Param); break;
                 }
             }
 
@@ -288,11 +288,11 @@ namespace SPICA.Formats.GFL2.Model.Material
         {
             long StartPosition = Writer.BaseStream.Position;
 
-            new GFSection(MagicStr).Write(Writer);            
+            new GFSection(MagicStr).Write(Writer);
 
-            new GFHashName(MaterialName)  .Write(Writer);
-            new GFHashName(ShaderName)    .Write(Writer);
-            new GFHashName(VtxShaderName) .Write(Writer);
+            new GFHashName(MaterialName).Write(Writer);
+            new GFHashName(ShaderName).Write(Writer);
+            new GFHashName(VtxShaderName).Write(Writer);
             new GFHashName(FragShaderName).Write(Writer);
 
             Writer.Write(LUT0HashId);
@@ -320,10 +320,10 @@ namespace SPICA.Formats.GFL2.Model.Material
             Constant5Color.Write(Writer);
             Specular0Color.Write(Writer);
             Specular1Color.Write(Writer);
-            BlendColor    .Write(Writer);
-            EmissionColor .Write(Writer);
-            AmbientColor  .Write(Writer);
-            DiffuseColor  .Write(Writer);
+            BlendColor.Write(Writer);
+            EmissionColor.Write(Writer);
+            AmbientColor.Write(Writer);
+            DiffuseColor.Write(Writer);
 
             Writer.Write(EdgeType);
             Writer.Write(IDEdgeEnable);
@@ -372,16 +372,16 @@ namespace SPICA.Formats.GFL2.Model.Material
 
                 Matrix3x4 Mtx = TextureCoords[Unit].GetTransform();
 
-                TexMtx[Unit * 12 + 0]  = Mtx.M41;
-                TexMtx[Unit * 12 + 1]  = Mtx.M31;
-                TexMtx[Unit * 12 + 2]  = Mtx.M21;
-                TexMtx[Unit * 12 + 3]  = Mtx.M11;
-                TexMtx[Unit * 12 + 4]  = Mtx.M42;
-                TexMtx[Unit * 12 + 5]  = Mtx.M32;
-                TexMtx[Unit * 12 + 6]  = Mtx.M22;
-                TexMtx[Unit * 12 + 7]  = Mtx.M12;
-                TexMtx[Unit * 12 + 8]  = Mtx.M43;
-                TexMtx[Unit * 12 + 9]  = Mtx.M33;
+                TexMtx[Unit * 12 + 0] = Mtx.M41;
+                TexMtx[Unit * 12 + 1] = Mtx.M31;
+                TexMtx[Unit * 12 + 2] = Mtx.M21;
+                TexMtx[Unit * 12 + 3] = Mtx.M11;
+                TexMtx[Unit * 12 + 4] = Mtx.M42;
+                TexMtx[Unit * 12 + 5] = Mtx.M32;
+                TexMtx[Unit * 12 + 6] = Mtx.M22;
+                TexMtx[Unit * 12 + 7] = Mtx.M12;
+                TexMtx[Unit * 12 + 8] = Mtx.M43;
+                TexMtx[Unit * 12 + 9] = Mtx.M33;
                 TexMtx[Unit * 12 + 10] = Mtx.M23;
                 TexMtx[Unit * 12 + 11] = Mtx.M13;
             }
@@ -398,7 +398,7 @@ namespace SPICA.Formats.GFL2.Model.Material
 
             CmdWriter.SetCommand(PICARegister.GPUREG_VSH_FLOATUNIFORM_INDEX, 0x80000001u);
 
-            CmdWriter.SetCommand(PICARegister.GPUREG_VSH_FLOATUNIFORM_DATA0, false, TexMtx);    
+            CmdWriter.SetCommand(PICARegister.GPUREG_VSH_FLOATUNIFORM_DATA0, false, TexMtx);
 
             CmdWriter.SetCommand(PICARegister.GPUREG_FACECULLING_CONFIG, (uint)FaceCulling);
 
@@ -406,9 +406,9 @@ namespace SPICA.Formats.GFL2.Model.Material
 
             CmdWriter.SetCommand(PICARegister.GPUREG_BLEND_FUNC, BlendFunction.ToUInt32());
 
-            if (BlendFunction.ColorSrcFunc != PICABlendFunc.One  ||
+            if (BlendFunction.ColorSrcFunc != PICABlendFunc.One ||
                 BlendFunction.ColorDstFunc != PICABlendFunc.Zero ||
-                BlendFunction.AlphaSrcFunc != PICABlendFunc.One  ||
+                BlendFunction.AlphaSrcFunc != PICABlendFunc.One ||
                 BlendFunction.AlphaDstFunc != PICABlendFunc.Zero)
             {
                 CmdWriter.SetCommand(PICARegister.GPUREG_LOGIC_OP, (uint)LogicalOperation);
@@ -431,10 +431,10 @@ namespace SPICA.Formats.GFL2.Model.Material
             CmdWriter.SetCommand(PICARegister.GPUREG_FRAMEBUFFER_FLUSH, true);
             CmdWriter.SetCommand(PICARegister.GPUREG_FRAMEBUFFER_INVALIDATE, true);
 
-            CmdWriter.SetCommand(PICARegister.GPUREG_COLORBUFFER_READ,  ColorBufferRead  ? 0xfu : 0u, 1);
+            CmdWriter.SetCommand(PICARegister.GPUREG_COLORBUFFER_READ, ColorBufferRead ? 0xfu : 0u, 1);
             CmdWriter.SetCommand(PICARegister.GPUREG_COLORBUFFER_WRITE, ColorBufferWrite ? 0xfu : 0u, 1);
 
-            CmdWriter.SetCommand(PICARegister.GPUREG_DEPTHBUFFER_READ,  StencilBufferRead,  DepthBufferRead);
+            CmdWriter.SetCommand(PICARegister.GPUREG_DEPTHBUFFER_READ, StencilBufferRead, DepthBufferRead);
             CmdWriter.SetCommand(PICARegister.GPUREG_DEPTHBUFFER_WRITE, StencilBufferWrite, DepthBufferWrite);
 
             uint TexUnitConfig = 0x00011000u;
@@ -450,9 +450,9 @@ namespace SPICA.Formats.GFL2.Model.Material
             CmdWriter.SetCommand(PICARegister.GPUREG_TEXUNIT1_BORDER_COLOR, BorderColor[1].ToUInt32());
             CmdWriter.SetCommand(PICARegister.GPUREG_TEXUNIT2_BORDER_COLOR, BorderColor[2].ToUInt32());
 
-            CmdWriter.SetCommand(PICARegister.GPUREG_LIGHTING_LUTINPUT_ABS,    LUTInputAbsolute.ToUInt32());
+            CmdWriter.SetCommand(PICARegister.GPUREG_LIGHTING_LUTINPUT_ABS, LUTInputAbsolute.ToUInt32());
             CmdWriter.SetCommand(PICARegister.GPUREG_LIGHTING_LUTINPUT_SELECT, LUTInputSelection.ToUInt32());
-            CmdWriter.SetCommand(PICARegister.GPUREG_LIGHTING_LUTINPUT_SCALE,  LUTInputScale.ToUInt32());
+            CmdWriter.SetCommand(PICARegister.GPUREG_LIGHTING_LUTINPUT_SCALE, LUTInputScale.ToUInt32());
 
             CmdWriter.WriteEnd();
 

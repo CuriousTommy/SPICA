@@ -6,7 +6,7 @@
         {
             Value = ((Value & 0xffffffff00000000ul) >> 32) | ((Value & 0x00000000fffffffful) << 32);
             Value = ((Value & 0xffff0000ffff0000ul) >> 16) | ((Value & 0x0000ffff0000fffful) << 16);
-            Value = ((Value & 0xff00ff00ff00ff00ul) >>  8) | ((Value & 0x00ff00ff00ff00fful) <<  8);
+            Value = ((Value & 0xff00ff00ff00ff00ul) >> 8) | ((Value & 0x00ff00ff00ff00fful) << 8);
 
             return Value;
         }
@@ -15,10 +15,10 @@
         {
             Value--;
 
-            Value |= (Value >>  1);
-            Value |= (Value >>  2);
-            Value |= (Value >>  4);
-            Value |= (Value >>  8);
+            Value |= (Value >> 1);
+            Value |= (Value >> 2);
+            Value |= (Value >> 4);
+            Value |= (Value >> 8);
             Value |= (Value >> 16);
 
             return ++Value;
@@ -38,8 +38,8 @@
         {
             int Mask = (1 << Count) - 1;
 
-            Mask  <<= Start;
-            Value &=  Mask;
+            Mask <<= Start;
+            Value &= Mask;
 
             return Value;
         }
@@ -48,8 +48,8 @@
         {
             int Mask = (1 << Count) - 1;
 
-            Mask  <<= Start;
-            Value &=  ~Mask;
+            Mask <<= Start;
+            Value &= ~Mask;
 
             return Value;
         }
@@ -59,7 +59,7 @@
             int Mask = (1 << Count) - 1;
 
             Value >>= Start;
-            Value &=  Mask;
+            Value &= Mask;
 
             return Value;
         }
@@ -69,7 +69,7 @@
             int Mask = (1 << Count) - 1;
 
             Value &= ~(Mask << Start);
-            Value |=   Bits << Start;
+            Value |= Bits << Start;
 
             return Value;
         }
@@ -82,7 +82,7 @@
         public static int SetBit(int Value, bool Bit, int Start)
         {
             return Bit
-                ? Value |  (1 << Start)
+                ? Value | (1 << Start)
                 : Value & ~(1 << Start);
         }
     }

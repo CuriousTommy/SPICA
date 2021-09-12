@@ -12,21 +12,21 @@ namespace SPICA.Rendering.SPICA_GL
         {
             switch (Func)
             {
-                case PICABlendFunc.Zero:                     return All.Zero;
-                case PICABlendFunc.One:                      return All.One;
-                case PICABlendFunc.SourceColor:              return All.SrcColor;
-                case PICABlendFunc.OneMinusSourceColor:      return All.OneMinusSrcColor;
-                case PICABlendFunc.DestinationColor:         return All.DstColor;
+                case PICABlendFunc.Zero: return All.Zero;
+                case PICABlendFunc.One: return All.One;
+                case PICABlendFunc.SourceColor: return All.SrcColor;
+                case PICABlendFunc.OneMinusSourceColor: return All.OneMinusSrcColor;
+                case PICABlendFunc.DestinationColor: return All.DstColor;
                 case PICABlendFunc.OneMinusDestinationColor: return All.OneMinusDstColor;
-                case PICABlendFunc.SourceAlpha:              return All.SrcAlpha;
-                case PICABlendFunc.OneMinusSourceAlpha:      return All.OneMinusSrcAlpha;
-                case PICABlendFunc.DestinationAlpha:         return All.DstAlpha;
+                case PICABlendFunc.SourceAlpha: return All.SrcAlpha;
+                case PICABlendFunc.OneMinusSourceAlpha: return All.OneMinusSrcAlpha;
+                case PICABlendFunc.DestinationAlpha: return All.DstAlpha;
                 case PICABlendFunc.OneMinusDestinationAlpha: return All.OneMinusDstAlpha;
-                case PICABlendFunc.ConstantColor:            return All.ConstantColor;
-                case PICABlendFunc.OneMinusConstantColor:    return All.OneMinusConstantColor;
-                case PICABlendFunc.ConstantAlpha:            return All.ConstantAlpha;
-                case PICABlendFunc.OneMinusConstantAlpha:    return All.OneMinusConstantAlpha;
-                case PICABlendFunc.SourceAlphaSaturate:      return All.SrcAlphaSaturate;
+                case PICABlendFunc.ConstantColor: return All.ConstantColor;
+                case PICABlendFunc.OneMinusConstantColor: return All.OneMinusConstantColor;
+                case PICABlendFunc.ConstantAlpha: return All.ConstantAlpha;
+                case PICABlendFunc.OneMinusConstantAlpha: return All.OneMinusConstantAlpha;
+                case PICABlendFunc.SourceAlphaSaturate: return All.SrcAlphaSaturate;
 
                 default: throw new ArgumentException("Invalid Blend function!");
             }

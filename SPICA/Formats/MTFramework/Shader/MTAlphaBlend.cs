@@ -50,9 +50,9 @@ namespace SPICA.Formats.MTFramework.Shader
             BlendFunction.AlphaSrcFunc = ColorSrcFunc.ToPICABlendFunc(true);
             BlendFunction.AlphaDstFunc = ColorDstFunc.ToPICABlendFunc(true);
 
-            RedWrite   = (BufferRW[0] & 1) != 0;
+            RedWrite = (BufferRW[0] & 1) != 0;
             GreenWrite = (BufferRW[0] & 2) != 0;
-            BlueWrite  = (BufferRW[0] & 4) != 0;
+            BlueWrite = (BufferRW[0] & 4) != 0;
             AlphaWrite = (BufferRW[0] & 8) != 0;
         }
     }

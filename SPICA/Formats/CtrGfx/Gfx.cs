@@ -17,6 +17,7 @@ using SPICA.Formats.CtrH3D.Model;
 using SPICA.Formats.CtrH3D.Model.Material;
 using SPICA.Formats.CtrH3D.Model.Mesh;
 using SPICA.Formats.CtrH3D.Texture;
+using SPICA.Misc;
 using SPICA.PICA.Commands;
 using SPICA.PICA.Converters;
 using SPICA.Serialization;
@@ -37,41 +38,41 @@ namespace SPICA.Formats.CtrGfx
 
     public class Gfx
     {
-        public readonly GfxDict<GfxModel>     Models;
-        public readonly GfxDict<GfxTexture>   Textures;
-        public readonly GfxDict<GfxLUT>       LUTs;
-        public readonly GfxDict<GfxMaterial>  Materials;
-        public readonly GfxDict<GfxShader>    Shaders;
-        public readonly GfxDict<GfxCamera>    Cameras;
-        public readonly GfxDict<GfxLight>     Lights;
-        public readonly GfxDict<GfxFog>       Fogs;
-        public readonly GfxDict<GfxScene>     Scenes;
+        public readonly GfxDict<GfxModel> Models;
+        public readonly GfxDict<GfxTexture> Textures;
+        public readonly GfxDict<GfxLUT> LUTs;
+        public readonly GfxDict<GfxMaterial> Materials;
+        public readonly GfxDict<GfxShader> Shaders;
+        public readonly GfxDict<GfxCamera> Cameras;
+        public readonly GfxDict<GfxLight> Lights;
+        public readonly GfxDict<GfxFog> Fogs;
+        public readonly GfxDict<GfxScene> Scenes;
         public readonly GfxDict<GfxAnimation> SkeletalAnimations;
         public readonly GfxDict<GfxAnimation> MaterialAnimations;
         public readonly GfxDict<GfxAnimation> VisibilityAnimations;
         public readonly GfxDict<GfxAnimation> CameraAnimations;
         public readonly GfxDict<GfxAnimation> LightAnimations;
         public readonly GfxDict<GfxAnimation> FogAnimations;
-        public readonly GfxDict<GfxEmitter>   Emitters;
+        public readonly GfxDict<GfxEmitter> Emitters;
 
         public Gfx()
         {
-            Models               = new GfxDict<GfxModel>();
-            Textures             = new GfxDict<GfxTexture>();
-            LUTs                 = new GfxDict<GfxLUT>();
-            Materials            = new GfxDict<GfxMaterial>();
-            Shaders              = new GfxDict<GfxShader>();
-            Cameras              = new GfxDict<GfxCamera>();
-            Lights               = new GfxDict<GfxLight>();
-            Fogs                 = new GfxDict<GfxFog>();
-            Scenes               = new GfxDict<GfxScene>();
-            SkeletalAnimations   = new GfxDict<GfxAnimation>();
-            MaterialAnimations   = new GfxDict<GfxAnimation>();
+            Models = new GfxDict<GfxModel>();
+            Textures = new GfxDict<GfxTexture>();
+            LUTs = new GfxDict<GfxLUT>();
+            Materials = new GfxDict<GfxMaterial>();
+            Shaders = new GfxDict<GfxShader>();
+            Cameras = new GfxDict<GfxCamera>();
+            Lights = new GfxDict<GfxLight>();
+            Fogs = new GfxDict<GfxFog>();
+            Scenes = new GfxDict<GfxScene>();
+            SkeletalAnimations = new GfxDict<GfxAnimation>();
+            MaterialAnimations = new GfxDict<GfxAnimation>();
             VisibilityAnimations = new GfxDict<GfxAnimation>();
-            CameraAnimations     = new GfxDict<GfxAnimation>();
-            LightAnimations      = new GfxDict<GfxAnimation>();
-            FogAnimations        = new GfxDict<GfxAnimation>();
-            Emitters             = new GfxDict<GfxEmitter>();
+            CameraAnimations = new GfxDict<GfxAnimation>();
+            LightAnimations = new GfxDict<GfxAnimation>();
+            FogAnimations = new GfxDict<GfxAnimation>();
+            Emitters = new GfxDict<GfxEmitter>();
         }
 
         public static Gfx Open(string FileName)
@@ -79,10 +80,13 @@ namespace SPICA.Formats.CtrGfx
             using (FileStream Input = new FileStream(FileName, FileMode.Open))
             {
                 BinaryDeserializer Deserializer = new BinaryDeserializer(Input, GetSerializationOptions());
+                StreamWriter OutputFile = WriteManager.CreateOutputFile("Gfx.txt");
 
-                GfxHeader Header = Deserializer.Deserialize<GfxHeader>();
-                Gfx       Scene  = Deserializer.Deserialize<Gfx>();
+                GfxHeader Header = Deserializer.Deserialize<GfxHeader>(ref OutputFile);
+                Gfx Scene = Deserializer.Deserialize<Gfx>(ref OutputFile);
 
+                OutputFile.Flush();
+                OutputFile.Close();
                 return Scene;
             }
         }
@@ -90,10 +94,13 @@ namespace SPICA.Formats.CtrGfx
         public static H3D Open(Stream Input)
         {
             BinaryDeserializer Deserializer = new BinaryDeserializer(Input, GetSerializationOptions());
+            StreamWriter OutputFile = WriteManager.CreateOutputFile("Gfx.txt");
 
-            GfxHeader Header = Deserializer.Deserialize<GfxHeader>();
-            Gfx       Scene  = Deserializer.Deserialize<Gfx>();
+            GfxHeader Header = Deserializer.Deserialize<GfxHeader>(ref OutputFile);
+            Gfx Scene = Deserializer.Deserialize<Gfx>(ref OutputFile);
 
+            OutputFile.Flush();
+            OutputFile.Close();
             return Scene.ToH3D();
         }
 
@@ -113,17 +120,17 @@ namespace SPICA.Formats.CtrGfx
                 {
                     H3DMaterial Mat = new H3DMaterial() { Name = Material.Name };
 
-                    Mat.MaterialParams.ModelReference  = $"{Mat.Name}@{Model.Name}";
+                    Mat.MaterialParams.ModelReference = $"{Mat.Name}@{Model.Name}";
                     Mat.MaterialParams.ShaderReference = "0@DefaultShader";
 
                     Mat.MaterialParams.Flags = (H3DMaterialFlags)Material.Flags;
 
                     Mat.MaterialParams.TranslucencyKind = (H3DTranslucencyKind)Material.TranslucencyKind;
-                    Mat.MaterialParams.TexCoordConfig   = (H3DTexCoordConfig)Material.TexCoordConfig;
+                    Mat.MaterialParams.TexCoordConfig = (H3DTexCoordConfig)Material.TexCoordConfig;
 
-                    Mat.MaterialParams.EmissionColor  = Material.Colors.Emission;
-                    Mat.MaterialParams.AmbientColor   = Material.Colors.Ambient;
-                    Mat.MaterialParams.DiffuseColor   = Material.Colors.Diffuse;
+                    Mat.MaterialParams.EmissionColor = Material.Colors.Emission;
+                    Mat.MaterialParams.AmbientColor = Material.Colors.Ambient;
+                    Mat.MaterialParams.DiffuseColor = Material.Colors.Diffuse;
                     Mat.MaterialParams.Specular0Color = Material.Colors.Specular0;
                     Mat.MaterialParams.Specular1Color = Material.Colors.Specular1;
                     Mat.MaterialParams.Constant0Color = Material.Colors.Constant0;
@@ -132,40 +139,40 @@ namespace SPICA.Formats.CtrGfx
                     Mat.MaterialParams.Constant3Color = Material.Colors.Constant3;
                     Mat.MaterialParams.Constant4Color = Material.Colors.Constant4;
                     Mat.MaterialParams.Constant5Color = Material.Colors.Constant5;
-                    Mat.MaterialParams.ColorScale     = Material.Colors.Scale;
+                    Mat.MaterialParams.ColorScale = Material.Colors.Scale;
 
                     if (Material.Rasterization.IsPolygonOffsetEnabled)
                     {
                         Mat.MaterialParams.Flags |= H3DMaterialFlags.IsPolygonOffsetEnabled;
                     }
 
-                    Mat.MaterialParams.FaceCulling       = Material.Rasterization.FaceCulling.ToPICAFaceCulling();
+                    Mat.MaterialParams.FaceCulling = Material.Rasterization.FaceCulling.ToPICAFaceCulling();
                     Mat.MaterialParams.PolygonOffsetUnit = Material.Rasterization.PolygonOffsetUnit;
 
                     Mat.MaterialParams.DepthColorMask = Material.FragmentOperation.Depth.ColorMask;
 
-                    Mat.MaterialParams.DepthColorMask.RedWrite   = true;
+                    Mat.MaterialParams.DepthColorMask.RedWrite = true;
                     Mat.MaterialParams.DepthColorMask.GreenWrite = true;
-                    Mat.MaterialParams.DepthColorMask.BlueWrite  = true;
+                    Mat.MaterialParams.DepthColorMask.BlueWrite = true;
                     Mat.MaterialParams.DepthColorMask.AlphaWrite = true;
                     Mat.MaterialParams.DepthColorMask.DepthWrite = true;
 
-                    Mat.MaterialParams.ColorBufferRead  = false;
+                    Mat.MaterialParams.ColorBufferRead = false;
                     Mat.MaterialParams.ColorBufferWrite = true;
 
-                    Mat.MaterialParams.StencilBufferRead  = false;
+                    Mat.MaterialParams.StencilBufferRead = false;
                     Mat.MaterialParams.StencilBufferWrite = false;
 
-                    Mat.MaterialParams.DepthBufferRead  = true;
+                    Mat.MaterialParams.DepthBufferRead = true;
                     Mat.MaterialParams.DepthBufferWrite = true;
 
-                    Mat.MaterialParams.ColorOperation   = Material.FragmentOperation.Blend.ColorOperation;
+                    Mat.MaterialParams.ColorOperation = Material.FragmentOperation.Blend.ColorOperation;
                     Mat.MaterialParams.LogicalOperation = Material.FragmentOperation.Blend.LogicalOperation;
-                    Mat.MaterialParams.BlendFunction    = Material.FragmentOperation.Blend.Function;
-                    Mat.MaterialParams.BlendColor       = Material.FragmentOperation.Blend.Color;
+                    Mat.MaterialParams.BlendFunction = Material.FragmentOperation.Blend.Function;
+                    Mat.MaterialParams.BlendColor = Material.FragmentOperation.Blend.Color;
 
                     Mat.MaterialParams.StencilOperation = Material.FragmentOperation.Stencil.Operation;
-                    Mat.MaterialParams.StencilTest      = Material.FragmentOperation.Stencil.Test;
+                    Mat.MaterialParams.StencilTest = Material.FragmentOperation.Stencil.Test;
 
                     int TCIndex = 0;
 
@@ -179,8 +186,8 @@ namespace SPICA.Formats.CtrGfx
 
                         TC.TransformType = (H3DTextureTransformType)TexCoord.TransformType;
 
-                        TC.Scale       = TexCoord.Scale;
-                        TC.Rotation    = TexCoord.Rotation;
+                        TC.Scale = TexCoord.Scale;
+                        TC.Rotation = TexCoord.Rotation;
                         TC.Translation = TexCoord.Translation;
 
                         switch (TexCoord.MappingType)
@@ -219,13 +226,13 @@ namespace SPICA.Formats.CtrGfx
                         switch ((uint)TexMapper.MagFilter | ((uint)TexMapper.MipFilter << 1))
                         {
                             case 0: TM.MinFilter = H3DTextureMinFilter.NearestMipmapNearest; break;
-                            case 1: TM.MinFilter = H3DTextureMinFilter.LinearMipmapNearest;  break;
-                            case 2: TM.MinFilter = H3DTextureMinFilter.NearestMipmapLinear;  break;
-                            case 3: TM.MinFilter = H3DTextureMinFilter.LinearMipmapLinear;   break;
+                            case 1: TM.MinFilter = H3DTextureMinFilter.LinearMipmapNearest; break;
+                            case 2: TM.MinFilter = H3DTextureMinFilter.NearestMipmapLinear; break;
+                            case 3: TM.MinFilter = H3DTextureMinFilter.LinearMipmapLinear; break;
                         }
 
                         TM.LODBias = TexMapper.LODBias;
-                        TM.MinLOD  = TexMapper.MinLOD;
+                        TM.MinLOD = TexMapper.MinLOD;
 
                         TM.BorderColor = TexMapper.BorderColor;
 
@@ -275,29 +282,29 @@ namespace SPICA.Formats.CtrGfx
                     Mat.MaterialParams.LUTInputSelection.ReflecR = Material.FragmentShader.LUTs.ReflecR?.Input ?? 0;
                     Mat.MaterialParams.LUTInputSelection.ReflecG = Material.FragmentShader.LUTs.ReflecG?.Input ?? 0;
                     Mat.MaterialParams.LUTInputSelection.ReflecB = Material.FragmentShader.LUTs.ReflecB?.Input ?? 0;
-                    Mat.MaterialParams.LUTInputSelection.Dist0   = Material.FragmentShader.LUTs.Dist0?.Input   ?? 0;
-                    Mat.MaterialParams.LUTInputSelection.Dist1   = Material.FragmentShader.LUTs.Dist1?.Input   ?? 0;
+                    Mat.MaterialParams.LUTInputSelection.Dist0 = Material.FragmentShader.LUTs.Dist0?.Input ?? 0;
+                    Mat.MaterialParams.LUTInputSelection.Dist1 = Material.FragmentShader.LUTs.Dist1?.Input ?? 0;
                     Mat.MaterialParams.LUTInputSelection.Fresnel = Material.FragmentShader.LUTs.Fresnel?.Input ?? 0;
 
                     Mat.MaterialParams.LUTInputScale.ReflecR = Material.FragmentShader.LUTs.ReflecR?.Scale ?? 0;
                     Mat.MaterialParams.LUTInputScale.ReflecG = Material.FragmentShader.LUTs.ReflecG?.Scale ?? 0;
                     Mat.MaterialParams.LUTInputScale.ReflecB = Material.FragmentShader.LUTs.ReflecB?.Scale ?? 0;
-                    Mat.MaterialParams.LUTInputScale.Dist0   = Material.FragmentShader.LUTs.Dist0?.Scale   ?? 0;
-                    Mat.MaterialParams.LUTInputScale.Dist1   = Material.FragmentShader.LUTs.Dist1?.Scale   ?? 0;
+                    Mat.MaterialParams.LUTInputScale.Dist0 = Material.FragmentShader.LUTs.Dist0?.Scale ?? 0;
+                    Mat.MaterialParams.LUTInputScale.Dist1 = Material.FragmentShader.LUTs.Dist1?.Scale ?? 0;
                     Mat.MaterialParams.LUTInputScale.Fresnel = Material.FragmentShader.LUTs.Fresnel?.Scale ?? 0;
 
                     Mat.MaterialParams.LUTReflecRTableName = Material.FragmentShader.LUTs.ReflecR?.Sampler.TableName;
                     Mat.MaterialParams.LUTReflecGTableName = Material.FragmentShader.LUTs.ReflecG?.Sampler.TableName;
                     Mat.MaterialParams.LUTReflecBTableName = Material.FragmentShader.LUTs.ReflecB?.Sampler.TableName;
-                    Mat.MaterialParams.LUTDist0TableName   = Material.FragmentShader.LUTs.Dist0?.Sampler.TableName;
-                    Mat.MaterialParams.LUTDist1TableName   = Material.FragmentShader.LUTs.Dist1?.Sampler.TableName;
+                    Mat.MaterialParams.LUTDist0TableName = Material.FragmentShader.LUTs.Dist0?.Sampler.TableName;
+                    Mat.MaterialParams.LUTDist1TableName = Material.FragmentShader.LUTs.Dist1?.Sampler.TableName;
                     Mat.MaterialParams.LUTFresnelTableName = Material.FragmentShader.LUTs.Fresnel?.Sampler.TableName;
 
                     Mat.MaterialParams.LUTReflecRSamplerName = Material.FragmentShader.LUTs.ReflecR?.Sampler.SamplerName;
                     Mat.MaterialParams.LUTReflecGSamplerName = Material.FragmentShader.LUTs.ReflecG?.Sampler.SamplerName;
                     Mat.MaterialParams.LUTReflecBSamplerName = Material.FragmentShader.LUTs.ReflecB?.Sampler.SamplerName;
-                    Mat.MaterialParams.LUTDist0SamplerName   = Material.FragmentShader.LUTs.Dist0?.Sampler.SamplerName;
-                    Mat.MaterialParams.LUTDist1SamplerName   = Material.FragmentShader.LUTs.Dist1?.Sampler.SamplerName;
+                    Mat.MaterialParams.LUTDist0SamplerName = Material.FragmentShader.LUTs.Dist0?.Sampler.SamplerName;
+                    Mat.MaterialParams.LUTDist1SamplerName = Material.FragmentShader.LUTs.Dist1?.Sampler.SamplerName;
                     Mat.MaterialParams.LUTFresnelSamplerName = Material.FragmentShader.LUTs.Fresnel?.Sampler.SamplerName;
 
                     Mat.MaterialParams.TexEnvStages[0] = Material.FragmentShader.TextureEnvironments[0].Stage;
@@ -359,15 +366,15 @@ namespace SPICA.Formats.CtrGfx
 
                             for (int i = 0; i < Vectors.Length; i++)
                             {
-                                switch(Attr.AttrName)
+                                switch (Attr.AttrName)
                                 {
-                                    case PICAAttributeName.Position:  Vertices[i].Position  = Vectors[i]; break;
-                                    case PICAAttributeName.Normal:    Vertices[i].Normal    = Vectors[i]; break;
-                                    case PICAAttributeName.Tangent:   Vertices[i].Tangent   = Vectors[i]; break;
+                                    case PICAAttributeName.Position: Vertices[i].Position = Vectors[i]; break;
+                                    case PICAAttributeName.Normal: Vertices[i].Normal = Vectors[i]; break;
+                                    case PICAAttributeName.Tangent: Vertices[i].Tangent = Vectors[i]; break;
                                     case PICAAttributeName.TexCoord0: Vertices[i].TexCoord0 = Vectors[i]; break;
                                     case PICAAttributeName.TexCoord1: Vertices[i].TexCoord1 = Vectors[i]; break;
                                     case PICAAttributeName.TexCoord2: Vertices[i].TexCoord2 = Vectors[i]; break;
-                                    case PICAAttributeName.Color:     Vertices[i].Color     = Vectors[i]; break;
+                                    case PICAAttributeName.Color: Vertices[i].Color = Vectors[i]; break;
 
                                     case PICAAttributeName.BoneIndex:
                                         Vertices[i].Indices[0] = (int)Vectors[i].X;
@@ -377,10 +384,10 @@ namespace SPICA.Formats.CtrGfx
                                         break;
 
                                     case PICAAttributeName.BoneWeight:
-                                        Vertices[i].Weights[0] =      Vectors[i].X;
-                                        Vertices[i].Weights[1] =      Vectors[i].Y;
-                                        Vertices[i].Weights[2] =      Vectors[i].Z;
-                                        Vertices[i].Weights[3] =      Vectors[i].W;
+                                        Vertices[i].Weights[0] = Vectors[i].X;
+                                        Vertices[i].Weights[1] = Vectors[i].Y;
+                                        Vertices[i].Weights[2] = Vectors[i].Z;
+                                        Vertices[i].Weights[3] = Vectors[i].W;
                                         break;
                                 }
                             }
@@ -392,7 +399,7 @@ namespace SPICA.Formats.CtrGfx
 
                             M.FixedAttributes.Add(new PICAFixedAttribute()
                             {
-                                Name  = VertexBuffer.AttrName,
+                                Name = VertexBuffer.AttrName,
 
                                 Value = new PICAVectorFloat24(
                                     Vector.Length > 0 ? Vector[0] : 0,
@@ -411,7 +418,7 @@ namespace SPICA.Formats.CtrGfx
                                 M.Attributes.Add(Attr.ToPICAAttribute());
                             }
 
-                            M.RawBuffer    = VtxBuff.RawBuffer;
+                            M.RawBuffer = VtxBuff.RawBuffer;
                             M.VertexStride = VtxBuff.VertexStride;
                         }
                     }
@@ -425,18 +432,18 @@ namespace SPICA.Formats.CtrGfx
 
                     int Layer = (int)Model.Materials[Mesh.MaterialIndex].TranslucencyKind;
 
-                    M.MaterialIndex  = (ushort)Mesh.MaterialIndex;
-                    M.NodeIndex      = (ushort)Mesh.MeshNodeIndex;
+                    M.MaterialIndex = (ushort)Mesh.MaterialIndex;
+                    M.NodeIndex = (ushort)Mesh.MeshNodeIndex;
                     M.PositionOffset = PositionOffset;
-                    M.MeshCenter     = Shape.BoundingBox.Center;
-                    M.Layer          = Layer;
-                    M.Priority       = Mesh.RenderPriority;
+                    M.MeshCenter = Shape.BoundingBox.Center;
+                    M.Layer = Layer;
+                    M.Priority = Mesh.RenderPriority;
 
                     H3DBoundingBox OBB = new H3DBoundingBox()
                     {
-                        Center      = Shape.BoundingBox.Center,
+                        Center = Shape.BoundingBox.Center,
                         Orientation = Shape.BoundingBox.Orientation,
-                        Size        = Shape.BoundingBox.Size
+                        Size = Shape.BoundingBox.Size
                     };
 
                     M.MetaData = new H3DMetaData();
@@ -462,8 +469,8 @@ namespace SPICA.Formats.CtrGfx
 
                                 switch (SubMesh.Skinning)
                                 {
-                                    case GfxSubMeshSkinning.None:   SM.Skinning = H3DSubMeshSkinning.None;   break;
-                                    case GfxSubMeshSkinning.Rigid:  SM.Skinning = H3DSubMeshSkinning.Rigid;  break;
+                                    case GfxSubMeshSkinning.None: SM.Skinning = H3DSubMeshSkinning.None; break;
+                                    case GfxSubMeshSkinning.Rigid: SM.Skinning = H3DSubMeshSkinning.Rigid; break;
                                     case GfxSubMeshSkinning.Smooth: SM.Skinning = H3DSubMeshSkinning.Smooth; break;
                                 }
 
@@ -514,11 +521,11 @@ namespace SPICA.Formats.CtrGfx
                     {
                         H3DBone B = new H3DBone()
                         {
-                            Name             = Bone.Name,
-                            ParentIndex      = (short)Bone.ParentIndex,
-                            Translation      = Bone.Translation,
-                            Rotation         = Bone.Rotation,
-                            Scale            = Bone.Scale,
+                            Name = Bone.Name,
+                            ParentIndex = (short)Bone.ParentIndex,
+                            Translation = Bone.Translation,
+                            Rotation = Bone.Rotation,
+                            Scale = Bone.Scale,
                             InverseTransform = Bone.InvWorldTransform
                         };
 
@@ -541,10 +548,10 @@ namespace SPICA.Formats.CtrGfx
             {
                 H3DTexture Tex = new H3DTexture()
                 {
-                    Name       = Texture.Name,
-                    Width      = Texture.Width,
-                    Height     = Texture.Height,
-                    Format     = Texture.HwFormat,
+                    Name = Texture.Name,
+                    Width = Texture.Width,
+                    Height = Texture.Height,
+                    Format = Texture.HwFormat,
                     MipmapSize = (byte)Texture.MipmapSize
                 };
 
@@ -574,7 +581,7 @@ namespace SPICA.Formats.CtrGfx
                     L.Samplers.Add(new H3DLUTSampler()
                     {
                         Flags = Sampler.IsAbsolute ? H3DLUTFlags.IsAbsolute : 0,
-                        Name  = Sampler.Name,
+                        Name = Sampler.Name,
                         Table = Sampler.Table
                     });
                 }
@@ -630,7 +637,7 @@ namespace SPICA.Formats.CtrGfx
                 Contents.Header = Header;
 
                 Section Strings = new Section();
-                Section Image   = new Section();
+                Section Image = new Section();
 
                 Image.Header = new GfxSectionHeader("IMAG");
 
@@ -638,7 +645,7 @@ namespace SPICA.Formats.CtrGfx
                 Serializer.AddSection((uint)GfxSectionId.Strings, Strings, typeof(GfxStringUtf8));
                 Serializer.AddSection((uint)GfxSectionId.Strings, Strings, typeof(GfxStringUtf16LE));
                 Serializer.AddSection((uint)GfxSectionId.Strings, Strings, typeof(GfxStringUtf16BE));
-                Serializer.AddSection((uint)GfxSectionId.Image,   Image);
+                Serializer.AddSection((uint)GfxSectionId.Image, Image);
 
                 Serializer.Serialize(Scene);
 

@@ -19,12 +19,12 @@ namespace SPICA.WinForms.GUI.Viewport
         public Matrix4 Transform;
 
         private Renderer Renderer;
-        private Shader   Shader;
+        private Shader Shader;
 
         public GridLines(Renderer Renderer, Shader Shader)
         {
             this.Renderer = Renderer;
-            this.Shader   = Shader;
+            this.Shader = Shader;
 
             Vector4[] Buffer = new Vector4[LinesCount * 4];
 
@@ -40,10 +40,10 @@ namespace SPICA.WinForms.GUI.Viewport
                     Color = new Vector4(new Vector3(169 / 255f), 1f);
 
                 Buffer[Index + 0] = new Vector4(i, 0, -50, 1);
-                Buffer[Index + 2] = new Vector4(i, 0,  50, 1);
+                Buffer[Index + 2] = new Vector4(i, 0, 50, 1);
 
                 Buffer[Index + 4] = new Vector4(-50, 0, i, 1);
-                Buffer[Index + 6] = new Vector4( 50, 0, i, 1);
+                Buffer[Index + 6] = new Vector4(50, 0, i, 1);
 
                 Buffer[Index + 1] = Color;
                 Buffer[Index + 3] = Color;

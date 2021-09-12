@@ -9,6 +9,7 @@ using SPICA.Formats.CtrH3D.Model.Material;
 using SPICA.Formats.CtrH3D.Scene;
 using SPICA.Formats.CtrH3D.Shader;
 using SPICA.Formats.CtrH3D.Texture;
+using SPICA.Misc;
 using SPICA.Serialization;
 using SPICA.Serialization.Attributes;
 using SPICA.Serialization.Serializer;
@@ -30,21 +31,21 @@ namespace SPICA.Formats.CtrH3D
 
     public class H3D : ICustomSerialization
     {
-        public readonly H3DDict<H3DModel>          Models;
+        public readonly H3DDict<H3DModel> Models;
         public readonly H3DDict<H3DMaterialParams> Materials;
-        public readonly H3DDict<H3DShader>         Shaders;
-        public readonly H3DDict<H3DTexture>        Textures;
-        public readonly H3DDict<H3DLUT>            LUTs;
-        public readonly H3DDict<H3DLight>          Lights;
-        public readonly H3DDict<H3DCamera>         Cameras;
-        public readonly H3DDict<H3DFog>            Fogs;
-        public readonly H3DDict<H3DAnimation>      SkeletalAnimations;
-        public readonly H3DDict<H3DMaterialAnim>   MaterialAnimations;
-        public readonly H3DDict<H3DAnimation>      VisibilityAnimations;
-        public readonly H3DDict<H3DAnimation>      LightAnimations;
-        public readonly H3DDict<H3DAnimation>      CameraAnimations;
-        public readonly H3DDict<H3DAnimation>      FogAnimations;
-        public readonly H3DDict<H3DScene>          Scenes;
+        public readonly H3DDict<H3DShader> Shaders;
+        public readonly H3DDict<H3DTexture> Textures;
+        public readonly H3DDict<H3DLUT> LUTs;
+        public readonly H3DDict<H3DLight> Lights;
+        public readonly H3DDict<H3DCamera> Cameras;
+        public readonly H3DDict<H3DFog> Fogs;
+        public readonly H3DDict<H3DAnimation> SkeletalAnimations;
+        public readonly H3DDict<H3DMaterialAnim> MaterialAnimations;
+        public readonly H3DDict<H3DAnimation> VisibilityAnimations;
+        public readonly H3DDict<H3DAnimation> LightAnimations;
+        public readonly H3DDict<H3DAnimation> CameraAnimations;
+        public readonly H3DDict<H3DAnimation> FogAnimations;
+        public readonly H3DDict<H3DScene> Scenes;
 
         [Ignore] public byte BackwardCompatibility;
         [Ignore] public byte ForwardCompatibility;
@@ -55,24 +56,24 @@ namespace SPICA.Formats.CtrH3D
 
         public H3D()
         {
-            Models               = new H3DDict<H3DModel>();
-            Materials            = new H3DDict<H3DMaterialParams>();
-            Shaders              = new H3DDict<H3DShader>();
-            Textures             = new H3DDict<H3DTexture>();
-            LUTs                 = new H3DDict<H3DLUT>();
-            Lights               = new H3DDict<H3DLight>();
-            Cameras              = new H3DDict<H3DCamera>();
-            Fogs                 = new H3DDict<H3DFog>();
-            SkeletalAnimations   = new H3DDict<H3DAnimation>();
-            MaterialAnimations   = new H3DDict<H3DMaterialAnim>();
+            Models = new H3DDict<H3DModel>();
+            Materials = new H3DDict<H3DMaterialParams>();
+            Shaders = new H3DDict<H3DShader>();
+            Textures = new H3DDict<H3DTexture>();
+            LUTs = new H3DDict<H3DLUT>();
+            Lights = new H3DDict<H3DLight>();
+            Cameras = new H3DDict<H3DCamera>();
+            Fogs = new H3DDict<H3DFog>();
+            SkeletalAnimations = new H3DDict<H3DAnimation>();
+            MaterialAnimations = new H3DDict<H3DMaterialAnim>();
             VisibilityAnimations = new H3DDict<H3DAnimation>();
-            LightAnimations      = new H3DDict<H3DAnimation>();
-            CameraAnimations     = new H3DDict<H3DAnimation>();
-            FogAnimations        = new H3DDict<H3DAnimation>();
-            Scenes               = new H3DDict<H3DScene>();
+            LightAnimations = new H3DDict<H3DAnimation>();
+            CameraAnimations = new H3DDict<H3DAnimation>();
+            FogAnimations = new H3DDict<H3DAnimation>();
+            Scenes = new H3DDict<H3DScene>();
 
             BackwardCompatibility = 0x21;
-            ForwardCompatibility  = 0x21;
+            ForwardCompatibility = 0x21;
 
             ConverterVersion = 42607;
 
@@ -91,16 +92,17 @@ namespace SPICA.Formats.CtrH3D
         {
             //Please note that data should be on Memory when opening because addresses are relocated.
             //Otherwise the original file would be corrupted!
+            StreamWriter OutputFile = WriteManager.CreateOutputFile("H3D.txt");
             BinaryDeserializer Deserializer = new BinaryDeserializer(MS, GetSerializationOptions());
 
-            H3DHeader Header = Deserializer.Deserialize<H3DHeader>();
+            H3DHeader Header = Deserializer.Deserialize<H3DHeader>(ref OutputFile);
 
             new H3DRelocator(MS, Header).ToAbsolute();
 
-            H3D Scene = Deserializer.Deserialize<H3D>();
+            H3D Scene = Deserializer.Deserialize<H3D>(ref OutputFile);
 
             Scene.BackwardCompatibility = Header.BackwardCompatibility;
-            Scene.ForwardCompatibility  = Header.ForwardCompatibility;
+            Scene.ForwardCompatibility = Header.ForwardCompatibility;
 
             Scene.ConverterVersion = Header.ConverterVersion;
 
@@ -134,21 +136,21 @@ namespace SPICA.Formats.CtrH3D
                 Comparison<RefValue> CompStr = H3DComparers.GetComparisonStr();
                 Comparison<RefValue> CompRaw = H3DComparers.GetComparisonRaw();
 
-                Section Strings    = new Section(0x10, CompStr);
-                Section Commands   = new Section(0x80);
-                Section RawData    = new Section(0x80, CompRaw);
-                Section RawExt     = new Section(0x80, CompRaw);
+                Section Strings = new Section(0x10, CompStr);
+                Section Commands = new Section(0x80);
+                Section RawData = new Section(0x80, CompRaw);
+                Section RawExt = new Section(0x80, CompRaw);
                 Section Relocation = new Section();
 
-                Serializer.AddSection((uint)H3DSectionId.Strings,    Strings,  typeof(string));
-                Serializer.AddSection((uint)H3DSectionId.Strings,    Strings,  typeof(H3DStringUtf16));
-                Serializer.AddSection((uint)H3DSectionId.Commands,   Commands, typeof(uint[]));
-                Serializer.AddSection((uint)H3DSectionId.RawData,    RawData);
-                Serializer.AddSection((uint)H3DSectionId.RawExt,     RawExt);
+                Serializer.AddSection((uint)H3DSectionId.Strings, Strings, typeof(string));
+                Serializer.AddSection((uint)H3DSectionId.Strings, Strings, typeof(H3DStringUtf16));
+                Serializer.AddSection((uint)H3DSectionId.Commands, Commands, typeof(uint[]));
+                Serializer.AddSection((uint)H3DSectionId.RawData, RawData);
+                Serializer.AddSection((uint)H3DSectionId.RawExt, RawExt);
                 Serializer.AddSection((uint)H3DSectionId.Relocation, Relocation);
 
                 Header.BackwardCompatibility = Scene.BackwardCompatibility;
-                Header.ForwardCompatibility  = Scene.ForwardCompatibility;
+                Header.ForwardCompatibility = Scene.ForwardCompatibility;
 
                 Header.ConverterVersion = Scene.ConverterVersion;
 
@@ -156,24 +158,24 @@ namespace SPICA.Formats.CtrH3D
 
                 Serializer.Serialize(Scene);
 
-                Header.AddressCount  = (ushort)RawData.Values.Count;
+                Header.AddressCount = (ushort)RawData.Values.Count;
                 Header.AddressCount += (ushort)RawExt.Values.Count;
 
                 Header.UnInitDataLength = Header.AddressCount * 4;
 
                 Header.ContentsAddress = Contents.Position;
-                Header.StringsAddress  = Strings.Position;
+                Header.StringsAddress = Strings.Position;
                 Header.CommandsAddress = Commands.Position;
-                Header.RawDataAddress  = RawData.Position;
-                Header.RawExtAddress   = RawExt.Position;
+                Header.RawDataAddress = RawData.Position;
+                Header.RawExtAddress = RawExt.Position;
 
                 Header.RelocationAddress = Relocation.Position;
 
                 Header.ContentsLength = Contents.Length;
-                Header.StringsLength  = Strings.Length;
+                Header.StringsLength = Strings.Length;
                 Header.CommandsLength = Commands.Length;
-                Header.RawDataLength  = RawData.Length;
-                Header.RawExtLength   = RawExt.Length;
+                Header.RawDataLength = RawData.Length;
+                Header.RawExtLength = RawExt.Length;
 
                 Relocator.ToRelative(Serializer);
 
@@ -190,21 +192,21 @@ namespace SPICA.Formats.CtrH3D
 
         public void Merge(H3D SceneData)
         {
-            AddUnique(SceneData.Models,               Models);
-            AddUnique(SceneData.Materials,            Materials);
-            AddUnique(SceneData.Shaders,              Shaders);
-            AddUnique(SceneData.Textures,             Textures);
-            AddUnique(SceneData.LUTs,                 LUTs);
-            AddUnique(SceneData.Lights,               Lights);
-            AddUnique(SceneData.Cameras,              Cameras);
-            AddUnique(SceneData.Fogs,                 Fogs);
-            AddUnique(SceneData.SkeletalAnimations,   SkeletalAnimations);
-            AddUnique(SceneData.MaterialAnimations,   MaterialAnimations);
+            AddUnique(SceneData.Models, Models);
+            AddUnique(SceneData.Materials, Materials);
+            AddUnique(SceneData.Shaders, Shaders);
+            AddUnique(SceneData.Textures, Textures);
+            AddUnique(SceneData.LUTs, LUTs);
+            AddUnique(SceneData.Lights, Lights);
+            AddUnique(SceneData.Cameras, Cameras);
+            AddUnique(SceneData.Fogs, Fogs);
+            AddUnique(SceneData.SkeletalAnimations, SkeletalAnimations);
+            AddUnique(SceneData.MaterialAnimations, MaterialAnimations);
             AddUnique(SceneData.VisibilityAnimations, VisibilityAnimations);
-            AddUnique(SceneData.LightAnimations,      LightAnimations);
-            AddUnique(SceneData.CameraAnimations,     CameraAnimations);
-            AddUnique(SceneData.FogAnimations,        FogAnimations);
-            AddUnique(SceneData.Scenes,               Scenes);
+            AddUnique(SceneData.LightAnimations, LightAnimations);
+            AddUnique(SceneData.CameraAnimations, CameraAnimations);
+            AddUnique(SceneData.FogAnimations, FogAnimations);
+            AddUnique(SceneData.Scenes, Scenes);
         }
 
         private void AddUnique<T>(H3DDict<T> Src, H3DDict<T> Tgt) where T : INamed
@@ -243,7 +245,7 @@ namespace SPICA.Formats.CtrH3D
             }
         }
 
-        void ICustomSerialization.Deserialize(BinaryDeserializer Deserializer) { }
+        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer) { }
 
         bool ICustomSerialization.Serialize(BinarySerializer Serializer)
         {

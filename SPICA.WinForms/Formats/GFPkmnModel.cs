@@ -6,24 +6,24 @@ using SPICA.Formats.GFL2.Model;
 using SPICA.Formats.GFL2.Motion;
 using SPICA.Formats.GFL2.Shader;
 using SPICA.Formats.GFL2.Texture;
-
+using SPICA.Misc;
 using System.IO;
 
 namespace SPICA.WinForms.Formats
 {
     class GFPkmnModel
     {
-        const uint GFModelConstant   = 0x15122117;
+        const uint GFModelConstant = 0x15122117;
         const uint GFTextureConstant = 0x15041213;
-        const uint GFMotionConstant  = 0x00060000;
+        const uint GFMotionConstant = 0x00060000;
 
         const uint BCHConstant = 0x00484342;
 
-        public static H3D OpenAsH3D(Stream Input, GFPackage.Header Header, H3DDict<H3DBone> Skeleton = null)
+        public static H3D OpenAsH3D(ref StreamWriter outputFile, Stream Input, GFPackage.Header Header, H3DDict<H3DBone> Skeleton = null)
         {
             H3D Output = default(H3D);
 
-            BinaryReader Reader = new BinaryReader(Input);
+            LogReader Reader = new LogReader(Input);
 
             Input.Seek(Header.Entries[0].Address, SeekOrigin.Begin);
 
@@ -37,12 +37,12 @@ namespace SPICA.WinForms.Formats
                     //High Poly Pokémon model
                     Input.Seek(Header.Entries[0].Address, SeekOrigin.Begin);
 
-                    MdlPack.Models.Add(new GFModel(Reader, "PM_HighPoly"));
+                    MdlPack.Models.Add(new GFModel(ref outputFile, Reader, "PM_HighPoly"));
 
                     //Low Poly Pokémon model
                     Input.Seek(Header.Entries[1].Address, SeekOrigin.Begin);
-                    
-                    MdlPack.Models.Add(new GFModel(Reader, "PM_LowPoly"));
+
+                    MdlPack.Models.Add(new GFModel(ref outputFile, Reader, "PM_LowPoly"));
 
                     //Pokémon Shader package
                     Input.Seek(Header.Entries[2].Address, SeekOrigin.Begin);
@@ -53,7 +53,7 @@ namespace SPICA.WinForms.Formats
                     {
                         Input.Seek(Entry.Address, SeekOrigin.Begin);
 
-                        MdlPack.Shaders.Add(new GFShader(Reader));
+                        MdlPack.Shaders.Add(new GFShader(ref outputFile, Reader));
                     }
 
                     //More shaders
@@ -67,7 +67,7 @@ namespace SPICA.WinForms.Formats
                         {
                             Input.Seek(Entry.Address, SeekOrigin.Begin);
 
-                            MdlPack.Shaders.Add(new GFShader(Reader));
+                            MdlPack.Shaders.Add(new GFShader(ref outputFile, Reader));
                         }
                     }
 
@@ -82,7 +82,7 @@ namespace SPICA.WinForms.Formats
                     {
                         Input.Seek(Entry.Address, SeekOrigin.Begin);
 
-                        Output.Textures.Add(new GFTexture(Reader).ToH3DTexture());
+                        Output.Textures.Add(new GFTexture(ref outputFile, Reader).ToH3DTexture());
                     }
 
                     break;
@@ -103,9 +103,9 @@ namespace SPICA.WinForms.Formats
 
                         GFMotion Mot = new GFMotion(Reader, Index);
 
-                        H3DAnimation    SklAnim = Mot.ToH3DSkeletalAnimation(Skeleton);
+                        H3DAnimation SklAnim = Mot.ToH3DSkeletalAnimation(Skeleton);
                         H3DMaterialAnim MatAnim = Mot.ToH3DMaterialAnimation();
-                        H3DAnimation    VisAnim = Mot.ToH3DVisibilityAnimation();
+                        H3DAnimation VisAnim = Mot.ToH3DVisibilityAnimation();
 
                         if (SklAnim != null)
                         {

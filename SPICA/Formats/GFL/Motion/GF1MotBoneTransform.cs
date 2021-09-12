@@ -22,13 +22,13 @@ namespace SPICA.Formats.GFL.Motion
 
         public GF1MotBoneTransform()
         {
-            ScaleX       = new List<GF1MotKeyFrame>();
-            ScaleY       = new List<GF1MotKeyFrame>();
-            ScaleZ       = new List<GF1MotKeyFrame>();
+            ScaleX = new List<GF1MotKeyFrame>();
+            ScaleY = new List<GF1MotKeyFrame>();
+            ScaleZ = new List<GF1MotKeyFrame>();
 
-            RotationX    = new List<GF1MotKeyFrame>();
-            RotationY    = new List<GF1MotKeyFrame>();
-            RotationZ    = new List<GF1MotKeyFrame>();
+            RotationX = new List<GF1MotKeyFrame>();
+            RotationY = new List<GF1MotKeyFrame>();
+            RotationZ = new List<GF1MotKeyFrame>();
 
             TranslationX = new List<GF1MotKeyFrame>();
             TranslationY = new List<GF1MotKeyFrame>();

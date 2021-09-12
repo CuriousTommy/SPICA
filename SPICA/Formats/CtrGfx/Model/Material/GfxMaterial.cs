@@ -13,7 +13,7 @@ namespace SPICA.Formats.CtrGfx.Model.Material
     {
         public GfxMaterialFlags Flags;
 
-        public GfxTexCoordConfig   TexCoordConfig;
+        public GfxTexCoordConfig TexCoordConfig;
         public GfxTranslucencyKind TranslucencyKind;
 
         public GfxMaterialColor Colors;
@@ -24,13 +24,13 @@ namespace SPICA.Formats.CtrGfx.Model.Material
 
         public int UsedTextureCoordsCount;
 
-        [Inline, FixedLength(3)] public readonly GfxTextureCoord[]  TextureCoords;
+        [Inline, FixedLength(3)] public readonly GfxTextureCoord[] TextureCoords;
         [Inline, FixedLength(3)] public readonly GfxTextureMapper[] TextureMappers;
 
         public GfxProcTextureMapper ProceduralTextureMapper;
 
         public readonly GfxShaderReference Shader;
-        public readonly GfxFragShader      FragmentShader;
+        public readonly GfxFragShader FragmentShader;
 
         public int ShaderProgramDescIndex;
 
@@ -56,16 +56,16 @@ namespace SPICA.Formats.CtrGfx.Model.Material
 
         public GfxMaterial()
         {
-            TextureCoords  = new GfxTextureCoord[3];
+            TextureCoords = new GfxTextureCoord[3];
             TextureMappers = new GfxTextureMapper[3];
 
-            Shader         = new GfxShaderReference();
+            Shader = new GfxShaderReference();
             FragmentShader = new GfxFragShader();
 
             ShaderParameters = new List<GfxShaderParam>();
         }
 
-        void ICustomSerialization.Deserialize(BinaryDeserializer Deserializer) { }
+        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer) { }
 
         bool ICustomSerialization.Serialize(BinarySerializer Serializer)
         {
@@ -181,7 +181,7 @@ namespace SPICA.Formats.CtrGfx.Model.Material
                 Writer.Write(FragLightEnb);
 
                 FragLightHash = HashBuffer(MS.ToArray());
-            }   
+            }
         }
 
         private void CalcFragLightLUTSampHash()

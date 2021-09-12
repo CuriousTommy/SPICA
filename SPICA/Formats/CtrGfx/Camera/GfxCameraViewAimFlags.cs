@@ -2,7 +2,7 @@
 {
     public enum GfxCameraViewAimFlags
     {
-        IsInheritingTargetRotation    = 1 << 0,
+        IsInheritingTargetRotation = 1 << 0,
         IsInheritingTargetTranslation = 1 << 1
     }
 }

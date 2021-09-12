@@ -5,6 +5,7 @@ using SPICA.Serialization;
 using SPICA.Serialization.Attributes;
 
 using System;
+using System.IO;
 using System.Numerics;
 
 namespace SPICA.Formats.CtrGfx.Model.Material
@@ -25,7 +26,7 @@ namespace SPICA.Formats.CtrGfx.Model.Material
 
         [Ignore] public RGBA Color;
 
-        void ICustomSerialization.Deserialize(BinaryDeserializer Deserializer)
+        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer)
         {
             PICACommandReader Reader = new PICACommandReader(Commands);
 

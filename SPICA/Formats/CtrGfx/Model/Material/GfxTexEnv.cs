@@ -24,7 +24,7 @@ namespace SPICA.Formats.CtrGfx.Model.Material
             Stage = new PICATexEnvStage();
         }
 
-        void ICustomSerialization.Deserialize(BinaryDeserializer Deserializer)
+        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer)
         {
             PICACommandReader Reader = new PICACommandReader(Commands);
 
@@ -126,15 +126,15 @@ namespace SPICA.Formats.CtrGfx.Model.Material
         {
             switch (Source)
             {
-                case PICATextureCombinerSource.Texture0:               return 0x84c0; //Texture 0
-                case PICATextureCombinerSource.Texture1:               return 0x84c1; //Texture 1
-                case PICATextureCombinerSource.Texture2:               return 0x84c2; //Texture 2
-                case PICATextureCombinerSource.Texture3:               return 0x84c3; //Texture 3
-                case PICATextureCombinerSource.Constant:               return 0x8576; //Constant
-                case PICATextureCombinerSource.PrimaryColor:           return 0x8577; //Primary Color
-                case PICATextureCombinerSource.Previous:               return 0x8578; //Previous
-                case PICATextureCombinerSource.PreviousBuffer:         return 0x8579; //Does not exist on OpenGL
-                case PICATextureCombinerSource.FragmentPrimaryColor:   return 0x6210; //Does not exist on OpenGL
+                case PICATextureCombinerSource.Texture0: return 0x84c0; //Texture 0
+                case PICATextureCombinerSource.Texture1: return 0x84c1; //Texture 1
+                case PICATextureCombinerSource.Texture2: return 0x84c2; //Texture 2
+                case PICATextureCombinerSource.Texture3: return 0x84c3; //Texture 3
+                case PICATextureCombinerSource.Constant: return 0x8576; //Constant
+                case PICATextureCombinerSource.PrimaryColor: return 0x8577; //Primary Color
+                case PICATextureCombinerSource.Previous: return 0x8578; //Previous
+                case PICATextureCombinerSource.PreviousBuffer: return 0x8579; //Does not exist on OpenGL
+                case PICATextureCombinerSource.FragmentPrimaryColor: return 0x6210; //Does not exist on OpenGL
                 case PICATextureCombinerSource.FragmentSecondaryColor: return 0x6211; //Does not exist on OpenGL
             }
 
@@ -145,16 +145,16 @@ namespace SPICA.Formats.CtrGfx.Model.Material
         {
             switch (Source)
             {
-                case PICATextureCombinerColorOp.Color:         return 0x0300; //Source Color
+                case PICATextureCombinerColorOp.Color: return 0x0300; //Source Color
                 case PICATextureCombinerColorOp.OneMinusColor: return 0x0301; //1 - Source Color
-                case PICATextureCombinerColorOp.Alpha:         return 0x0302; //Source Alpha
+                case PICATextureCombinerColorOp.Alpha: return 0x0302; //Source Alpha
                 case PICATextureCombinerColorOp.OneMinusAlpha: return 0x0303; //1 - Source Alpha
-                case PICATextureCombinerColorOp.Red:           return 0x8580; //Src0 RGB
-                case PICATextureCombinerColorOp.Green:         return 0x8581; //Src1 RGB
-                case PICATextureCombinerColorOp.Blue:          return 0x8582; //Src2 RGB
-                case PICATextureCombinerColorOp.OneMinusRed:   return 0x8583; //Does not exist on OpenGL
+                case PICATextureCombinerColorOp.Red: return 0x8580; //Src0 RGB
+                case PICATextureCombinerColorOp.Green: return 0x8581; //Src1 RGB
+                case PICATextureCombinerColorOp.Blue: return 0x8582; //Src2 RGB
+                case PICATextureCombinerColorOp.OneMinusRed: return 0x8583; //Does not exist on OpenGL
                 case PICATextureCombinerColorOp.OneMinusGreen: return 0x8584; //Does not exist on OpenGL
-                case PICATextureCombinerColorOp.OneMinusBlue:  return 0x8585; //Does not exist on OpenGL
+                case PICATextureCombinerColorOp.OneMinusBlue: return 0x8585; //Does not exist on OpenGL
             }
 
             return 0;
@@ -164,14 +164,14 @@ namespace SPICA.Formats.CtrGfx.Model.Material
         {
             switch (Source)
             {
-                case PICATextureCombinerAlphaOp.Alpha:         return 0x0302; //Source Alpha
+                case PICATextureCombinerAlphaOp.Alpha: return 0x0302; //Source Alpha
                 case PICATextureCombinerAlphaOp.OneMinusAlpha: return 0x0303; //1 - Source Alpha
-                case PICATextureCombinerAlphaOp.Red:           return 0x8580; //Src0 RGB
-                case PICATextureCombinerAlphaOp.Green:         return 0x8581; //Src1 RGB
-                case PICATextureCombinerAlphaOp.Blue:          return 0x8582; //Src2 RGB
-                case PICATextureCombinerAlphaOp.OneMinusRed:   return 0x8583; //Does not exist on OpenGL
+                case PICATextureCombinerAlphaOp.Red: return 0x8580; //Src0 RGB
+                case PICATextureCombinerAlphaOp.Green: return 0x8581; //Src1 RGB
+                case PICATextureCombinerAlphaOp.Blue: return 0x8582; //Src2 RGB
+                case PICATextureCombinerAlphaOp.OneMinusRed: return 0x8583; //Does not exist on OpenGL
                 case PICATextureCombinerAlphaOp.OneMinusGreen: return 0x8584; //Does not exist on OpenGL
-                case PICATextureCombinerAlphaOp.OneMinusBlue:  return 0x8585; //Does not exist on OpenGL
+                case PICATextureCombinerAlphaOp.OneMinusBlue: return 0x8585; //Does not exist on OpenGL
             }
 
             return 0;

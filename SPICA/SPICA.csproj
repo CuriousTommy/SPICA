@@ -382,6 +382,8 @@
     <Compile Include="Math3D\Matrix3x4.cs" />
     <Compile Include="Math3D\RGBA.cs" />
     <Compile Include="Math3D\Vector.cs" />
+    <Compile Include="Misc\LogReader.cs" />
+    <Compile Include="Misc\WriteManager.cs" />
     <Compile Include="PICA\Commands\PICAAlphaTest.cs" />
     <Compile Include="PICA\Commands\PICAAttribute.cs" />
     <Compile Include="PICA\Commands\PICAAttributeFormat.cs" />

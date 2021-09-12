@@ -107,13 +107,13 @@ namespace SPICA.WinForms.GUI
 
             if (_Maximum > 0)
             {
-                float PartStep  = RulerW / _Maximum;
+                float PartStep = RulerW / _Maximum;
                 float FrameStep = RulerMinDist / PartStep;
 
                 if (FrameStep < 1) FrameStep = 1;
                 if (FrameStep > 1) PartStep = RulerMinDist;
 
-                float RulerX   = PartStep;
+                float RulerX = PartStep;
                 float HalfStep = PartStep * 0.5f;
 
                 for (float
@@ -121,7 +121,7 @@ namespace SPICA.WinForms.GUI
                     RulerX - HalfStep < RulerW;
                     Frame += FrameStep, RulerX += PartStep)
                 {
-                    int RX  = (int)(RulerX + RulerSX);
+                    int RX = (int)(RulerX + RulerSX);
                     int HRX = (int)(RulerX + RulerSX - HalfStep);
 
                     //Short line
@@ -154,7 +154,7 @@ namespace SPICA.WinForms.GUI
             int L = Rect.X + 1; //Left
             int T = Rect.Y + 1; //Top
 
-            int R = L + Rect.Width  - 2; //Right
+            int R = L + Rect.Width - 2; //Right
             int B = T + Rect.Height - 2; //Bottom
 
             Pen BlackShade = new Pen(Color.FromArgb(0x3f, Color.Black), 2);
@@ -191,7 +191,7 @@ namespace SPICA.WinForms.GUI
 
             Points[0] = new Point(CurX - 4, Rect.Y - 2 + Rect.Height); //Left
             Points[1] = new Point(CurX + 4, Rect.Y - 2 + Rect.Height); //Right
-            Points[2] = new Point(CurX,     Rect.Y + 1 + HalfH); //Middle
+            Points[2] = new Point(CurX, Rect.Y + 1 + HalfH); //Middle
 
             e.Graphics.FillPolygon(new SolidBrush(CursorColor), Points);
         }

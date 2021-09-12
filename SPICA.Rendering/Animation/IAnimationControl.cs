@@ -4,10 +4,10 @@
     {
         AnimationState State { get; set; }
 
-        float Frame       { get; set; }
-        float Step        { get; set; }
+        float Frame { get; set; }
+        float Step { get; set; }
         float FramesCount { get; }
-        bool  IsLooping   { get; }
+        bool IsLooping { get; }
 
         void AdvanceFrame();
         void SlowDown();

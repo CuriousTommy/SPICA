@@ -56,18 +56,18 @@ namespace SPICA.Rendering
             VtxNames = new ShaderNameBlock();
             GeoNames = new ShaderNameBlock();
 
-            VtxNames.Vec4Uniforms[DefaultShaderIds.PosOffs]     = "PosOffs";
+            VtxNames.Vec4Uniforms[DefaultShaderIds.PosOffs] = "PosOffs";
             VtxNames.Vec4Uniforms[DefaultShaderIds.IrScale + 0] = "IrScale[0]";
             VtxNames.Vec4Uniforms[DefaultShaderIds.IrScale + 1] = "IrScale[1]";
-            VtxNames.Vec4Uniforms[DefaultShaderIds.TexcMap]     = "TexcMap";
+            VtxNames.Vec4Uniforms[DefaultShaderIds.TexcMap] = "TexcMap";
             VtxNames.Vec4Uniforms[DefaultShaderIds.TexMtx2 + 0] = "TexMtx2[0]";
             VtxNames.Vec4Uniforms[DefaultShaderIds.TexMtx2 + 1] = "TexMtx2[1]";
-            VtxNames.Vec4Uniforms[DefaultShaderIds.TexTran]     = "TexTran";
-            VtxNames.Vec4Uniforms[DefaultShaderIds.MatAmbi]     = "MatAmbi";
-            VtxNames.Vec4Uniforms[DefaultShaderIds.MatDiff]     = "MatDiff";
-            VtxNames.Vec4Uniforms[DefaultShaderIds.HsLGCol]     = "HslGCol";
-            VtxNames.Vec4Uniforms[DefaultShaderIds.HsLSCol]     = "HslSCol";
-            VtxNames.Vec4Uniforms[DefaultShaderIds.HsLSDir]     = "HslSDir";
+            VtxNames.Vec4Uniforms[DefaultShaderIds.TexTran] = "TexTran";
+            VtxNames.Vec4Uniforms[DefaultShaderIds.MatAmbi] = "MatAmbi";
+            VtxNames.Vec4Uniforms[DefaultShaderIds.MatDiff] = "MatDiff";
+            VtxNames.Vec4Uniforms[DefaultShaderIds.HsLGCol] = "HslGCol";
+            VtxNames.Vec4Uniforms[DefaultShaderIds.HsLSCol] = "HslSCol";
+            VtxNames.Vec4Uniforms[DefaultShaderIds.HsLSDir] = "HslSDir";
             VtxNames.Vec4Uniforms[DefaultShaderIds.ProjMtx + 0] = "ProjMtx[0]";
             VtxNames.Vec4Uniforms[DefaultShaderIds.ProjMtx + 1] = "ProjMtx[1]";
             VtxNames.Vec4Uniforms[DefaultShaderIds.ProjMtx + 2] = "ProjMtx[2]";

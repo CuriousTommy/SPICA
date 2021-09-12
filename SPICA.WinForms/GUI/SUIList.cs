@@ -118,9 +118,9 @@ namespace SPICA.WinForms.GUI
                 }
 
                 e.Graphics.DrawString(
-                    Items[Index], 
+                    Items[Index],
                     Font,
-                    new SolidBrush(ForeColor), 
+                    new SolidBrush(ForeColor),
                     new Rectangle(0, Y, Width, ItemHeight),
                     new StringFormat { LineAlignment = StringAlignment.Center });
             }
@@ -160,9 +160,9 @@ namespace SPICA.WinForms.GUI
         {
             switch (keyData)
             {
-                case Keys.Up:     SelectUp();   break;
-                case Keys.Down:   SelectDown(); break;
-                case Keys.Escape: Select(-1);   break;
+                case Keys.Up: SelectUp(); break;
+                case Keys.Down: SelectDown(); break;
+                case Keys.Escape: Select(-1); break;
             }
 
             return base.ProcessCmdKey(ref msg, keyData);
@@ -301,10 +301,10 @@ namespace SPICA.WinForms.GUI
 
                 switch (e.Action)
                 {
-                    case NotifyCollectionChangedAction.Add:     Items.Add(Item);           break;
-                    case NotifyCollectionChangedAction.Remove:  Items.Remove(Item);        break;
+                    case NotifyCollectionChangedAction.Add: Items.Add(Item); break;
+                    case NotifyCollectionChangedAction.Remove: Items.Remove(Item); break;
                     case NotifyCollectionChangedAction.Replace: Items.Insert(Index, Item); break;
-                    case NotifyCollectionChangedAction.Reset:   Items.Clear();             break;
+                    case NotifyCollectionChangedAction.Reset: Items.Clear(); break;
                 }
 
                 if (e.Action == NotifyCollectionChangedAction.Remove ||

@@ -5,7 +5,6 @@ using SPICA.Formats.CtrH3D.Model;
 using SPICA.Formats.CtrH3D.Model.Material;
 using SPICA.Formats.CtrH3D.Model.Mesh;
 using SPICA.PICA.Commands;
-using SPICA.PICA.Converters;
 using SPICA.Rendering.Shaders;
 using SPICA.Rendering.SPICA_GL;
 
@@ -18,13 +17,13 @@ namespace SPICA.Rendering
     {
         private int VBOHandle;
         private int VAOHandle;
-        
-        private  Model       Parent;
-        internal H3DMesh     BaseMesh;
+
+        private Model Parent;
+        internal H3DMesh BaseMesh;
         internal H3DMaterial Material;
-        private  Vector4     Scales0;
-        private  Vector4     Scales1;
-        private  Vector4     PosOffs;
+        private Vector4 Scales0;
+        private Vector4 Scales1;
+        private Vector4 PosOffs;
 
         internal string Texture0Name;
         internal string Texture1Name;
@@ -32,7 +31,7 @@ namespace SPICA.Rendering
 
         public Mesh(Model Parent, H3DMesh BaseMesh)
         {
-            this.Parent   = Parent;
+            this.Parent = Parent;
             this.BaseMesh = BaseMesh;
 
             Material = Parent.BaseModel.Materials[BaseMesh.MaterialIndex];
@@ -102,8 +101,8 @@ namespace SPICA.Rendering
 
                 switch (Attrib.Format)
                 {
-                    case PICAAttributeFormat.Byte:  Type = VertexAttribPointerType.Byte;              break;
-                    case PICAAttributeFormat.Ubyte: Type = VertexAttribPointerType.UnsignedByte;      break;
+                    case PICAAttributeFormat.Byte: Type = VertexAttribPointerType.Byte; break;
+                    case PICAAttributeFormat.Ubyte: Type = VertexAttribPointerType.UnsignedByte; break;
                     case PICAAttributeFormat.Short: Type = VertexAttribPointerType.Short; Size <<= 1; break;
                     case PICAAttributeFormat.Float: Type = VertexAttribPointerType.Float; Size <<= 2; break;
                 }
@@ -159,13 +158,13 @@ namespace SPICA.Rendering
         {
             switch (Name)
             {
-                case PICAAttributeName.Position:   Scales0.X = Scale; break;
-                case PICAAttributeName.Normal:     Scales0.Y = Scale; break;
-                case PICAAttributeName.Tangent:    Scales0.Z = Scale; break;
-                case PICAAttributeName.Color:      Scales0.W = Scale; break;
-                case PICAAttributeName.TexCoord0:  Scales1.X = Scale; break;
-                case PICAAttributeName.TexCoord1:  Scales1.Y = Scale; break;
-                case PICAAttributeName.TexCoord2:  Scales1.Z = Scale; break;
+                case PICAAttributeName.Position: Scales0.X = Scale; break;
+                case PICAAttributeName.Normal: Scales0.Y = Scale; break;
+                case PICAAttributeName.Tangent: Scales0.Z = Scale; break;
+                case PICAAttributeName.Color: Scales0.W = Scale; break;
+                case PICAAttributeName.TexCoord0: Scales1.X = Scale; break;
+                case PICAAttributeName.TexCoord1: Scales1.Y = Scale; break;
+                case PICAAttributeName.TexCoord2: Scales1.Z = Scale; break;
                 case PICAAttributeName.BoneWeight: Scales1.W = Scale; break;
             }
         }
@@ -187,22 +186,22 @@ namespace SPICA.Rendering
 
             GL.PolygonOffset(0, Params.PolygonOffsetUnit);
 
-            SetState(EnableCap.Blend,       Params.ColorOperation.BlendMode == PICABlendMode.Blend);
+            SetState(EnableCap.Blend, Params.ColorOperation.BlendMode == PICABlendMode.Blend);
             SetState(EnableCap.StencilTest, Params.StencilTest.Enabled);
-            SetState(EnableCap.DepthTest,   Params.DepthColorMask.Enabled);
-            SetState(EnableCap.CullFace,    Params.FaceCulling != PICAFaceCulling.Never);
+            SetState(EnableCap.DepthTest, Params.DepthColorMask.Enabled);
+            SetState(EnableCap.CullFace, Params.FaceCulling != PICAFaceCulling.Never);
 
-            Parent.Renderer.TryBindLUT(4, Params.LUTDist0TableName,   Params.LUTDist0SamplerName);
-            Parent.Renderer.TryBindLUT(5, Params.LUTDist1TableName,   Params.LUTDist1SamplerName);
+            Parent.Renderer.TryBindLUT(4, Params.LUTDist0TableName, Params.LUTDist0SamplerName);
+            Parent.Renderer.TryBindLUT(5, Params.LUTDist1TableName, Params.LUTDist1SamplerName);
             Parent.Renderer.TryBindLUT(6, Params.LUTFresnelTableName, Params.LUTFresnelSamplerName);
             Parent.Renderer.TryBindLUT(7, Params.LUTReflecRTableName, Params.LUTReflecRSamplerName);
 
             Parent.Renderer.TryBindLUT(8,
-                Params.LUTReflecGTableName   ?? Params.LUTReflecRTableName, 
+                Params.LUTReflecGTableName ?? Params.LUTReflecRTableName,
                 Params.LUTReflecGSamplerName ?? Params.LUTReflecRSamplerName);
 
             Parent.Renderer.TryBindLUT(9,
-                Params.LUTReflecBTableName   ?? Params.LUTReflecRTableName, 
+                Params.LUTReflecBTableName ?? Params.LUTReflecRTableName,
                 Params.LUTReflecBSamplerName ?? Params.LUTReflecRSamplerName);
 
             //Setup texture units
@@ -237,7 +236,7 @@ namespace SPICA.Rendering
                 SetWrapAndFilter(TextureTarget.Texture2D, 2);
             }
 
-            Shader.SetVtxVector4(DefaultShaderIds.PosOffs,     PosOffs);
+            Shader.SetVtxVector4(DefaultShaderIds.PosOffs, PosOffs);
             Shader.SetVtxVector4(DefaultShaderIds.IrScale + 0, Scales0);
             Shader.SetVtxVector4(DefaultShaderIds.IrScale + 1, Scales1);
 
@@ -356,10 +355,10 @@ namespace SPICA.Rendering
         {
             switch (Wrap)
             {
-                case PICATextureWrap.ClampToEdge:   return All.ClampToEdge;
+                case PICATextureWrap.ClampToEdge: return All.ClampToEdge;
                 case PICATextureWrap.ClampToBorder: return All.ClampToBorder;
-                case PICATextureWrap.Repeat:        return All.Repeat;
-                case PICATextureWrap.Mirror:        return All.MirroredRepeat;
+                case PICATextureWrap.Repeat: return All.Repeat;
+                case PICATextureWrap.Mirror: return All.MirroredRepeat;
 
                 default: throw new ArgumentException("Invalid wrap mode!");
             }
@@ -370,12 +369,12 @@ namespace SPICA.Rendering
         {
             switch (Filter)
             {
-                case H3DTextureMinFilter.Nearest:              return All.Nearest;
+                case H3DTextureMinFilter.Nearest: return All.Nearest;
                 case H3DTextureMinFilter.NearestMipmapNearest: return All.Nearest;
-                case H3DTextureMinFilter.NearestMipmapLinear:  return All.Nearest;
-                case H3DTextureMinFilter.Linear:               return All.Linear;
-                case H3DTextureMinFilter.LinearMipmapNearest:  return All.Linear;
-                case H3DTextureMinFilter.LinearMipmapLinear:   return All.Linear;
+                case H3DTextureMinFilter.NearestMipmapLinear: return All.Nearest;
+                case H3DTextureMinFilter.Linear: return All.Linear;
+                case H3DTextureMinFilter.LinearMipmapNearest: return All.Linear;
+                case H3DTextureMinFilter.LinearMipmapLinear: return All.Linear;
 
                 default: throw new ArgumentException("Invalid minification filter!");
             }
@@ -385,7 +384,7 @@ namespace SPICA.Rendering
         {
             switch (Filter)
             {
-                case H3DTextureMagFilter.Linear:  return All.Linear;
+                case H3DTextureMagFilter.Linear: return All.Linear;
                 case H3DTextureMagFilter.Nearest: return All.Nearest;
 
                 default: throw new ArgumentException("Invalid magnification filter!");

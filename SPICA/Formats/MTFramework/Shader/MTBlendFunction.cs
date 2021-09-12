@@ -27,16 +27,16 @@ namespace SPICA.Formats.MTFramework.Shader
         {
             switch (BlendFunc)
             {
-                case MTBlendFunction.Zero:                return PICABlendFunc.Zero;
-                case MTBlendFunction.One:                 return PICABlendFunc.One;
-                case MTBlendFunction.SourceColor:         return PICABlendFunc.SourceColor;
-                case MTBlendFunction.InvSourceColor:      return PICABlendFunc.OneMinusSourceColor;
-                case MTBlendFunction.SourceAlpha:         return PICABlendFunc.SourceAlpha;
-                case MTBlendFunction.InvSourceAlpha:      return PICABlendFunc.OneMinusSourceAlpha;
-                case MTBlendFunction.DestAlpha:           return PICABlendFunc.DestinationAlpha;
-                case MTBlendFunction.InvDestAlpha:        return PICABlendFunc.OneMinusDestinationAlpha;
-                case MTBlendFunction.DestColor:           return PICABlendFunc.DestinationColor;
-                case MTBlendFunction.InvDestColor:        return PICABlendFunc.OneMinusDestinationColor;
+                case MTBlendFunction.Zero: return PICABlendFunc.Zero;
+                case MTBlendFunction.One: return PICABlendFunc.One;
+                case MTBlendFunction.SourceColor: return PICABlendFunc.SourceColor;
+                case MTBlendFunction.InvSourceColor: return PICABlendFunc.OneMinusSourceColor;
+                case MTBlendFunction.SourceAlpha: return PICABlendFunc.SourceAlpha;
+                case MTBlendFunction.InvSourceAlpha: return PICABlendFunc.OneMinusSourceAlpha;
+                case MTBlendFunction.DestAlpha: return PICABlendFunc.DestinationAlpha;
+                case MTBlendFunction.InvDestAlpha: return PICABlendFunc.OneMinusDestinationAlpha;
+                case MTBlendFunction.DestColor: return PICABlendFunc.DestinationColor;
+                case MTBlendFunction.InvDestColor: return PICABlendFunc.OneMinusDestinationColor;
                 case MTBlendFunction.SourceAlphaSaturate: return PICABlendFunc.SourceAlphaSaturate;
                 case MTBlendFunction.BlendFactor:
                     return Alpha

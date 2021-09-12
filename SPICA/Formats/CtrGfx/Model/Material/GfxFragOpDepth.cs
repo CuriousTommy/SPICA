@@ -2,6 +2,7 @@
 using SPICA.PICA.Commands;
 using SPICA.Serialization;
 using SPICA.Serialization.Attributes;
+using System.IO;
 
 namespace SPICA.Formats.CtrGfx.Model.Material
 {
@@ -13,7 +14,7 @@ namespace SPICA.Formats.CtrGfx.Model.Material
 
         [Ignore] public PICADepthColorMask ColorMask;
 
-        void ICustomSerialization.Deserialize(BinaryDeserializer Deserializer)
+        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer)
         {
             PICACommandReader Reader = new PICACommandReader(Commands);
 

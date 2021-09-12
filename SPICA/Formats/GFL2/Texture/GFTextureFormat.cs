@@ -27,20 +27,20 @@ namespace SPICA.Formats.GFL2.Texture
         {
             switch (Format)
             {
-                case GFTextureFormat.RGB565:   return PICATextureFormat.RGB565;
-                case GFTextureFormat.RGB8:     return PICATextureFormat.RGB8;
-                case GFTextureFormat.RGBA8:    return PICATextureFormat.RGBA8;
-                case GFTextureFormat.RGBA4:    return PICATextureFormat.RGBA4;
+                case GFTextureFormat.RGB565: return PICATextureFormat.RGB565;
+                case GFTextureFormat.RGB8: return PICATextureFormat.RGB8;
+                case GFTextureFormat.RGBA8: return PICATextureFormat.RGBA8;
+                case GFTextureFormat.RGBA4: return PICATextureFormat.RGBA4;
                 case GFTextureFormat.RGBA5551: return PICATextureFormat.RGBA5551;
-                case GFTextureFormat.LA8:      return PICATextureFormat.LA8;
-                case GFTextureFormat.HiLo8:    return PICATextureFormat.HiLo8;
-                case GFTextureFormat.L8:       return PICATextureFormat.L8;
-                case GFTextureFormat.A8:       return PICATextureFormat.A8;
-                case GFTextureFormat.LA4:      return PICATextureFormat.LA4;
-                case GFTextureFormat.L4:       return PICATextureFormat.L4;
-                case GFTextureFormat.A4:       return PICATextureFormat.A4;
-                case GFTextureFormat.ETC1:     return PICATextureFormat.ETC1;
-                case GFTextureFormat.ETC1A4:   return PICATextureFormat.ETC1A4;
+                case GFTextureFormat.LA8: return PICATextureFormat.LA8;
+                case GFTextureFormat.HiLo8: return PICATextureFormat.HiLo8;
+                case GFTextureFormat.L8: return PICATextureFormat.L8;
+                case GFTextureFormat.A8: return PICATextureFormat.A8;
+                case GFTextureFormat.LA4: return PICATextureFormat.LA4;
+                case GFTextureFormat.L4: return PICATextureFormat.L4;
+                case GFTextureFormat.A4: return PICATextureFormat.A4;
+                case GFTextureFormat.ETC1: return PICATextureFormat.ETC1;
+                case GFTextureFormat.ETC1A4: return PICATextureFormat.ETC1A4;
 
                 default: throw new ArgumentException("Invalid format!");
             }

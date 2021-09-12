@@ -10,11 +10,11 @@ namespace SPICA.Rendering.Shaders
 
         public ShaderNameBlock()
         {
-            Vec4Uniforms  = new string[96];
+            Vec4Uniforms = new string[96];
             IVec4Uniforms = new string[4];
-            BoolUniforms  = new string[16];
-            Inputs        = new string[16];
-            Outputs       = new string[16];
+            BoolUniforms = new string[16];
+            Inputs = new string[16];
+            Outputs = new string[16];
         }
 
         public ShaderNameBlock(
@@ -24,11 +24,11 @@ namespace SPICA.Rendering.Shaders
             string[] InputNames,
             string[] OutputNames)
         {
-            Vec4Uniforms  = Vec4UniformNames;
+            Vec4Uniforms = Vec4UniformNames;
             IVec4Uniforms = IVec4UniformNames;
-            BoolUniforms  = BoolUniformNames;
-            Inputs        = InputNames;
-            Outputs       = OutputNames;
+            BoolUniforms = BoolUniformNames;
+            Inputs = InputNames;
+            Outputs = OutputNames;
         }
     }
 }

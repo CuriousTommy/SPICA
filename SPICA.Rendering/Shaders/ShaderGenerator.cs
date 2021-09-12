@@ -12,9 +12,9 @@ namespace SPICA.Rendering.Shaders
         public const string BoolsName = "BoolUniforms";
 
         protected const string TempRegName = "reg_temp";
-        protected const string A0RegName   = "reg_a0";
-        protected const string ALRegName   = "reg_al";
-        protected const string CmpRegName  = "reg_cmp";
+        protected const string A0RegName = "reg_a0";
+        protected const string ALRegName = "reg_al";
+        protected const string CmpRegName = "reg_cmp";
 
         protected string[] Vec4UniformNames;
         protected string[] Vec4UniformNamesNoIdx;
@@ -30,8 +30,8 @@ namespace SPICA.Rendering.Shaders
         protected struct ProcInfo
         {
             public string Name;
-            public uint   Offset;
-            public uint   Length;
+            public uint Offset;
+            public uint Length;
         }
 
         protected Queue<ProcInfo> Procs;
@@ -43,7 +43,7 @@ namespace SPICA.Rendering.Shaders
         protected ShaderBinary SHBin;
 
         protected StringBuilder SB;
-        
+
         protected string Ident;
 
         private uint IP;
@@ -52,12 +52,12 @@ namespace SPICA.Rendering.Shaders
         {
             this.SHBin = SHBin;
 
-            Vec4UniformNames      = new string[96];
+            Vec4UniformNames = new string[96];
             Vec4UniformNamesNoIdx = new string[96];
-            IVec4UniformNames     = new string[4];
-            BoolUniformNames      = new string[16];
-            InputNames            = new string[16];
-            OutputNames           = new string[16];
+            IVec4UniformNames = new string[4];
+            BoolUniformNames = new string[16];
+            InputNames = new string[16];
+            OutputNames = new string[16];
 
             InstTbl = new GenInstCode[]
             {
@@ -140,7 +140,7 @@ namespace SPICA.Rendering.Shaders
 
             Procs.Enqueue(new ProcInfo()
             {
-                Name   = "main",
+                Name = "main",
                 Offset = Program.MainOffset,
                 Length = Program.EndMainOffset - Program.MainOffset
             });
@@ -224,7 +224,7 @@ namespace SPICA.Rendering.Shaders
                 if (Reg.Mask != 0)
                 {
                     if (Reg.Name == ShaderOutputRegName.TexCoord0W)
-                        Reg.Name =  ShaderOutputRegName.TexCoord0;
+                        Reg.Name = ShaderOutputRegName.TexCoord0;
 
                     OutputNames[i] = $"{Prefix}{Reg.Name}";
 
@@ -263,7 +263,7 @@ namespace SPICA.Rendering.Shaders
         }
 
         /* Helper methods for derived classes */
-        
+
         protected ShaderNameBlock GetNameBlock()
         {
             return new ShaderNameBlock(
@@ -406,9 +406,9 @@ namespace SPICA.Rendering.Shaders
         }
 
         private void GenDP3(
-            string Src1,  string Src2,
+            string Src1, string Src2,
             string SSrc1, string SSrc2,
-            string Dest,  string SDst)
+            string Dest, string SDst)
         {
             string Dot = GetVecCtor($"dot(" +
                 $"{Src1}.{SSrc1.Substring(0, 3)}, " +
@@ -418,9 +418,9 @@ namespace SPICA.Rendering.Shaders
         }
 
         private void GenDPH(
-            string Src1,  string Src2,
+            string Src1, string Src2,
             string SSrc1, string SSrc2,
-            string Dest,  string SDst)
+            string Dest, string SDst)
         {
             string Dot = GetVecCtor($"dot(" +
                 $"{Src1}.{SSrc1.Substring(0, 3)}, " +
@@ -430,9 +430,9 @@ namespace SPICA.Rendering.Shaders
         }
 
         private void GenSGE(
-            string Src1,  string Src2,
+            string Src1, string Src2,
             string SSrc1, string SSrc2,
-            string Dest,  string SDst)
+            string Dest, string SDst)
         {
             for (int i = 0; i < SDst.Length; i++)
             {
@@ -444,9 +444,9 @@ namespace SPICA.Rendering.Shaders
         }
 
         private void GenSLT(
-            string Src1,  string Src2,
+            string Src1, string Src2,
             string SSrc1, string SSrc2,
-            string Dest,  string SDst)
+            string Dest, string SDst)
         {
             for (int i = 0; i < SDst.Length; i++)
             {
@@ -543,10 +543,10 @@ namespace SPICA.Rendering.Shaders
             switch (OpCode)
             {
                 case ShaderOpCode.BreakC: GenBreakC(Program, Inst); break;
-                case ShaderOpCode.Call:   GenCall  (Program, Inst); break;
-                case ShaderOpCode.CallC:  GenCallC (Program, Inst); break;
-                case ShaderOpCode.IfC:    GenIfC   (Program, Inst); break;
-                case ShaderOpCode.JmpC:   GenJmpC  (Program, Inst); break;
+                case ShaderOpCode.Call: GenCall(Program, Inst); break;
+                case ShaderOpCode.CallC: GenCallC(Program, Inst); break;
+                case ShaderOpCode.IfC: GenIfC(Program, Inst); break;
+                case ShaderOpCode.JmpC: GenJmpC(Program, Inst); break;
             }
         }
 
@@ -558,10 +558,10 @@ namespace SPICA.Rendering.Shaders
 
             switch (OpCode)
             {
-                case ShaderOpCode.IfU:   GenIfU  (Program, Inst); break;
+                case ShaderOpCode.IfU: GenIfU(Program, Inst); break;
                 case ShaderOpCode.CallU: GenCallU(Program, Inst); break;
-                case ShaderOpCode.Loop:  GenLoop (Program, Inst); break;
-                case ShaderOpCode.JmpU:  GenJmpU (Program, Inst); break;
+                case ShaderOpCode.Loop: GenLoop(Program, Inst); break;
+                case ShaderOpCode.JmpU: GenJmpU(Program, Inst); break;
             }
         }
 
@@ -591,7 +591,7 @@ namespace SPICA.Rendering.Shaders
 
             AddProc(Name, Dest, Count);
 
-           return $"{Name}();";
+            return $"{Name}();";
         }
 
         private void GenIfC(ShaderProgram Program, ShaderInst2 Inst)
@@ -663,14 +663,14 @@ namespace SPICA.Rendering.Shaders
             if (Uniform.IsConstant)
             {
                 ALStart = $"{ALRegName} = {(byte)Uniform.Constant.Y}";
-                ALCond  = $"{ALRegName} <= {(byte)Uniform.Constant.X}";
-                ALInc   = $"{ALRegName} += {(byte)Uniform.Constant.Z}";  
+                ALCond = $"{ALRegName} <= {(byte)Uniform.Constant.X}";
+                ALInc = $"{ALRegName} += {(byte)Uniform.Constant.Z}";
             }
             else
             {
                 ALStart = $"{ALRegName} = {IUName}.y";
-                ALCond  = $"{ALRegName} <= {IUName}.x";
-                ALInc   = $"{ALRegName} += {IUName}.z";  
+                ALCond = $"{ALRegName} <= {IUName}.x";
+                ALInc = $"{ALRegName} += {IUName}.z";
             }
 
             Append($"for ({ALStart}; {ALCond}; {ALInc}) {{");
@@ -803,8 +803,8 @@ namespace SPICA.Rendering.Shaders
             {
                 case 0: Cond = $"{RefX}{CmpRegName}.x || {RefY}{CmpRegName}.y"; break;
                 case 1: Cond = $"{RefX}{CmpRegName}.x && {RefY}{CmpRegName}.y"; break;
-                case 2: Cond = $"{RefX}{CmpRegName}.x";                         break;
-                case 3: Cond = $"{RefY}{CmpRegName}.y";                         break;
+                case 2: Cond = $"{RefX}{CmpRegName}.x"; break;
+                case 3: Cond = $"{RefY}{CmpRegName}.y"; break;
             }
 
             return Cond;
@@ -919,7 +919,7 @@ namespace SPICA.Rendering.Shaders
 
                 Procs.Enqueue(new ProcInfo()
                 {
-                    Name   = Name,
+                    Name = Name,
                     Offset = Offset,
                     Length = Length
                 });

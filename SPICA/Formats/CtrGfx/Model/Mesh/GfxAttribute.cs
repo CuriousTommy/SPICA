@@ -49,10 +49,10 @@ namespace SPICA.Formats.CtrGfx.Model.Mesh
 
                         switch (Format)
                         {
-                            case GfxGLDataType.GL_BYTE:          Value = Reader.ReadSByte();  break;
-                            case GfxGLDataType.GL_UNSIGNED_BYTE: Value = Reader.ReadByte();   break;
-                            case GfxGLDataType.GL_SHORT:         Value = Reader.ReadInt16();  break;
-                            case GfxGLDataType.GL_FLOAT:         Value = Reader.ReadSingle(); break;
+                            case GfxGLDataType.GL_BYTE: Value = Reader.ReadSByte(); break;
+                            case GfxGLDataType.GL_UNSIGNED_BYTE: Value = Reader.ReadByte(); break;
+                            case GfxGLDataType.GL_SHORT: Value = Reader.ReadInt16(); break;
+                            case GfxGLDataType.GL_FLOAT: Value = Reader.ReadSingle(); break;
                         }
 
                         Value *= Scale;
@@ -75,10 +75,10 @@ namespace SPICA.Formats.CtrGfx.Model.Mesh
         {
             return new PICAAttribute()
             {
-                Name     = AttrName,
-                Format   = Format.ToPICAAttributeFormat(),
+                Name = AttrName,
+                Format = Format.ToPICAAttributeFormat(),
                 Elements = Elements,
-                Scale    = Scale
+                Scale = Scale
             };
         }
     }

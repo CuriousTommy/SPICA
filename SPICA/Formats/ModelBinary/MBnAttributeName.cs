@@ -21,12 +21,12 @@ namespace SPICA.Formats.ModelBinary
         {
             switch (AttrName)
             {
-                case MBnAttributeName.Position:   return PICAAttributeName.Position;
-                case MBnAttributeName.Normal:     return PICAAttributeName.Normal;
-                case MBnAttributeName.Color:      return PICAAttributeName.Color;
-                case MBnAttributeName.TexCoord0:  return PICAAttributeName.TexCoord0;
-                case MBnAttributeName.TexCoord1:  return PICAAttributeName.TexCoord1;
-                case MBnAttributeName.BoneIndex:  return PICAAttributeName.BoneIndex;
+                case MBnAttributeName.Position: return PICAAttributeName.Position;
+                case MBnAttributeName.Normal: return PICAAttributeName.Normal;
+                case MBnAttributeName.Color: return PICAAttributeName.Color;
+                case MBnAttributeName.TexCoord0: return PICAAttributeName.TexCoord0;
+                case MBnAttributeName.TexCoord1: return PICAAttributeName.TexCoord1;
+                case MBnAttributeName.BoneIndex: return PICAAttributeName.BoneIndex;
                 case MBnAttributeName.BoneWeight: return PICAAttributeName.BoneWeight;
 
                 default: throw new ArgumentException($"Invalid or unimplemented MBn Attribute name {AttrName}!");

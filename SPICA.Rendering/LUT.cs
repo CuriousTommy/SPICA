@@ -28,7 +28,7 @@ namespace SPICA.Rendering
                     for (int i = 0; i < 256; i++)
                     {
                         Table[i + 256] = Sampler.Table[i];
-                        Table[i +   0] = Sampler.Table[0];
+                        Table[i + 0] = Sampler.Table[0];
                     }
                 }
                 else
@@ -40,8 +40,8 @@ namespace SPICA.Rendering
 
                         Table[i + 256] = Sampler.Table[PosIdx];
                         Table[i + 257] = Sampler.Table[PosIdx];
-                        Table[i +   0] = Sampler.Table[NegIdx];
-                        Table[i +   1] = Sampler.Table[NegIdx];
+                        Table[i + 0] = Sampler.Table[NegIdx];
+                        Table[i + 1] = Sampler.Table[NegIdx];
                     }
                 }
 

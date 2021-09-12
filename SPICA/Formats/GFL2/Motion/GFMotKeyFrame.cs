@@ -5,7 +5,7 @@ namespace SPICA.Formats.GFL2.Motion
 {
     public struct GFMotKeyFrame
     {
-        public int   Frame;
+        public int Frame;
         public float Value;
         public float Slope;
 
@@ -23,7 +23,7 @@ namespace SPICA.Formats.GFL2.Motion
                 case 3: KeyFrames.Add(new GFMotKeyFrame(0, Reader.ReadSingle(), 0)); break; //Constant
 
                 //Key Frame list
-                case 4: 
+                case 4:
                 case 5:
                     uint KeyFramesCount = Reader.ReadUInt32();
 
@@ -55,9 +55,9 @@ namespace SPICA.Formats.GFL2.Motion
                     else
                     {
                         //Stored as Quantized UInt16, 32 bits per entry + 128 bits of Offsets/Scale
-                        float ValueScale  = Reader.ReadSingle();
+                        float ValueScale = Reader.ReadSingle();
                         float ValueOffset = Reader.ReadSingle();
-                        float SlopeScale  = Reader.ReadSingle();
+                        float SlopeScale = Reader.ReadSingle();
                         float SlopeOffset = Reader.ReadSingle();
 
                         for (int Index = 0; Index < KeyFramesCount; Index++)

@@ -15,12 +15,12 @@ namespace SPICA.Rendering.Animation
     {
         private class Bone
         {
-            public Vector3    Scale;
-            public Vector3    EulerRotation;
-            public Vector3    Translation;
+            public Vector3 Scale;
+            public Vector3 EulerRotation;
+            public Vector3 Translation;
             public Quaternion Rotation;
-            public Bone       Parent;
-            public int        ParentIndex;
+            public Bone Parent;
+            public int ParentIndex;
 
             public void CalculateQuaternion()
             {
@@ -76,9 +76,9 @@ namespace SPICA.Rendering.Animation
         {
             for (int i = 0; i < Skeleton.Count; i++)
             {
-                FrameSkeleton[i].Scale         = Skeleton[i].Scale      .ToVector3();
-                FrameSkeleton[i].EulerRotation = Skeleton[i].Rotation   .ToVector3();
-                FrameSkeleton[i].Translation   = Skeleton[i].Translation.ToVector3();
+                FrameSkeleton[i].Scale = Skeleton[i].Scale.ToVector3();
+                FrameSkeleton[i].EulerRotation = Skeleton[i].Rotation.ToVector3();
+                FrameSkeleton[i].Translation = Skeleton[i].Translation.ToVector3();
 
                 FrameSkeleton[i].CalculateQuaternion();
             }
@@ -151,7 +151,7 @@ namespace SPICA.Rendering.Animation
 
                 ScaleCompensate &= Bone.Parent != null;
 
-                Transforms[Index]  = Matrix4.CreateScale(Bone.Scale);
+                Transforms[Index] = Matrix4.CreateScale(Bone.Scale);
                 Transforms[Index] *= Matrix4.CreateFromQuaternion(Bone.Rotation);
                 Transforms[Index] *= ScaleCompensate
                     ? Matrix4.CreateTranslation(Bone.Translation * Bone.Parent.Scale)
@@ -177,13 +177,13 @@ namespace SPICA.Rendering.Animation
 
         private void SetBone(H3DAnimTransform Transform, Bone Bone)
         {
-            TrySetFrameValue(Transform.ScaleX,       ref Bone.Scale.X);
-            TrySetFrameValue(Transform.ScaleY,       ref Bone.Scale.Y);
-            TrySetFrameValue(Transform.ScaleZ,       ref Bone.Scale.Z);
+            TrySetFrameValue(Transform.ScaleX, ref Bone.Scale.X);
+            TrySetFrameValue(Transform.ScaleY, ref Bone.Scale.Y);
+            TrySetFrameValue(Transform.ScaleZ, ref Bone.Scale.Z);
 
-            TrySetFrameValue(Transform.RotationX,    ref Bone.EulerRotation.X);
-            TrySetFrameValue(Transform.RotationY,    ref Bone.EulerRotation.Y);
-            TrySetFrameValue(Transform.RotationZ,    ref Bone.EulerRotation.Z);
+            TrySetFrameValue(Transform.RotationX, ref Bone.EulerRotation.X);
+            TrySetFrameValue(Transform.RotationY, ref Bone.EulerRotation.Y);
+            TrySetFrameValue(Transform.RotationZ, ref Bone.EulerRotation.Z);
 
             TrySetFrameValue(Transform.TranslationX, ref Bone.Translation.X);
             TrySetFrameValue(Transform.TranslationY, ref Bone.Translation.Y);

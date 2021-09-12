@@ -33,10 +33,10 @@ namespace SPICA.Formats.CtrH3D
 
         [Ignore] public ushort[] Indices;
 
-        void ICustomSerialization.Deserialize(BinaryDeserializer Deserializer)
+        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer)
         {
             bool Is16Bits = Type == 1;
-            uint Address  = Deserializer.Reader.ReadUInt32();
+            uint Address = Deserializer.Reader.ReadUInt32();
             long Position = Deserializer.BaseStream.Position;
 
             Indices = new ushort[Count];
@@ -87,9 +87,9 @@ namespace SPICA.Formats.CtrH3D
 
             Serializer.Sections[(uint)H3DSectionId.RawData].Values.Add(new RefValue()
             {
-                Parent   = this,
+                Parent = this,
                 Position = Position,
-                Value    = Data
+                Value = Data
             });
 
             Serializer.BaseStream.Seek(4, SeekOrigin.Current);

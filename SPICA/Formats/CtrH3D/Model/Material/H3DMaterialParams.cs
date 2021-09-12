@@ -1,5 +1,4 @@
 ﻿using SPICA.Formats.Common;
-using SPICA.Formats.CtrH3D.LUT;
 using SPICA.Math3D;
 using SPICA.PICA;
 using SPICA.PICA.Commands;
@@ -8,6 +7,7 @@ using SPICA.Serialization.Attributes;
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Numerics;
 
 namespace SPICA.Formats.CtrH3D.Model.Material
@@ -133,8 +133,8 @@ namespace SPICA.Formats.CtrH3D.Model.Material
 
         [IfVersion(CmpOp.Gequal, 7)] public H3DMetaData MetaData;
 
-        [Ignore] public PICALUTInAbs   LUTInputAbsolute;
-        [Ignore] public PICALUTInSel   LUTInputSelection;
+        [Ignore] public PICALUTInAbs LUTInputAbsolute;
+        [Ignore] public PICALUTInSel LUTInputSelection;
         [Ignore] public PICALUTInScale LUTInputScale;
 
         [Ignore] public readonly PICATexEnvStage[] TexEnvStages;
@@ -180,7 +180,7 @@ namespace SPICA.Formats.CtrH3D.Model.Material
         public H3DMaterialParams()
         {
             TextureCoords = new H3DTextureCoord[3];
-            TexEnvStages  = new PICATexEnvStage[6];
+            TexEnvStages = new PICATexEnvStage[6];
 
             for (int Index = 0; Index < TexEnvStages.Length; Index++)
             {
@@ -266,7 +266,7 @@ namespace SPICA.Formats.CtrH3D.Model.Material
             throw new ArgumentOutOfRangeException(nameof(Stage));
         }
 
-        void ICustomSerialization.Deserialize(BinaryDeserializer Deserializer)
+        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer)
         {
             PICACommandReader Reader;
 
@@ -280,9 +280,9 @@ namespace SPICA.Formats.CtrH3D.Model.Material
 
                 switch (Cmd.Register)
                 {
-                    case PICARegister.GPUREG_LIGHTING_LUTINPUT_ABS:    LUTInputAbsolute  = new PICALUTInAbs(Param);   break;
-                    case PICARegister.GPUREG_LIGHTING_LUTINPUT_SELECT: LUTInputSelection = new PICALUTInSel(Param);   break;
-                    case PICARegister.GPUREG_LIGHTING_LUTINPUT_SCALE:  LUTInputScale     = new PICALUTInScale(Param); break;
+                    case PICARegister.GPUREG_LIGHTING_LUTINPUT_ABS: LUTInputAbsolute = new PICALUTInAbs(Param); break;
+                    case PICARegister.GPUREG_LIGHTING_LUTINPUT_SELECT: LUTInputSelection = new PICALUTInSel(Param); break;
+                    case PICARegister.GPUREG_LIGHTING_LUTINPUT_SCALE: LUTInputScale = new PICALUTInScale(Param); break;
                 }
             }
 
@@ -345,7 +345,7 @@ namespace SPICA.Formats.CtrH3D.Model.Material
                         TexEnvStages[Stage].Scale = new PICATexEnvScale(Param);
                         break;
 
-                    case PICARegister.GPUREG_TEXENV_UPDATE_BUFFER:  PICATexEnvStage.SetUpdateBuffer(TexEnvStages, Param); break;
+                    case PICARegister.GPUREG_TEXENV_UPDATE_BUFFER: PICATexEnvStage.SetUpdateBuffer(TexEnvStages, Param); break;
 
                     case PICARegister.GPUREG_TEXENV_BUFFER_COLOR: TexEnvBufferColor = new RGBA(Param); break;
 
@@ -365,17 +365,17 @@ namespace SPICA.Formats.CtrH3D.Model.Material
 
                     case PICARegister.GPUREG_FACECULLING_CONFIG: FaceCulling = (PICAFaceCulling)(Param & 3); break;
 
-                    case PICARegister.GPUREG_COLORBUFFER_READ:  ColorBufferRead  = (Param & 0xf) == 0xf; break;
+                    case PICARegister.GPUREG_COLORBUFFER_READ: ColorBufferRead = (Param & 0xf) == 0xf; break;
                     case PICARegister.GPUREG_COLORBUFFER_WRITE: ColorBufferWrite = (Param & 0xf) == 0xf; break;
 
                     case PICARegister.GPUREG_DEPTHBUFFER_READ:
                         StencilBufferRead = (Param & 1) != 0;
-                        DepthBufferRead   = (Param & 2) != 0;
+                        DepthBufferRead = (Param & 2) != 0;
                         break;
 
                     case PICARegister.GPUREG_DEPTHBUFFER_WRITE:
                         StencilBufferWrite = (Param & 1) != 0;
-                        DepthBufferWrite   = (Param & 2) != 0;
+                        DepthBufferWrite = (Param & 2) != 0;
                         break;
                 }
             }
@@ -403,9 +403,9 @@ namespace SPICA.Formats.CtrH3D.Model.Material
 
             Writer = new PICACommandWriter();
 
-            Writer.SetCommand(PICARegister.GPUREG_LIGHTING_LUTINPUT_ABS,    LUTInputAbsolute.ToUInt32());
+            Writer.SetCommand(PICARegister.GPUREG_LIGHTING_LUTINPUT_ABS, LUTInputAbsolute.ToUInt32());
             Writer.SetCommand(PICARegister.GPUREG_LIGHTING_LUTINPUT_SELECT, LUTInputSelection.ToUInt32());
-            Writer.SetCommand(PICARegister.GPUREG_LIGHTING_LUTINPUT_SCALE,  LUTInputScale.ToUInt32());
+            Writer.SetCommand(PICARegister.GPUREG_LIGHTING_LUTINPUT_SCALE, LUTInputScale.ToUInt32());
 
             LUTConfigCommands = Writer.GetBuffer();
 
@@ -458,10 +458,10 @@ namespace SPICA.Formats.CtrH3D.Model.Material
 
             FrameAccessOffset = (byte)Writer.Index;
 
-            Writer.SetCommand(PICARegister.GPUREG_COLORBUFFER_READ,  ColorBufferRead  ? 0xfu : 0u, 1);
+            Writer.SetCommand(PICARegister.GPUREG_COLORBUFFER_READ, ColorBufferRead ? 0xfu : 0u, 1);
             Writer.SetCommand(PICARegister.GPUREG_COLORBUFFER_WRITE, ColorBufferWrite ? 0xfu : 0u, 1);
 
-            Writer.SetCommand(PICARegister.GPUREG_DEPTHBUFFER_READ,  StencilBufferRead,  DepthBufferRead);
+            Writer.SetCommand(PICARegister.GPUREG_DEPTHBUFFER_READ, StencilBufferRead, DepthBufferRead);
             Writer.SetCommand(PICARegister.GPUREG_DEPTHBUFFER_WRITE, StencilBufferWrite, DepthBufferWrite);
 
             Matrix3x4[] TexMtx = new Matrix3x4[3];
@@ -494,7 +494,7 @@ namespace SPICA.Formats.CtrH3D.Model.Material
                 IOUtils.ToUInt32(TextureCoords[1].Translation.Y),
                 IOUtils.ToUInt32(TextureCoords[1].Translation.X),
                 IOUtils.ToUInt32(TextureCoords[0].Translation.Y),
-                IOUtils.ToUInt32(TextureCoords[0].Translation.X));      
+                IOUtils.ToUInt32(TextureCoords[0].Translation.X));
 
             Writer.SetCommand(PICARegister.GPUREG_VSH_FLOATUNIFORM_INDEX, true, 0x8000000au,
                 IOUtils.ToUInt32(TextureSources[3]),

@@ -6,7 +6,6 @@ using SPICA.WinForms.Formats;
 
 using System;
 using System.IO;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SPICA.WinForms

@@ -97,7 +97,7 @@ namespace SPICA.Formats.Common
                     }
                 }
             }
-            
+
             return Vertices;
         }
     }

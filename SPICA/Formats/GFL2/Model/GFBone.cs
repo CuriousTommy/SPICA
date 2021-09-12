@@ -10,7 +10,7 @@ namespace SPICA.Formats.GFL2.Model
     {
         public string Name;
         public string Parent;
-        public byte   Flags;
+        public byte Flags;
 
         public Vector3 Scale;
         public Vector3 Rotation;
@@ -18,12 +18,12 @@ namespace SPICA.Formats.GFL2.Model
 
         public GFBone(BinaryReader Reader)
         {
-            Name   = Reader.ReadByteLengthString();
+            Name = Reader.ReadByteLengthString();
             Parent = Reader.ReadByteLengthString();
-            Flags  = Reader.ReadByte();
+            Flags = Reader.ReadByte();
 
-            Scale       = Reader.ReadVector3();
-            Rotation    = Reader.ReadVector3();
+            Scale = Reader.ReadVector3();
+            Rotation = Reader.ReadVector3();
             Translation = Reader.ReadVector3();
         }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SPICA.Misc;
+using System;
 using System.IO;
 using System.Numerics;
 
@@ -6,10 +7,10 @@ namespace SPICA.Math3D
 {
     static class VectorExtensions
     {
-        public static Vector2 ReadVector2(this BinaryReader Reader)
+        public static Vector2 ReadVector2(this LogReader Reader, ref StreamWriter outputFile)
         {
             return new Vector2(
-                Reader.ReadSingle(),
+                (float)0.0,
                 Reader.ReadSingle());
         }
 

@@ -19,7 +19,7 @@ namespace SPICA.Formats.Generic.COLLADA
         public void Set(params Matrix3x4[] Matrices)
         {
             StringBuilder SB = new StringBuilder();
-            
+
             for (int i = 0; i < Matrices.Length; i++)
             {
                 if (i < Matrices.Length - 1)

@@ -39,7 +39,7 @@ namespace SPICA.Formats.CtrGfx
             Contents = new GfxDictionary<T>();
         }
 
-        void ICustomSerialization.Deserialize(BinaryDeserializer Deserializer) { }
+        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer) { }
 
         bool ICustomSerialization.Serialize(BinarySerializer Serializer)
         {

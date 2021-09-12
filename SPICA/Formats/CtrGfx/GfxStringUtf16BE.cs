@@ -1,6 +1,7 @@
 ﻿using SPICA.Formats.Common;
 using SPICA.Serialization;
 using SPICA.Serialization.Attributes;
+using System.IO;
 
 namespace SPICA.Formats.CtrGfx
 {
@@ -20,7 +21,7 @@ namespace SPICA.Formats.CtrGfx
             return Str ?? string.Empty;
         }
 
-        void ICustomSerialization.Deserialize(BinaryDeserializer Deserializer)
+        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer)
         {
             Str = Deserializer.Reader.ReadNullTerminatedStringUtf16BE();
         }

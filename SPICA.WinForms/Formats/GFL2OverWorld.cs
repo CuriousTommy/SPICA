@@ -6,7 +6,7 @@ using SPICA.Formats.GFL2.Model;
 using SPICA.Formats.GFL2.Motion;
 using SPICA.Formats.GFL2.Shader;
 using SPICA.Formats.GFL2.Texture;
-
+using SPICA.Misc;
 using System.IO;
 
 namespace SPICA.WinForms.Formats
@@ -17,18 +17,18 @@ namespace SPICA.WinForms.Formats
         const uint GFTextureConstant = 0x15041213;
         const uint GFMotionConstant = 0x00060000;
 
-        public static H3D OpenAsH3D(Stream Input, GFPackage.Header Header, H3DDict<H3DBone> Skeleton = null)
+        public static H3D OpenAsH3D(ref StreamWriter outputFile, Stream Input, GFPackage.Header Header, H3DDict<H3DBone> Skeleton = null)
         {
-            BinaryReader Reader = new BinaryReader(Input);
+            LogReader Reader = new LogReader(Input);
 
             GFModelPack MdlPack = new GFModelPack();
             GFMotionPack MotPack = new GFMotionPack();
 
-            ReadModelsBG(Header.Entries[0], Reader, MdlPack); //Textures
-            ReadModelsBG(Header.Entries[1], Reader, MdlPack); //Shaders
-            ReadModelsBG(Header.Entries[2], Reader, MdlPack); //Models
-            ReadModelsBG(Header.Entries[3], Reader, MdlPack); //Models?
-            ReadModelsBG(Header.Entries[4], Reader, MdlPack); //More models
+            ReadModelsBG(ref outputFile, Header.Entries[0], Reader, MdlPack); //Textures
+            ReadModelsBG(ref outputFile, Header.Entries[1], Reader, MdlPack); //Shaders
+            ReadModelsBG(ref outputFile, Header.Entries[2], Reader, MdlPack); //Models
+            ReadModelsBG(ref outputFile, Header.Entries[3], Reader, MdlPack); //Models?
+            ReadModelsBG(ref outputFile, Header.Entries[4], Reader, MdlPack); //More models
             ReadAnimsBG(Header.Entries[5], Reader, MotPack); //Animations
             ReadAnimsBG(Header.Entries[6], Reader, MotPack); //More animations
 
@@ -37,7 +37,7 @@ namespace SPICA.WinForms.Formats
             foreach (GFMotion Mot in MotPack)
             {
                 H3DMaterialAnim MatAnim = Mot.ToH3DMaterialAnimation();
-                H3DAnimation    VisAnim = Mot.ToH3DVisibilityAnimation();
+                H3DAnimation VisAnim = Mot.ToH3DVisibilityAnimation();
 
                 if (MatAnim != null)
                 {
@@ -57,7 +57,7 @@ namespace SPICA.WinForms.Formats
             return Output;
         }
 
-        private static void ReadModelsBG(GFPackage.Entry File, BinaryReader Reader, GFModelPack MdlPack)
+        private static void ReadModelsBG(ref StreamWriter outputFile, GFPackage.Entry File, LogReader Reader, GFModelPack MdlPack)
         {
             if (File.Length < 0x80) return;
 
@@ -78,7 +78,7 @@ namespace SPICA.WinForms.Formats
                     case GFModelConstant:
                         Reader.BaseStream.Seek(-4, SeekOrigin.Current);
 
-                        MdlPack.Models.Add(new GFModel(Reader, $"Model_{MdlPack.Models.Count}"));
+                        MdlPack.Models.Add(new GFModel(ref outputFile, Reader, $"Model_{MdlPack.Models.Count}"));
 
                         break;
 
@@ -99,9 +99,9 @@ namespace SPICA.WinForms.Formats
                         Reader.BaseStream.Seek(Entry.Address, SeekOrigin.Begin);
 
                         if (Signature == "texture")
-                            MdlPack.Textures.Add(new GFTexture(Reader));
+                            MdlPack.Textures.Add(new GFTexture(ref outputFile, Reader));
                         else
-                            MdlPack.Shaders.Add(new GFShader(Reader));
+                            MdlPack.Shaders.Add(new GFShader(ref outputFile, Reader));
 
                         break;
                 }

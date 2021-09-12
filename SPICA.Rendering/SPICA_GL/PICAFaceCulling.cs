@@ -12,9 +12,9 @@ namespace SPICA.Rendering.SPICA_GL
         {
             switch (Cull)
             {
-                case PICAFaceCulling.Never:     return CullFaceMode.FrontAndBack;
+                case PICAFaceCulling.Never: return CullFaceMode.FrontAndBack;
                 case PICAFaceCulling.FrontFace: return CullFaceMode.Front;
-                case PICAFaceCulling.BackFace:  return CullFaceMode.Back;
+                case PICAFaceCulling.BackFace: return CullFaceMode.Back;
 
                 default: throw new ArgumentException("Invalid Face culling!");
             }

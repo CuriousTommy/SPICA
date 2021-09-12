@@ -19,9 +19,9 @@ namespace SPICA.Formats.CtrGfx.Model.Material
             switch (FaceCulling)
             {
                 case GfxFaceCulling.FrontFace: return PICAFaceCulling.FrontFace;
-                case GfxFaceCulling.BackFace:  return PICAFaceCulling.BackFace;
-                case GfxFaceCulling.Always:    return PICAFaceCulling.FrontFace;
-                case GfxFaceCulling.Never:     return PICAFaceCulling.Never;
+                case GfxFaceCulling.BackFace: return PICAFaceCulling.BackFace;
+                case GfxFaceCulling.Always: return PICAFaceCulling.FrontFace;
+                case GfxFaceCulling.Never: return PICAFaceCulling.Never;
 
                 default: throw new ArgumentException($"Invalid PICA Face Culling {FaceCulling}!");
             }

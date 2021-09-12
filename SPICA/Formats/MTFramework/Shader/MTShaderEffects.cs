@@ -25,12 +25,12 @@ namespace SPICA.Formats.MTFramework.Shader
             Reader.BaseStream.Seek(8, SeekOrigin.Current); //Unknown stuff
 
             uint DescriptorsCount = Reader.ReadUInt32();
-            uint FragShaderCount  = Reader.ReadUInt32();
-            uint VtxShaderCount   = Reader.ReadUInt32();
-            uint FragShaderAddr   = Reader.ReadUInt32();
-            uint VtxShaderAddr    = Reader.ReadUInt32();
-            uint StringsTblAddr   = Reader.ReadUInt32();
-            uint VtxProgramAddr   = Reader.ReadUInt32();
+            uint FragShaderCount = Reader.ReadUInt32();
+            uint VtxShaderCount = Reader.ReadUInt32();
+            uint FragShaderAddr = Reader.ReadUInt32();
+            uint VtxShaderAddr = Reader.ReadUInt32();
+            uint StringsTblAddr = Reader.ReadUInt32();
+            uint VtxProgramAddr = Reader.ReadUInt32();
 
             long VtxFormatsAddr = Reader.BaseStream.Position;
 
@@ -44,11 +44,11 @@ namespace SPICA.Formats.MTFramework.Shader
                 string DescName = GetName(Reader, StringsTblAddr);
                 string TypeName = GetName(Reader, StringsTblAddr);
 
-                ushort DescType   = Reader.ReadUInt16();
-                ushort MapLength  = Reader.ReadUInt16(); //Actual length is value / 2? Not sure
-                ushort MapIndex   = Reader.ReadUInt16();
-                ushort DescIndex  = Reader.ReadUInt16();
-                uint   MapAddress = Reader.ReadUInt32(); //Not sure what this address actually points to
+                ushort DescType = Reader.ReadUInt16();
+                ushort MapLength = Reader.ReadUInt16(); //Actual length is value / 2? Not sure
+                ushort MapIndex = Reader.ReadUInt16();
+                ushort DescIndex = Reader.ReadUInt16();
+                uint MapAddress = Reader.ReadUInt32(); //Not sure what this address actually points to
 
                 uint Hash = (CRC32Hash.Hash(DescName) << 12) | DescIndex;
 

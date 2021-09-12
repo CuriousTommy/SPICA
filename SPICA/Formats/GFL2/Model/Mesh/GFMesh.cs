@@ -1,5 +1,6 @@
 ﻿using SPICA.Formats.Common;
 using SPICA.Math3D;
+using SPICA.Misc;
 using SPICA.PICA;
 using SPICA.PICA.Commands;
 
@@ -44,14 +45,14 @@ namespace SPICA.Formats.GFL2.Model.Mesh
             SubMeshes = new List<GFSubMesh>();
         }
 
-        public GFMesh(BinaryReader Reader) : this()
+        public GFMesh(LogReader Reader) : this()
         {
             GFSection MeshSection = new GFSection(Reader);
 
             long Position = Reader.BaseStream.Position;
 
-            uint   NameHash = Reader.ReadUInt32();
-            string NameStr  = Reader.ReadPaddedString(0x40);
+            uint NameHash = Reader.ReadUInt32();
+            string NameStr = Reader.ReadPaddedString(0x40);
 
             Name = NameStr;
 
@@ -76,9 +77,9 @@ namespace SPICA.Formats.GFL2.Model.Mesh
             do
             {
                 CommandsLength = Reader.ReadUInt32();
-                CommandIndex   = Reader.ReadUInt32();
-                CommandsCount  = Reader.ReadUInt32();
-                Padding        = Reader.ReadUInt32();
+                CommandIndex = Reader.ReadUInt32();
+                CommandsCount = Reader.ReadUInt32();
+                Padding = Reader.ReadUInt32();
 
                 uint[] Commands = new uint[CommandsLength >> 2];
 
@@ -87,7 +88,7 @@ namespace SPICA.Formats.GFL2.Model.Mesh
                     Commands[Index] = Reader.ReadUInt32();
                 }
 
-                CmdList.Add(Commands);                
+                CmdList.Add(Commands);
             }
             while (CommandIndex < CommandsCount - 1);
 
@@ -101,7 +102,7 @@ namespace SPICA.Formats.GFL2.Model.Mesh
 
                 uint SMNameHash = Reader.ReadUInt32();
 
-                SM.Name             = Reader.ReadIntLengthString();
+                SM.Name = Reader.ReadIntLengthString();
                 SM.BoneIndicesCount = Reader.ReadByte();
 
                 for (int Bone = 0; Bone < 0x1f; Bone++)
@@ -111,10 +112,10 @@ namespace SPICA.Formats.GFL2.Model.Mesh
 
                 SMSizes[MeshIndex] = new SubMeshSize()
                 {
-                    VerticesCount  = Reader.ReadInt32(),
-                    IndicesCount   = Reader.ReadInt32(),
+                    VerticesCount = Reader.ReadInt32(),
+                    IndicesCount = Reader.ReadInt32(),
                     VerticesLength = Reader.ReadInt32(),
-                    IndicesLength  = Reader.ReadInt32()
+                    IndicesLength = Reader.ReadInt32()
                 };
 
                 SubMeshes.Add(SM);
@@ -124,9 +125,9 @@ namespace SPICA.Formats.GFL2.Model.Mesh
             {
                 GFSubMesh SM = SubMeshes[MeshIndex];
 
-                uint[] EnableCommands  = CmdList[MeshIndex * 3 + 0];
+                uint[] EnableCommands = CmdList[MeshIndex * 3 + 0];
                 uint[] DisableCommands = CmdList[MeshIndex * 3 + 1];
-                uint[] IndexCommands   = CmdList[MeshIndex * 3 + 2];
+                uint[] IndexCommands = CmdList[MeshIndex * 3 + 2];
 
                 PICACommandReader CmdReader;
 
@@ -134,11 +135,11 @@ namespace SPICA.Formats.GFL2.Model.Mesh
 
                 PICAVectorFloat24[] Fixed = new PICAVectorFloat24[12];
 
-                ulong BufferFormats     = 0;
-                ulong BufferAttributes  = 0;
+                ulong BufferFormats = 0;
+                ulong BufferAttributes = 0;
                 ulong BufferPermutation = 0;
-                int   AttributesCount   = 0;
-                int   AttributesTotal   = 0;
+                int AttributesCount = 0;
+                int AttributesTotal = 0;
 
                 int FixedIndex = 0;
 
@@ -150,7 +151,7 @@ namespace SPICA.Formats.GFL2.Model.Mesh
 
                     switch (Cmd.Register)
                     {
-                        case PICARegister.GPUREG_ATTRIBBUFFERS_FORMAT_LOW:  BufferFormats |= (ulong)Param <<  0; break;
+                        case PICARegister.GPUREG_ATTRIBBUFFERS_FORMAT_LOW: BufferFormats |= (ulong)Param << 0; break;
                         case PICARegister.GPUREG_ATTRIBBUFFERS_FORMAT_HIGH: BufferFormats |= (ulong)Param << 32; break;
 
                         case PICARegister.GPUREG_ATTRIBBUFFER0_CONFIG1:
@@ -159,8 +160,8 @@ namespace SPICA.Formats.GFL2.Model.Mesh
 
                         case PICARegister.GPUREG_ATTRIBBUFFER0_CONFIG2:
                             BufferAttributes |= (ulong)(Param & 0xffff) << 32;
-                            SM.VertexStride   =  (byte)(Param >> 16);
-                            AttributesCount   =   (int)(Param >> 28);
+                            SM.VertexStride = (byte)(Param >> 16);
+                            AttributesCount = (int)(Param >> 28);
                             break;
 
                         case PICARegister.GPUREG_FIXEDATTRIB_INDEX: FixedIndex = (int)Param; break;
@@ -171,7 +172,7 @@ namespace SPICA.Formats.GFL2.Model.Mesh
 
                         case PICARegister.GPUREG_VSH_NUM_ATTR: AttributesTotal = (int)(Param + 1); break;
 
-                        case PICARegister.GPUREG_VSH_ATTRIBUTES_PERMUTATION_LOW:  BufferPermutation |= (ulong)Param <<  0; break;
+                        case PICARegister.GPUREG_VSH_ATTRIBUTES_PERMUTATION_LOW: BufferPermutation |= (ulong)Param << 0; break;
                         case PICARegister.GPUREG_VSH_ATTRIBUTES_PERMUTATION_HIGH: BufferPermutation |= (ulong)Param << 32; break;
                     }
                 }
@@ -188,22 +189,22 @@ namespace SPICA.Formats.GFL2.Model.Mesh
 
                         SM.FixedAttributes.Add(new PICAFixedAttribute()
                         {
-                            Name  = Name,
+                            Name = Name,
                             Value = Fixed[Index] * Scale
                         });
                     }
                     else
                     {
-                        int PermutationIdx = (int)((BufferAttributes  >> Index          * 4) & 0xf);
-                        int AttributeName  = (int)((BufferPermutation >> PermutationIdx * 4) & 0xf);
-                        int AttributeFmt   = (int)((BufferFormats     >> PermutationIdx * 4) & 0xf);
+                        int PermutationIdx = (int)((BufferAttributes >> Index * 4) & 0xf);
+                        int AttributeName = (int)((BufferPermutation >> PermutationIdx * 4) & 0xf);
+                        int AttributeFmt = (int)((BufferFormats >> PermutationIdx * 4) & 0xf);
 
                         PICAAttribute Attrib = new PICAAttribute()
                         {
-                            Name     = (PICAAttributeName)AttributeName,
-                            Format   = (PICAAttributeFormat)(AttributeFmt & 3),
+                            Name = (PICAAttributeName)AttributeName,
+                            Format = (PICAAttributeFormat)(AttributeFmt & 3),
                             Elements = (AttributeFmt >> 2) + 1,
-                            Scale    = Scales[AttributeFmt & 3]
+                            Scale = Scales[AttributeFmt & 3]
                         };
 
                         if (Attrib.Name == PICAAttributeName.BoneIndex) Attrib.Scale = 1;
@@ -215,7 +216,7 @@ namespace SPICA.Formats.GFL2.Model.Mesh
                 CmdReader = new PICACommandReader(IndexCommands);
 
                 uint BufferAddress = 0;
-                uint BufferCount   = 0;
+                uint BufferCount = 0;
 
                 while (CmdReader.HasCommand)
                 {
@@ -226,7 +227,7 @@ namespace SPICA.Formats.GFL2.Model.Mesh
                     switch (Cmd.Register)
                     {
                         case PICARegister.GPUREG_INDEXBUFFER_CONFIG: BufferAddress = Param; break;
-                        case PICARegister.GPUREG_NUMVERTICES:        BufferCount   = Param; break;
+                        case PICARegister.GPUREG_NUMVERTICES: BufferCount = Param; break;
                         case PICARegister.GPUREG_PRIMITIVE_CONFIG:
                             SM.PrimitiveMode = (PICAPrimitiveMode)(Param >> 8);
                             break;
@@ -287,10 +288,10 @@ namespace SPICA.Formats.GFL2.Model.Mesh
                 /* Enable commands */
                 CmdWriter = new PICACommandWriter();
 
-                ulong BufferFormats     = 0;
-                ulong BufferAttributes  = 0;
+                ulong BufferFormats = 0;
+                ulong BufferAttributes = 0;
                 ulong BufferPermutation = 0;
-                int   AttributesTotal   = 0;
+                int AttributesTotal = 0;
 
                 //Normal Attributes
                 for (int Attr = 0; Attr < SM.Attributes.Count; Attr++)
@@ -301,12 +302,12 @@ namespace SPICA.Formats.GFL2.Model.Mesh
 
                     ulong AttribFmt;
 
-                    AttribFmt  = (ulong)Attrib.Format;
+                    AttribFmt = (ulong)Attrib.Format;
                     AttribFmt |= (ulong)((Attrib.Elements - 1) & 3) << 2;
 
-                    BufferFormats     |=        AttribFmt   << Shift;
+                    BufferFormats |= AttribFmt << Shift;
                     BufferPermutation |= (ulong)Attrib.Name << Shift;
-                    BufferAttributes  |= (ulong)Attr        << Shift;
+                    BufferAttributes |= (ulong)Attr << Shift;
                 }
 
                 BufferAttributes |= (ulong)(SM.VertexStride & 0xff) << 48;
@@ -326,15 +327,15 @@ namespace SPICA.Formats.GFL2.Model.Mesh
 
                 CmdWriter.SetCommand(PICARegister.GPUREG_VSH_NUM_ATTR, (uint)(AttributesTotal - 1), 1);
 
-                CmdWriter.SetCommand(PICARegister.GPUREG_VSH_ATTRIBUTES_PERMUTATION_LOW,  (uint)(BufferPermutation >>  0));
+                CmdWriter.SetCommand(PICARegister.GPUREG_VSH_ATTRIBUTES_PERMUTATION_LOW, (uint)(BufferPermutation >> 0));
                 CmdWriter.SetCommand(PICARegister.GPUREG_VSH_ATTRIBUTES_PERMUTATION_HIGH, (uint)(BufferPermutation >> 32));
 
                 CmdWriter.SetCommand(PICARegister.GPUREG_ATTRIBBUFFERS_LOC, true,
                     0x03000000u, //Base Address (Place holder)
-                    (uint)(BufferFormats >>  0),
+                    (uint)(BufferFormats >> 0),
                     (uint)(BufferFormats >> 32),
                     0x99999999u, //Attributes Buffer Address (Place holder)
-                    (uint)(BufferAttributes >>  0),
+                    (uint)(BufferAttributes >> 0),
                     (uint)(BufferAttributes >> 32));
 
                 for (int Attr = 0; Attr < SM.FixedAttributes.Count; Attr++)
@@ -489,7 +490,7 @@ namespace SPICA.Formats.GFL2.Model.Mesh
             }
         }
 
-        private int GetPaddedLen4(int Length)  => (Length + 0x3) & ~0x3;
+        private int GetPaddedLen4(int Length) => (Length + 0x3) & ~0x3;
         private int GetPaddedLen16(int Length) => (Length + 0xf) & ~0xf;
     }
 }

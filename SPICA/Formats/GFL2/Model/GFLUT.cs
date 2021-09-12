@@ -35,7 +35,8 @@ namespace SPICA.Formats.GFL2.Model
 
         private string _Name;
 
-        public string Name {
+        public string Name
+        {
             get => _Name;
             set
             {
@@ -86,8 +87,8 @@ namespace SPICA.Formats.GFL2.Model
 
                 if (Cmd.Register == PICARegister.GPUREG_LIGHTING_LUT_INDEX)
                 {
-                    Index =               Cmd.Parameters[0] & 0xff;
-                    Type  = (PICALUTType)(Cmd.Parameters[0] >> 8);
+                    Index = Cmd.Parameters[0] & 0xff;
+                    Type = (PICALUTType)(Cmd.Parameters[0] >> 8);
                 }
                 else if (
                     Cmd.Register >= PICARegister.GPUREG_LIGHTING_LUT_DATA0 &&
@@ -119,7 +120,7 @@ namespace SPICA.Formats.GFL2.Model
                 }
 
                 int Value = (int)(_Table[Index] * 0xfff);
-                int Diff  = (int)(Difference    * 0x7ff);
+                int Diff = (int)(Difference * 0x7ff);
 
                 QuantizedValues[Index] = (uint)(Value | (Diff << 12)) & 0xffffff;
             }

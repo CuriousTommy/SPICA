@@ -32,9 +32,9 @@ namespace SPICA.WinForms.GUI
 
             switch (Alignment)
             {
-                case TabAlignment.Top:    PageRect = RemoveMargin(DisplayRectangle, 0, 4, 4, 4); break;
-                case TabAlignment.Left:   PageRect = RemoveMargin(DisplayRectangle, 4, 0, 4, 4); break;
-                case TabAlignment.Right:  PageRect = RemoveMargin(DisplayRectangle, 4, 4, 0, 4); break;
+                case TabAlignment.Top: PageRect = RemoveMargin(DisplayRectangle, 0, 4, 4, 4); break;
+                case TabAlignment.Left: PageRect = RemoveMargin(DisplayRectangle, 4, 0, 4, 4); break;
+                case TabAlignment.Right: PageRect = RemoveMargin(DisplayRectangle, 4, 4, 0, 4); break;
                 case TabAlignment.Bottom: PageRect = RemoveMargin(DisplayRectangle, 4, 4, 4, 0); break;
             }
 
@@ -51,14 +51,14 @@ namespace SPICA.WinForms.GUI
                 if (IsSelected) e.Graphics.FillRectangle(new SolidBrush(BackgroundColor), Rect);
 
                 if (ImageList != null && (
-                    ImageList.Images.ContainsKey(TabPages[Index].ImageKey) || 
+                    ImageList.Images.ContainsKey(TabPages[Index].ImageKey) ||
                     ImageList.Images.Count > (uint)TabPages[Index].ImageIndex))
                 {
                     Image Icon = ImageList.Images.ContainsKey(TabPages[Index].ImageKey)
                         ? ImageList.Images[TabPages[Index].ImageKey]
                         : ImageList.Images[TabPages[Index].ImageIndex];
 
-                    int RW =  VertAlign ? Rect.Width  : Rect.Width  - (int)TextSize.Width;
+                    int RW = VertAlign ? Rect.Width : Rect.Width - (int)TextSize.Width;
                     int RH = !VertAlign ? Rect.Height : Rect.Height - (int)TextSize.Height;
 
                     Point IconPt = new Point(
@@ -76,7 +76,7 @@ namespace SPICA.WinForms.GUI
 
                     Rect = new Rectangle(
                         -Rect.Height >> 1,
-                        -Rect.Width  >> 1,
+                        -Rect.Width >> 1,
                          Rect.Height,
                          Rect.Width);
                 }
@@ -85,7 +85,7 @@ namespace SPICA.WinForms.GUI
 
                 StringFormat TextFmt = new StringFormat
                 {
-                    Alignment     = StringAlignment.Center,
+                    Alignment = StringAlignment.Center,
                     LineAlignment = StringAlignment.Center
                 };
 
@@ -100,8 +100,8 @@ namespace SPICA.WinForms.GUI
             {
                 Y = Input.Y - Top,
                 X = Input.X - Left,
-                Width  = Input.Width  + Left + Right,
-                Height = Input.Height + Top  + Bottom
+                Width = Input.Width + Left + Right,
+                Height = Input.Height + Top + Bottom
             };
         }
     }

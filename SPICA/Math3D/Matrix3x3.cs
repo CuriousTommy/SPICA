@@ -35,7 +35,7 @@ namespace SPICA.Math3D
                 m11, m12, m13, 0f,
                 m21, m22, m23, 0f,
                 m31, m32, m33, 0f,
-                 0f,  0f,  0f, 1f);
+                 0f, 0f, 0f, 1f);
         }
 
         public Matrix4x4 ToMatrix4x4()

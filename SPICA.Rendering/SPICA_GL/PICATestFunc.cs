@@ -12,14 +12,14 @@ namespace SPICA.Rendering.SPICA_GL
         {
             switch (Func)
             {
-                case PICATestFunc.Never:    return All.Never;
-                case PICATestFunc.Always:   return All.Always;
-                case PICATestFunc.Equal:    return All.Equal;
+                case PICATestFunc.Never: return All.Never;
+                case PICATestFunc.Always: return All.Always;
+                case PICATestFunc.Equal: return All.Equal;
                 case PICATestFunc.Notequal: return All.Notequal;
-                case PICATestFunc.Less:     return All.Less;
-                case PICATestFunc.Lequal:   return All.Lequal;
-                case PICATestFunc.Greater:  return All.Greater;
-                case PICATestFunc.Gequal:   return All.Gequal;
+                case PICATestFunc.Less: return All.Less;
+                case PICATestFunc.Lequal: return All.Lequal;
+                case PICATestFunc.Greater: return All.Greater;
+                case PICATestFunc.Gequal: return All.Gequal;
 
                 default: throw new ArgumentException("Invalid function!");
             }

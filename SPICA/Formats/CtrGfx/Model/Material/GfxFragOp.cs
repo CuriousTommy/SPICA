@@ -7,8 +7,8 @@ namespace SPICA.Formats.CtrGfx.Model.Material
 {
     public struct GfxFragOp
     {
-        public GfxFragOpDepth   Depth;
-        public GfxFragOpBlend   Blend;
+        public GfxFragOpDepth Depth;
+        public GfxFragOpBlend Blend;
         public GfxFragOpStencil Stencil;
 
         internal byte[] GetBytes()
@@ -72,21 +72,21 @@ namespace SPICA.Formats.CtrGfx.Model.Material
         {
             switch (BlendFunc)
             {
-                case PICABlendFunc.Zero:                     return 0x0000;
-                case PICABlendFunc.One:                      return 0x0001;
-                case PICABlendFunc.SourceColor:              return 0x0300;
-                case PICABlendFunc.OneMinusSourceColor:      return 0x0301;
-                case PICABlendFunc.DestinationColor:         return 0x0306;
+                case PICABlendFunc.Zero: return 0x0000;
+                case PICABlendFunc.One: return 0x0001;
+                case PICABlendFunc.SourceColor: return 0x0300;
+                case PICABlendFunc.OneMinusSourceColor: return 0x0301;
+                case PICABlendFunc.DestinationColor: return 0x0306;
                 case PICABlendFunc.OneMinusDestinationColor: return 0x0307;
-                case PICABlendFunc.SourceAlpha:              return 0x0302;
-                case PICABlendFunc.OneMinusSourceAlpha:      return 0x0303;
-                case PICABlendFunc.DestinationAlpha:         return 0x0304;
+                case PICABlendFunc.SourceAlpha: return 0x0302;
+                case PICABlendFunc.OneMinusSourceAlpha: return 0x0303;
+                case PICABlendFunc.DestinationAlpha: return 0x0304;
                 case PICABlendFunc.OneMinusDestinationAlpha: return 0x0305;
-                case PICABlendFunc.ConstantColor:            return 0x8001;
-                case PICABlendFunc.OneMinusConstantColor:    return 0x8002;
-                case PICABlendFunc.ConstantAlpha:            return 0x8003;
-                case PICABlendFunc.OneMinusConstantAlpha:    return 0x8004;
-                case PICABlendFunc.SourceAlphaSaturate:      return 0x0308;
+                case PICABlendFunc.ConstantColor: return 0x8001;
+                case PICABlendFunc.OneMinusConstantColor: return 0x8002;
+                case PICABlendFunc.ConstantAlpha: return 0x8003;
+                case PICABlendFunc.OneMinusConstantAlpha: return 0x8004;
+                case PICABlendFunc.SourceAlphaSaturate: return 0x0308;
             }
 
             return 0;
@@ -96,11 +96,11 @@ namespace SPICA.Formats.CtrGfx.Model.Material
         {
             switch (BlendEquation)
             {
-                case PICABlendEquation.FuncAdd:             return 0x8006;
-                case PICABlendEquation.FuncSubtract:        return 0x800a;
+                case PICABlendEquation.FuncAdd: return 0x8006;
+                case PICABlendEquation.FuncSubtract: return 0x800a;
                 case PICABlendEquation.FuncReverseSubtract: return 0x800b;
-                case PICABlendEquation.Min:                 return 0x8007;
-                case PICABlendEquation.Max:                 return 0x8008;
+                case PICABlendEquation.Min: return 0x8007;
+                case PICABlendEquation.Max: return 0x8008;
             }
 
             return 0;

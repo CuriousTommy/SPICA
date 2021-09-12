@@ -6,21 +6,20 @@ using SPICA.Formats.CtrH3D.Model.Mesh;
 using SPICA.Formats.CtrH3D.Texture;
 using SPICA.PICA.Commands;
 using SPICA.PICA.Converters;
-
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Globalization;
-using System.Text;
+using System.IO;
 using System.Numerics;
+using System.Text;
 
 namespace SPICA.Formats.Generic.StudioMdl
 {
     public class SMD
     {
-        private List<SMDNode> Nodes    = new List<SMDNode>();
+        private List<SMDNode> Nodes = new List<SMDNode>();
         private List<SMDBone> Skeleton = new List<SMDBone>();
-        private List<SMDMesh> Meshes   = new List<SMDMesh>();
+        private List<SMDMesh> Meshes = new List<SMDMesh>();
 
         private enum SMDSection
         {
@@ -44,16 +43,16 @@ namespace SPICA.Formats.Generic.StudioMdl
                 {
                     SMDNode Node = new SMDNode()
                     {
-                        Index       = Index,
-                        Name        = Bone.Name,
+                        Index = Index,
+                        Name = Bone.Name,
                         ParentIndex = Bone.ParentIndex
                     };
 
                     SMDBone B = new SMDBone()
                     {
-                        NodeIndex   = Index++,
+                        NodeIndex = Index++,
                         Translation = Bone.Translation,
-                        Rotation    = Bone.Rotation
+                        Rotation = Bone.Rotation
                     };
 
                     Nodes.Add(Node);
@@ -69,7 +68,7 @@ namespace SPICA.Formats.Generic.StudioMdl
                     Meshes.Add(new SMDMesh()
                     {
                         MaterialName = Mdl.Materials[Mesh.MaterialIndex].Texture0Name + ".png",
-                        Vertices     = MeshTransform.GetVerticesList(Mdl.Skeleton, Mesh)
+                        Vertices = MeshTransform.GetVerticesList(Mdl.Skeleton, Mesh)
                     });
                 }
             }
@@ -108,18 +107,18 @@ namespace SPICA.Formats.Generic.StudioMdl
                     switch (Params[0])
                     {
                         case "version": break;
-                        case "nodes":     CurrSection   = SMDSection.Nodes;     break;
-                        case "skeleton":  CurrSection   = SMDSection.Skeleton;  break;
-                        case "time":      SkeletalFrame = int.Parse(Params[1]); break;
-                        case "triangles": CurrSection   = SMDSection.Triangles; break;
-                        case "end":       CurrSection   = SMDSection.None;      break;
+                        case "nodes": CurrSection = SMDSection.Nodes; break;
+                        case "skeleton": CurrSection = SMDSection.Skeleton; break;
+                        case "time": SkeletalFrame = int.Parse(Params[1]); break;
+                        case "triangles": CurrSection = SMDSection.Triangles; break;
+                        case "end": CurrSection = SMDSection.None; break;
 
                         default:
                             switch (CurrSection)
                             {
                                 case SMDSection.Nodes:
-                                    int NameStart  = Line.IndexOf('"') + 1;
-                                    int NameEnd    = Line.LastIndexOf('"');
+                                    int NameStart = Line.IndexOf('"') + 1;
+                                    int NameEnd = Line.LastIndexOf('"');
                                     int NameLength = NameEnd - NameStart;
 
                                     Params[1] = Line.Substring(NameStart, NameLength);
@@ -127,8 +126,8 @@ namespace SPICA.Formats.Generic.StudioMdl
 
                                     Nodes.Add(new SMDNode()
                                     {
-                                        Index       = int.Parse(Params[0]),
-                                        Name        = Params[1],
+                                        Index = int.Parse(Params[0]),
+                                        Name = Params[1],
                                         ParentIndex = int.Parse(Params[2])
                                     });
                                     break;
@@ -229,7 +228,7 @@ namespace SPICA.Formats.Generic.StudioMdl
                     Bone.Translation.X,
                     Bone.Translation.Y,
                     Bone.Translation.Z,
-                    Bone.Rotation.X, 
+                    Bone.Rotation.X,
                     Bone.Rotation.Y,
                     Bone.Rotation.Z));
             }
@@ -316,7 +315,7 @@ namespace SPICA.Formats.Generic.StudioMdl
 
                 while (VerticesQueue.Count > 2)
                 {
-                    List<ushort> Indices     = new List<ushort>();
+                    List<ushort> Indices = new List<ushort>();
                     List<ushort> BoneIndices = new List<ushort>();
 
                     int TriCount = VerticesQueue.Count / 3;
@@ -395,10 +394,10 @@ namespace SPICA.Formats.Generic.StudioMdl
 
                     SubMeshes.Add(new H3DSubMesh()
                     {
-                        Skinning         = H3DSubMeshSkinning.Smooth,
+                        Skinning = H3DSubMeshSkinning.Smooth,
                         BoneIndicesCount = (ushort)BoneIndices.Count,
-                        BoneIndices      = BoneIndices.ToArray(),
-                        Indices          = Indices.ToArray()
+                        BoneIndices = BoneIndices.ToArray(),
+                        Indices = Indices.ToArray()
                     });
                 }
 
@@ -413,8 +412,8 @@ namespace SPICA.Formats.Generic.StudioMdl
                 //Mesh
                 H3DMesh M = new H3DMesh(Vertices.Keys, Attributes, SubMeshes)
                 {
-                    Skinning      = H3DMeshSkinning.Smooth,
-                    MeshCenter    = (MinVector + MaxVector) * 0.5f,
+                    Skinning = H3DMeshSkinning.Smooth,
+                    MeshCenter = (MinVector + MaxVector) * 0.5f,
                     MaterialIndex = MaterialIndex
                 };
 
@@ -448,11 +447,11 @@ namespace SPICA.Formats.Generic.StudioMdl
 
                 Model.Skeleton.Add(new H3DBone()
                 {
-                    Name        = Node.Name,
+                    Name = Node.Name,
                     ParentIndex = (short)Node.ParentIndex,
                     Translation = Bone.Translation,
-                    Rotation    = Bone.Rotation,
-                    Scale       = Vector3.One
+                    Rotation = Bone.Rotation,
+                    Scale = Vector3.One
                 });
             }
 

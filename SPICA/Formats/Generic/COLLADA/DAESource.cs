@@ -21,9 +21,9 @@ namespace SPICA.Formats.Generic.COLLADA
 
             DAEArray Array = new DAEArray()
             {
-                id    = $"{Name}_array_id",
+                id = $"{Name}_array_id",
                 count = (uint)(Elements.Length * Stride),
-                data  = string.Join(" ", Elements)
+                data = string.Join(" ", Elements)
             };
 
             if (Accessors[1] == "Name")
@@ -32,7 +32,7 @@ namespace SPICA.Formats.Generic.COLLADA
                 float_array = Array;
 
             technique_common.accessor.source = $"#{Array.id}";
-            technique_common.accessor.count  = (uint)Elements.Length;
+            technique_common.accessor.count = (uint)Elements.Length;
             technique_common.accessor.stride = (uint)Stride;
 
             for (int Index = 0; Index < Accessors.Length; Index += 2)

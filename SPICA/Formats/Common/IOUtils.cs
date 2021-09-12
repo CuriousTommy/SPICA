@@ -49,15 +49,15 @@ namespace SPICA.Formats.Common
         public static uint ReadUInt24(this BinaryReader Reader)
         {
             return (uint)(
-                Reader.ReadByte() <<  0 |
-                Reader.ReadByte() <<  8 |
+                Reader.ReadByte() << 0 |
+                Reader.ReadByte() << 8 |
                 Reader.ReadByte() << 16);
         }
 
         public static void WriteUInt24(this BinaryWriter Writer, uint Value)
         {
-            Writer.Write((byte)(Value >>  0));
-            Writer.Write((byte)(Value >>  8));
+            Writer.Write((byte)(Value >> 0));
+            Writer.Write((byte)(Value >> 8));
             Writer.Write((byte)(Value >> 16));
         }
 

@@ -11,7 +11,7 @@ namespace SPICA.Formats.Generic.COLLADA
 
         [XmlElement("source")] public List<DAESource> src = new List<DAESource>();
 
-        public DAEJoints  joints         = new DAEJoints();
+        public DAEJoints joints = new DAEJoints();
         public DAEWeights vertex_weights = new DAEWeights();
     }
 
@@ -24,7 +24,7 @@ namespace SPICA.Formats.Generic.COLLADA
             input.Add(new DAEInput()
             {
                 semantic = semantic,
-                source   = source
+                source = source
             });
         }
     }
@@ -43,8 +43,8 @@ namespace SPICA.Formats.Generic.COLLADA
             input.Add(new DAEInputOffset()
             {
                 semantic = semantic,
-                source   = source,
-                offset   = offset
+                source = source,
+                offset = offset
             });
         }
     }

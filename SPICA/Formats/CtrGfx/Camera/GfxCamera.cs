@@ -21,8 +21,8 @@ namespace SPICA.Formats.CtrGfx.Camera
             H3DCamera Output = new H3DCamera() { Name = Name };
 
             Output.TransformTranslation = TransformTranslation;
-            Output.TransformRotation    = TransformRotation;
-            Output.TransformScale       = TransformScale;
+            Output.TransformRotation = TransformRotation;
+            Output.TransformScale = TransformScale;
 
             Output.ViewType = (H3DCameraViewType)ViewType;
 
@@ -39,8 +39,8 @@ namespace SPICA.Formats.CtrGfx.Camera
 
             Output.WScale = WScale;
 
-            bool InheritUpRot       = false;
-            bool InheritTargetRot   = false;
+            bool InheritUpRot = false;
+            bool InheritTargetRot = false;
             bool InheritTargetTrans = false;
 
             if (View is GfxCameraViewAim ViewAim)
@@ -48,22 +48,22 @@ namespace SPICA.Formats.CtrGfx.Camera
                 Output.View = new H3DCameraViewAim()
                 {
                     Target = ViewAim.Target,
-                    Twist  = ViewAim.Twist
+                    Twist = ViewAim.Twist
                 };
 
-                InheritTargetRot   = (ViewAim.Flags & GfxCameraViewAimFlags.IsInheritingTargetRotation)    != 0;
+                InheritTargetRot = (ViewAim.Flags & GfxCameraViewAimFlags.IsInheritingTargetRotation) != 0;
                 InheritTargetTrans = (ViewAim.Flags & GfxCameraViewAimFlags.IsInheritingTargetTranslation) != 0;
             }
             else if (View is GfxCameraViewLookAt ViewLookAt)
             {
                 Output.View = new H3DCameraViewLookAt()
                 {
-                    Target   = ViewLookAt.Target,
+                    Target = ViewLookAt.Target,
                     UpVector = ViewLookAt.UpVector
                 };
 
-                InheritUpRot       = (ViewLookAt.Flags & GfxCameraViewLookAtFlags.IsInheritingUpRotation)        != 0;
-                InheritTargetRot   = (ViewLookAt.Flags & GfxCameraViewLookAtFlags.IsInheritingTargetRotation)    != 0;
+                InheritUpRot = (ViewLookAt.Flags & GfxCameraViewLookAtFlags.IsInheritingUpRotation) != 0;
+                InheritTargetRot = (ViewLookAt.Flags & GfxCameraViewLookAtFlags.IsInheritingTargetRotation) != 0;
                 InheritTargetTrans = (ViewLookAt.Flags & GfxCameraViewLookAtFlags.IsInheritingTargetTranslation) != 0;
             }
             else if (View is GfxCameraViewRotation ViewRotation)
@@ -80,10 +80,10 @@ namespace SPICA.Formats.CtrGfx.Camera
             {
                 Output.Projection = new H3DCameraProjectionPerspective()
                 {
-                    ZNear       = ProjPersp.ZNear,
-                    ZFar        = ProjPersp.ZFar,
+                    ZNear = ProjPersp.ZNear,
+                    ZFar = ProjPersp.ZFar,
                     AspectRatio = ProjPersp.AspectRatio,
-                    FOVY        = ProjPersp.FOVY
+                    FOVY = ProjPersp.FOVY
                 };
             }
             else if (
@@ -94,10 +94,10 @@ namespace SPICA.Formats.CtrGfx.Camera
 
                 Output.Projection = new H3DCameraProjectionOrthogonal()
                 {
-                    ZNear       = ProjOrtho.ZNear,
-                    ZFar        = ProjOrtho.ZFar,
+                    ZNear = ProjOrtho.ZNear,
+                    ZFar = ProjOrtho.ZFar,
                     AspectRatio = ProjOrtho.AspectRatio,
-                    Height      = ProjOrtho.Height
+                    Height = ProjOrtho.Height
                 };
             }
 

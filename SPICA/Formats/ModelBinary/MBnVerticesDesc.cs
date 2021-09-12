@@ -26,7 +26,7 @@ namespace SPICA.Formats.ModelBinary
 
             for (int Index = 0; Index < AttributesCount; Index++)
             {
-                MBnAttributeName   AttrName   = (MBnAttributeName)Reader.ReadUInt32();
+                MBnAttributeName AttrName = (MBnAttributeName)Reader.ReadUInt32();
                 MBnAttributeFormat AttrFormat = (MBnAttributeFormat)Reader.ReadUInt32();
 
                 float Scale = Reader.ReadSingle();
@@ -35,10 +35,10 @@ namespace SPICA.Formats.ModelBinary
 
                 switch (AttrName)
                 {
-                    case MBnAttributeName.Position:  
+                    case MBnAttributeName.Position:
                     case MBnAttributeName.Normal:
                         Elements = 3; break;
-                    case MBnAttributeName.TexCoord0: 
+                    case MBnAttributeName.TexCoord0:
                     case MBnAttributeName.TexCoord1:
                     case MBnAttributeName.BoneIndex:
                     case MBnAttributeName.BoneWeight:
@@ -71,10 +71,10 @@ namespace SPICA.Formats.ModelBinary
 
                 Attributes.Add(new PICAAttribute()
                 {
-                    Name     = AttrName.ToPICAAttributeName(),
-                    Format   = AttrFormat.ToPICAAttributeFormat(),
+                    Name = AttrName.ToPICAAttributeName(),
+                    Format = AttrFormat.ToPICAAttributeFormat(),
                     Elements = Elements,
-                    Scale    = Scale
+                    Scale = Scale
                 });
             }
 

@@ -36,8 +36,8 @@ namespace SPICA.Formats.GFL2.Motion
         public Vector3 AnimRegionMin;
         public Vector3 AnimRegionMax;
 
-        public GFSkeletonMot   SkeletalAnimation;
-        public GFMaterialMot   MaterialAnimation;
+        public GFSkeletonMot SkeletalAnimation;
+        public GFMaterialMot MaterialAnimation;
         public GFVisibilityMot VisibilityAnimation;
 
         public int Index;
@@ -50,7 +50,7 @@ namespace SPICA.Formats.GFL2.Motion
 
             long Position = Reader.BaseStream.Position;
 
-            uint MagicNumber  = Reader.ReadUInt32();
+            uint MagicNumber = Reader.ReadUInt32();
             uint SectionCount = Reader.ReadUInt32();
 
             Section[] AnimSections = new Section[SectionCount];
@@ -61,7 +61,7 @@ namespace SPICA.Formats.GFL2.Motion
                 {
                     SectName = (Sect)Reader.ReadUInt32(),
 
-                    Length  = Reader.ReadUInt32(),
+                    Length = Reader.ReadUInt32(),
                     Address = Reader.ReadUInt32()
                 };
             }
@@ -101,12 +101,12 @@ namespace SPICA.Formats.GFL2.Motion
             {
                 GFSkeleton.Add(new GFBone()
                 {
-                    Name        = Bone.Name,
-                    Parent      = Bone.ParentIndex != -1 ? Skeleton[Bone.ParentIndex].Name : string.Empty,
-                    Flags       = (byte)(Bone.ParentIndex == -1 ? 2 : 1), //TODO: Fix, 2 = Identity and 1 Normal bone?
+                    Name = Bone.Name,
+                    Parent = Bone.ParentIndex != -1 ? Skeleton[Bone.ParentIndex].Name : string.Empty,
+                    Flags = (byte)(Bone.ParentIndex == -1 ? 2 : 1), //TODO: Fix, 2 = Identity and 1 Normal bone?
                     Translation = Bone.Translation,
-                    Rotation    = Bone.Rotation,
-                    Scale       = Bone.Scale,
+                    Rotation = Bone.Rotation,
+                    Scale = Bone.Scale,
                 });
             }
 

@@ -25,18 +25,22 @@ namespace SPICA.Math3D
 
         public RGBA(uint Param)
         {
-            R = (byte)(Param >>  0);
-            G = (byte)(Param >>  8);
+            R = (byte)(Param >> 0);
+            G = (byte)(Param >> 8);
             B = (byte)(Param >> 16);
             A = (byte)(Param >> 24);
         }
 
-        public RGBA(BinaryReader Reader)
+        public RGBA(ref StreamWriter outputFile, BinaryReader Reader)
         {
+            long position = outputFile.BaseStream.Position;
+
             R = Reader.ReadByte();
             G = Reader.ReadByte();
             B = Reader.ReadByte();
             A = Reader.ReadByte();
+
+            outputFile.WriteLine(String.Format("{0} | RGBA: {1}", position, this));
         }
 
         public override string ToString()
@@ -48,7 +52,7 @@ namespace SPICA.Math3D
         {
             uint Param;
 
-            Param  = (uint)R << 0;
+            Param = (uint)R << 0;
             Param |= (uint)G << 8;
             Param |= (uint)B << 16;
             Param |= (uint)A << 24;

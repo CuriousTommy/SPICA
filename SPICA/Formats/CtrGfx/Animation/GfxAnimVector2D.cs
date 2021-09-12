@@ -1,5 +1,6 @@
 ﻿using SPICA.Serialization;
 using SPICA.Serialization.Attributes;
+using System.IO;
 
 namespace SPICA.Formats.CtrGfx.Animation
 {
@@ -19,9 +20,9 @@ namespace SPICA.Formats.CtrGfx.Animation
             };
         }
 
-        void ICustomSerialization.Deserialize(BinaryDeserializer Deserializer)
+        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer)
         {
-            GfxAnimVector.SetVector(Deserializer, Vector);
+            GfxAnimVector.SetVector(ref OutputFile, Deserializer, Vector);
         }
 
         bool ICustomSerialization.Serialize(BinarySerializer Serializer)

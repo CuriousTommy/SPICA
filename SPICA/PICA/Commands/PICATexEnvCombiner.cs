@@ -7,7 +7,7 @@
 
         public PICATexEnvCombiner(uint Param)
         {
-            Color = (PICATextureCombinerMode)((Param >>  0) & 0xf);
+            Color = (PICATextureCombinerMode)((Param >> 0) & 0xf);
             Alpha = (PICATextureCombinerMode)((Param >> 16) & 0xf);
         }
 
@@ -15,7 +15,7 @@
         {
             uint Param = 0;
 
-            Param |= ((uint)Color & 0xf) <<  0;
+            Param |= ((uint)Color & 0xf) << 0;
             Param |= ((uint)Alpha & 0xf) << 16;
 
             return Param;

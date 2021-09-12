@@ -15,7 +15,8 @@ namespace SPICA.Formats.GFLX
         List<byte[]> Files;
         List<string> Names;
 
-        public GFLXPack(BinaryReader br) {
+        public GFLXPack(BinaryReader br)
+        {
             //
         }
 
@@ -80,7 +81,8 @@ namespace SPICA.Formats.GFLX
             return Files[ind];
         }
 
-        public string GetName(int ind) {
+        public string GetName(int ind)
+        {
             if (ind >= FileCnt) return string.Empty;
             return Names[ind];
         }

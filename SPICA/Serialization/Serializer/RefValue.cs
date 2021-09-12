@@ -30,9 +30,9 @@ namespace SPICA.Serialization.Serializer
 
             Parent = null;
 
-            Position      = -1;
-            HasLength     = false;
-            HasTwoPtr     = false;
+            Position = -1;
+            HasLength = false;
+            HasTwoPtr = false;
             PointerOffset = 0;
         }
     }

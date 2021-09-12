@@ -16,10 +16,10 @@ namespace SPICA.WinForms.GUI.Viewport
         public Shader()
         {
             FragShaderHandle = GL.CreateShader(ShaderType.FragmentShader);
-            VtxShaderHandle  = GL.CreateShader(ShaderType.VertexShader);
+            VtxShaderHandle = GL.CreateShader(ShaderType.VertexShader);
 
             GL.ShaderSource(FragShaderHandle, Resources.FragmentShader);
-            GL.ShaderSource(VtxShaderHandle,  Resources.VertexShader);
+            GL.ShaderSource(VtxShaderHandle, Resources.VertexShader);
 
             GL.CompileShader(FragShaderHandle);
             GL.CompileShader(VtxShaderHandle);

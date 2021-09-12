@@ -22,12 +22,12 @@ namespace SPICA.Formats.Common
 
             if (GetBit(Value.Name, Bit))
             {
-                Value.LeftNodeIndex  = (ushort)Traverse(Value.Name, Nodes, out Root, Bit);
+                Value.LeftNodeIndex = (ushort)Traverse(Value.Name, Nodes, out Root, Bit);
                 Value.RightNodeIndex = (ushort)Nodes.Count;
             }
             else
             {
-                Value.LeftNodeIndex  = (ushort)Nodes.Count;
+                Value.LeftNodeIndex = (ushort)Nodes.Count;
                 Value.RightNodeIndex = (ushort)Traverse(Value.Name, Nodes, out Root, Bit);
             }
 
@@ -36,7 +36,7 @@ namespace SPICA.Formats.Common
             if (GetBit(Value.Name, Root.ReferenceBit))
                 Root.RightNodeIndex = (ushort)Nodes.Count;
             else
-                Root.LeftNodeIndex  = (ushort)Nodes.Count;
+                Root.LeftNodeIndex = (ushort)Nodes.Count;
 
             Nodes.Add(Value);
 
@@ -68,7 +68,7 @@ namespace SPICA.Formats.Common
         private static bool GetBit(string Name, uint Bit)
         {
             int Position = (int)(Bit >> 3);
-            int CharBit  = (int)(Bit &  7);
+            int CharBit = (int)(Bit & 7);
 
             if (Name != null && Position < Name.Length)
                 return ((Name[Position] >> CharBit) & 1) != 0;

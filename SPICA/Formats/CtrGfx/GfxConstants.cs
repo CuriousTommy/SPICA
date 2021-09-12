@@ -2,7 +2,7 @@
 {
     class GfxConstants
     {
-        public const ushort ByteOrderMark   = 0xfeff;
+        public const ushort ByteOrderMark = 0xfeff;
         public const ushort GfxHeaderLength = 0x14;
 
         //Revision numbers

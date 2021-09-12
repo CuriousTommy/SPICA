@@ -72,7 +72,7 @@ namespace SPICA.WinForms.GUI
                 Max = value;
 
                 if (ScrollY > Max)
-                    Value = Max; 
+                    Value = Max;
                 else
                     CalculateBarHeight();
             }

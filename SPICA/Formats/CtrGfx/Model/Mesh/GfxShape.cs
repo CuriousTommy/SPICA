@@ -1,5 +1,4 @@
-﻿using SPICA.Formats.Common;
-using SPICA.Serialization.Attributes;
+﻿using SPICA.Serialization.Attributes;
 
 using System.Collections.Generic;
 using System.Numerics;

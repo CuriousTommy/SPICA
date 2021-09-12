@@ -20,20 +20,20 @@ namespace SPICA.Rendering
 {
     public class Model : IDisposable
     {
-        internal Renderer        Renderer;
-        internal H3DModel        BaseModel;
-        internal List<Mesh>      Meshes0;
-        internal List<Mesh>      Meshes1;
-        internal List<Mesh>      Meshes2;
-        internal List<Mesh>      Meshes3;
-        internal List<Shader>    Shaders;
-        internal Matrix4[]       InverseTransforms;
-        internal Matrix4[]       SkeletonTransforms;
+        internal Renderer Renderer;
+        internal H3DModel BaseModel;
+        internal List<Mesh> Meshes0;
+        internal List<Mesh> Meshes1;
+        internal List<Mesh> Meshes2;
+        internal List<Mesh> Meshes3;
+        internal List<Shader> Shaders;
+        internal Matrix4[] InverseTransforms;
+        internal Matrix4[] SkeletonTransforms;
         internal MaterialState[] MaterialStates;
-        internal bool[]          Visibilities;
+        internal bool[] Visibilities;
 
-        public readonly SkeletalAnimation   SkeletalAnim;
-        public readonly MaterialAnimation   MaterialAnim;
+        public readonly SkeletalAnimation SkeletalAnim;
+        public readonly MaterialAnimation MaterialAnim;
         public readonly VisibilityAnimation VisibilityAnim;
 
         private Dictionary<int, int> ShaderHashes;
@@ -42,7 +42,7 @@ namespace SPICA.Rendering
 
         public Model(Renderer Renderer, H3DModel BaseModel)
         {
-            this.Renderer  = Renderer;
+            this.Renderer = Renderer;
             this.BaseModel = BaseModel;
 
             Meshes0 = new List<Mesh>();
@@ -67,8 +67,8 @@ namespace SPICA.Rendering
             AddMeshes(Meshes2, BaseModel.MeshesLayer2);
             AddMeshes(Meshes3, BaseModel.MeshesLayer3);
 
-            SkeletalAnim   = new SkeletalAnimation(BaseModel.Skeleton);
-            MaterialAnim   = new MaterialAnimation(BaseModel.Materials);
+            SkeletalAnim = new SkeletalAnimation(BaseModel.Skeleton);
+            MaterialAnim = new MaterialAnimation(BaseModel.Materials);
             VisibilityAnim = new VisibilityAnimation(
                 BaseModel.MeshNodesTree,
                 BaseModel.MeshNodesVisibility);
@@ -143,12 +143,12 @@ namespace SPICA.Rendering
                 GL.Uniform1(GL.GetUniformLocation(Shdr.Handle, "Textures[1]"), 1);
                 GL.Uniform1(GL.GetUniformLocation(Shdr.Handle, "Textures[2]"), 2);
                 GL.Uniform1(GL.GetUniformLocation(Shdr.Handle, "TextureCube"), 3);
-                GL.Uniform1(GL.GetUniformLocation(Shdr.Handle, "LUTs[0]"),     4);
-                GL.Uniform1(GL.GetUniformLocation(Shdr.Handle, "LUTs[1]"),     5);
-                GL.Uniform1(GL.GetUniformLocation(Shdr.Handle, "LUTs[2]"),     6);
-                GL.Uniform1(GL.GetUniformLocation(Shdr.Handle, "LUTs[3]"),     7);
-                GL.Uniform1(GL.GetUniformLocation(Shdr.Handle, "LUTs[4]"),     8);
-                GL.Uniform1(GL.GetUniformLocation(Shdr.Handle, "LUTs[5]"),     9);
+                GL.Uniform1(GL.GetUniformLocation(Shdr.Handle, "LUTs[0]"), 4);
+                GL.Uniform1(GL.GetUniformLocation(Shdr.Handle, "LUTs[1]"), 5);
+                GL.Uniform1(GL.GetUniformLocation(Shdr.Handle, "LUTs[2]"), 6);
+                GL.Uniform1(GL.GetUniformLocation(Shdr.Handle, "LUTs[3]"), 7);
+                GL.Uniform1(GL.GetUniformLocation(Shdr.Handle, "LUTs[4]"), 8);
+                GL.Uniform1(GL.GetUniformLocation(Shdr.Handle, "LUTs[5]"), 9);
 
                 for (int i = 0; i < 3; i++)
                 {
@@ -320,7 +320,7 @@ namespace SPICA.Rendering
 
             Equals &= LHS.FresnelSelector == RHS.FresnelSelector;
 
-            Equals &= LHS.BumpMode    == RHS.BumpMode;
+            Equals &= LHS.BumpMode == RHS.BumpMode;
             Equals &= LHS.BumpTexture == RHS.BumpTexture;
 
             Equals &= LHS.Constant0Assignment == RHS.Constant0Assignment;
@@ -330,36 +330,36 @@ namespace SPICA.Rendering
             Equals &= LHS.Constant4Assignment == RHS.Constant4Assignment;
             Equals &= LHS.Constant5Assignment == RHS.Constant5Assignment;
 
-            Equals &= LHS.LUTInputAbsolute.Dist0   == RHS.LUTInputAbsolute.Dist0;
-            Equals &= LHS.LUTInputAbsolute.Dist1   == RHS.LUTInputAbsolute.Dist1;
+            Equals &= LHS.LUTInputAbsolute.Dist0 == RHS.LUTInputAbsolute.Dist0;
+            Equals &= LHS.LUTInputAbsolute.Dist1 == RHS.LUTInputAbsolute.Dist1;
             Equals &= LHS.LUTInputAbsolute.Fresnel == RHS.LUTInputAbsolute.Fresnel;
             Equals &= LHS.LUTInputAbsolute.ReflecR == RHS.LUTInputAbsolute.ReflecR;
             Equals &= LHS.LUTInputAbsolute.ReflecG == RHS.LUTInputAbsolute.ReflecG;
             Equals &= LHS.LUTInputAbsolute.ReflecB == RHS.LUTInputAbsolute.ReflecB;
 
-            Equals &= LHS.LUTInputSelection.Dist0   == RHS.LUTInputSelection.Dist0;
-            Equals &= LHS.LUTInputSelection.Dist1   == RHS.LUTInputSelection.Dist1;
+            Equals &= LHS.LUTInputSelection.Dist0 == RHS.LUTInputSelection.Dist0;
+            Equals &= LHS.LUTInputSelection.Dist1 == RHS.LUTInputSelection.Dist1;
             Equals &= LHS.LUTInputSelection.Fresnel == RHS.LUTInputSelection.Fresnel;
             Equals &= LHS.LUTInputSelection.ReflecR == RHS.LUTInputSelection.ReflecR;
             Equals &= LHS.LUTInputSelection.ReflecG == RHS.LUTInputSelection.ReflecG;
             Equals &= LHS.LUTInputSelection.ReflecB == RHS.LUTInputSelection.ReflecB;
 
-            Equals &= LHS.LUTInputScale.Dist0   == RHS.LUTInputScale.Dist0;
-            Equals &= LHS.LUTInputScale.Dist1   == RHS.LUTInputScale.Dist1;
+            Equals &= LHS.LUTInputScale.Dist0 == RHS.LUTInputScale.Dist0;
+            Equals &= LHS.LUTInputScale.Dist1 == RHS.LUTInputScale.Dist1;
             Equals &= LHS.LUTInputScale.Fresnel == RHS.LUTInputScale.Fresnel;
             Equals &= LHS.LUTInputScale.ReflecR == RHS.LUTInputScale.ReflecR;
             Equals &= LHS.LUTInputScale.ReflecG == RHS.LUTInputScale.ReflecG;
             Equals &= LHS.LUTInputScale.ReflecB == RHS.LUTInputScale.ReflecB;
 
-            Equals &= LHS.LUTDist0TableName   == RHS.LUTDist0TableName;
-            Equals &= LHS.LUTDist1TableName   == RHS.LUTDist1TableName;
+            Equals &= LHS.LUTDist0TableName == RHS.LUTDist0TableName;
+            Equals &= LHS.LUTDist1TableName == RHS.LUTDist1TableName;
             Equals &= LHS.LUTFresnelTableName == RHS.LUTFresnelTableName;
             Equals &= LHS.LUTReflecRTableName == RHS.LUTReflecRTableName;
             Equals &= LHS.LUTReflecGTableName == RHS.LUTReflecGTableName;
             Equals &= LHS.LUTReflecBTableName == RHS.LUTReflecBTableName;
 
-            Equals &= LHS.LUTDist0SamplerName   == RHS.LUTDist0SamplerName;
-            Equals &= LHS.LUTDist1SamplerName   == RHS.LUTDist1SamplerName;
+            Equals &= LHS.LUTDist0SamplerName == RHS.LUTDist0SamplerName;
+            Equals &= LHS.LUTDist1SamplerName == RHS.LUTDist1SamplerName;
             Equals &= LHS.LUTFresnelSamplerName == RHS.LUTFresnelSamplerName;
             Equals &= LHS.LUTReflecRSamplerName == RHS.LUTReflecRSamplerName;
             Equals &= LHS.LUTReflecGSamplerName == RHS.LUTReflecGSamplerName;
@@ -422,7 +422,7 @@ namespace SPICA.Rendering
                     }
                 }
 
-                int LightsCountLocation  = GL.GetUniformLocation(Shader.Handle, "LightsCount");
+                int LightsCountLocation = GL.GetUniformLocation(Shader.Handle, "LightsCount");
 
                 GL.Uniform1(LightsCountLocation, fi);
             }
@@ -430,33 +430,33 @@ namespace SPICA.Rendering
 
         private void SetFragmentLight(Shader Shader, Light Light, int fi)
         {
-            int PositionLocation     = GL.GetUniformLocation(Shader.Handle, $"Lights[{fi}].Position");
-            int DirectionLocation    = GL.GetUniformLocation(Shader.Handle, $"Lights[{fi}].Direction");
-            int AmbientLocation      = GL.GetUniformLocation(Shader.Handle, $"Lights[{fi}].Ambient");
-            int DiffuseLocation      = GL.GetUniformLocation(Shader.Handle, $"Lights[{fi}].Diffuse");
-            int Specular0Location    = GL.GetUniformLocation(Shader.Handle, $"Lights[{fi}].Specular0");
-            int Specular1Location    = GL.GetUniformLocation(Shader.Handle, $"Lights[{fi}].Specular1");
-            int LUTInputLocation     = GL.GetUniformLocation(Shader.Handle, $"Lights[{fi}].AngleLUTInput");
-            int LUTScaleLocation     = GL.GetUniformLocation(Shader.Handle, $"Lights[{fi}].AngleLUTScale");
-            int AttScaleLocation     = GL.GetUniformLocation(Shader.Handle, $"Lights[{fi}].AttScale");
-            int AttBiasLocation      = GL.GetUniformLocation(Shader.Handle, $"Lights[{fi}].AttBias");
-            int DistAttEnbLocation   = GL.GetUniformLocation(Shader.Handle, $"Lights[{fi}].DistAttEnb");
+            int PositionLocation = GL.GetUniformLocation(Shader.Handle, $"Lights[{fi}].Position");
+            int DirectionLocation = GL.GetUniformLocation(Shader.Handle, $"Lights[{fi}].Direction");
+            int AmbientLocation = GL.GetUniformLocation(Shader.Handle, $"Lights[{fi}].Ambient");
+            int DiffuseLocation = GL.GetUniformLocation(Shader.Handle, $"Lights[{fi}].Diffuse");
+            int Specular0Location = GL.GetUniformLocation(Shader.Handle, $"Lights[{fi}].Specular0");
+            int Specular1Location = GL.GetUniformLocation(Shader.Handle, $"Lights[{fi}].Specular1");
+            int LUTInputLocation = GL.GetUniformLocation(Shader.Handle, $"Lights[{fi}].AngleLUTInput");
+            int LUTScaleLocation = GL.GetUniformLocation(Shader.Handle, $"Lights[{fi}].AngleLUTScale");
+            int AttScaleLocation = GL.GetUniformLocation(Shader.Handle, $"Lights[{fi}].AttScale");
+            int AttBiasLocation = GL.GetUniformLocation(Shader.Handle, $"Lights[{fi}].AttBias");
+            int DistAttEnbLocation = GL.GetUniformLocation(Shader.Handle, $"Lights[{fi}].DistAttEnb");
             int TwoSidedDiffLocation = GL.GetUniformLocation(Shader.Handle, $"Lights[{fi}].TwoSidedDiff");
-            int DirectionalLocation  = GL.GetUniformLocation(Shader.Handle, $"Lights[{fi}].Directional");
+            int DirectionalLocation = GL.GetUniformLocation(Shader.Handle, $"Lights[{fi}].Directional");
 
-            GL.Uniform3(PositionLocation,     Light.Position);
-            GL.Uniform3(DirectionLocation,    Light.Direction);
-            GL.Uniform4(AmbientLocation,      Light.Ambient);
-            GL.Uniform4(DiffuseLocation,      Light.Diffuse);
-            GL.Uniform4(Specular0Location,    Light.Specular0);
-            GL.Uniform4(Specular1Location,    Light.Specular1);
-            GL.Uniform1(LUTInputLocation,     Light.AngleLUTInput);
-            GL.Uniform1(LUTScaleLocation,     Light.AngleLUTScale);
-            GL.Uniform1(AttScaleLocation,     Light.AttenuationScale);
-            GL.Uniform1(AttBiasLocation,      Light.AttenuationBias);
-            GL.Uniform1(DistAttEnbLocation,   Light.DistAttEnabled  ? 1 : 0);
+            GL.Uniform3(PositionLocation, Light.Position);
+            GL.Uniform3(DirectionLocation, Light.Direction);
+            GL.Uniform4(AmbientLocation, Light.Ambient);
+            GL.Uniform4(DiffuseLocation, Light.Diffuse);
+            GL.Uniform4(Specular0Location, Light.Specular0);
+            GL.Uniform4(Specular1Location, Light.Specular1);
+            GL.Uniform1(LUTInputLocation, Light.AngleLUTInput);
+            GL.Uniform1(LUTScaleLocation, Light.AngleLUTScale);
+            GL.Uniform1(AttScaleLocation, Light.AttenuationScale);
+            GL.Uniform1(AttBiasLocation, Light.AttenuationBias);
+            GL.Uniform1(DistAttEnbLocation, Light.DistAttEnabled ? 1 : 0);
             GL.Uniform1(TwoSidedDiffLocation, Light.TwoSidedDiffuse ? 1 : 0);
-            GL.Uniform1(DirectionalLocation,  Light.Directional     ? 1 : 0);
+            GL.Uniform1(DirectionalLocation, Light.Directional ? 1 : 0);
 
             Renderer.TryBindLUT(10 + fi * 2,
                 Light.AngleLUTTableName,
@@ -571,9 +571,9 @@ namespace SPICA.Rendering
                     MS.Transforms[1].Row3.X,
                     MS.Transforms[1].Row3.Y));
 
-                GL.Uniform4(GL.GetUniformLocation(Shader.Handle, FragmentShaderGenerator.EmissionUniform),  MS.Emission);
-                GL.Uniform4(GL.GetUniformLocation(Shader.Handle, FragmentShaderGenerator.AmbientUniform),   MS.Ambient);
-                GL.Uniform4(GL.GetUniformLocation(Shader.Handle, FragmentShaderGenerator.DiffuseUniform),   MS.Diffuse);
+                GL.Uniform4(GL.GetUniformLocation(Shader.Handle, FragmentShaderGenerator.EmissionUniform), MS.Emission);
+                GL.Uniform4(GL.GetUniformLocation(Shader.Handle, FragmentShaderGenerator.AmbientUniform), MS.Ambient);
+                GL.Uniform4(GL.GetUniformLocation(Shader.Handle, FragmentShaderGenerator.DiffuseUniform), MS.Diffuse);
                 GL.Uniform4(GL.GetUniformLocation(Shader.Handle, FragmentShaderGenerator.Specular0Uniform), MS.Specular0);
                 GL.Uniform4(GL.GetUniformLocation(Shader.Handle, FragmentShaderGenerator.Specular1Uniform), MS.Specular1);
                 GL.Uniform4(GL.GetUniformLocation(Shader.Handle, FragmentShaderGenerator.Constant0Uniform), MS.Constant0);

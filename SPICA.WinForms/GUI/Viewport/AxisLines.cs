@@ -17,12 +17,12 @@ namespace SPICA.WinForms.GUI.Viewport
         public Matrix4 Transform;
 
         private Renderer Renderer;
-        private Shader   Shader;
+        private Shader Shader;
 
         public AxisLines(Renderer Renderer, Shader Shader)
         {
             this.Renderer = Renderer;
-            this.Shader   = Shader;
+            this.Shader = Shader;
 
             Vector4[] Buffer = new Vector4[]
             {
