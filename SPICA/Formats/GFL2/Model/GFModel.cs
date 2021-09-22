@@ -89,7 +89,7 @@ namespace SPICA.Formats.GFL2.Model
 
             for (int Index = 0; Index < LUTsCount; Index++)
             {
-                LUTs.Add(new GFLUT(Reader, LUTLength));
+                LUTs.Add(new GFLUT(ref outputFile, Reader, LUTLength));
             }
 
             for (int Index = 0; Index < MaterialNames.Length; Index++)
@@ -99,7 +99,7 @@ namespace SPICA.Formats.GFL2.Model
 
             for (int Index = 0; Index < MeshNames.Length; Index++)
             {
-                Meshes.Add(new GFMesh(Reader));
+                Meshes.Add(new GFMesh(ref outputFile, Reader));
             }
 
             foreach (GFLUT LUT in LUTs)

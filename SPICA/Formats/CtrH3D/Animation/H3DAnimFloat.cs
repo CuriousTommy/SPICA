@@ -15,9 +15,9 @@ namespace SPICA.Formats.CtrH3D.Animation
             _Value = new H3DFloatKeyFrameGroup();
         }
 
-        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer)
+        void ICustomSerialization.Deserialize(ref StreamWriter outputFile, BinaryDeserializer Deserializer)
         {
-            H3DAnimVector.SetVector(ref OutputFile, Deserializer, ref _Value);
+            H3DAnimVector.SetVector(ref outputFile, Deserializer, ref _Value);
         }
 
         bool ICustomSerialization.Serialize(BinarySerializer Serializer)

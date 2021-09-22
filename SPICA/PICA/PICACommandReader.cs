@@ -1,7 +1,8 @@
 ﻿using SPICA.Formats.Common;
 using SPICA.PICA.Commands;
-
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Numerics;
 
 namespace SPICA.PICA
@@ -101,7 +102,7 @@ namespace SPICA.PICA
         public Vector4[] VtxShaderUniforms => VtxShader.Uniforms;
         public Vector4[] GeoShaderUniforms => GeoShader.Uniforms;
 
-        public PICACommandReader(uint[] Cmds)
+        public PICACommandReader(uint[] Cmds, ref StreamWriter outputFile)
         {
             Commands = new List<PICACommand>();
 
@@ -113,12 +114,18 @@ namespace SPICA.PICA
             while (Index < Cmds.Length)
             {
                 uint Parameter = Cmds[Index++];
+                outputFile.WriteLine(String.Format("PICACommandReader(...) | Parameter = {0}", Parameter));
                 uint Command = Cmds[Index++];
+                outputFile.WriteLine(String.Format("PICACommandReader(...) | Command = {0}", Command));
 
                 uint Id = (Command >> 0) & 0xffff;
+                outputFile.WriteLine(String.Format("PICACommandReader(...) | Id = {0}", Id));
                 uint Mask = (Command >> 16) & 0xf;
+                outputFile.WriteLine(String.Format("PICACommandReader(...) | Mask = {0}", Mask));
                 uint ExtraParams = (Command >> 20) & 0x7ff;
+                outputFile.WriteLine(String.Format("PICACommandReader(...) | ExtraParams = {0}", ExtraParams));
                 bool Consecutive = (Command >> 31) != 0;
+                outputFile.WriteLine(String.Format("PICACommandReader(...) | Consecutive = {0}", Consecutive));
 
                 if (Consecutive)
                 {

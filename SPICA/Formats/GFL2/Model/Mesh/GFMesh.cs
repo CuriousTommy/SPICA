@@ -45,25 +45,25 @@ namespace SPICA.Formats.GFL2.Model.Mesh
             SubMeshes = new List<GFSubMesh>();
         }
 
-        public GFMesh(LogReader Reader) : this()
+        public GFMesh(ref StreamWriter outputFile, LogReader Reader) : this()
         {
             GFSection MeshSection = new GFSection(Reader);
 
             long Position = Reader.BaseStream.Position;
 
-            uint NameHash = Reader.ReadUInt32();
+            uint NameHash = Reader.ReadUInt32(ref outputFile, "GFMesh(...) | NameHash");
             string NameStr = Reader.ReadPaddedString(0x40);
 
             Name = NameStr;
 
-            Reader.ReadUInt32();
+            Reader.ReadUInt32(ref outputFile, "GFMesh(...) | [no variable]");
 
-            BBoxMinVector = Reader.ReadVector4(); //Is it right? seems to be 0, 0, 0, 1
-            BBoxMaxVector = Reader.ReadVector4(); //Is it right? seems to be 0, 0, 0, 1
+            BBoxMinVector = Reader.ReadVector4(ref outputFile, "GFMesh(...) | BBoxMinVector"); //Is it right? seems to be 0, 0, 0, 1
+            BBoxMaxVector = Reader.ReadVector4(ref outputFile, "GFMesh(...) | BBoxMaxVector"); //Is it right? seems to be 0, 0, 0, 1
 
-            uint SubMeshesCount = Reader.ReadUInt32();
+            uint SubMeshesCount = Reader.ReadUInt32(ref outputFile, "GFMesh(...) | SubMeshesCount");
 
-            BoneIndicesPerVertex = Reader.ReadInt32();
+            BoneIndicesPerVertex = Reader.ReadInt32(ref outputFile, "GFMesh(...) | BoneIndicesPerVertex");
 
             Reader.BaseStream.Seek(0x10, SeekOrigin.Current); //Padding
 
@@ -76,16 +76,16 @@ namespace SPICA.Formats.GFL2.Model.Mesh
 
             do
             {
-                CommandsLength = Reader.ReadUInt32();
-                CommandIndex = Reader.ReadUInt32();
-                CommandsCount = Reader.ReadUInt32();
-                Padding = Reader.ReadUInt32();
+                CommandsLength = Reader.ReadUInt32(ref outputFile, "GFMesh(...) | CommandsLength");
+                CommandIndex = Reader.ReadUInt32(ref outputFile, "GFMesh(...) | CommandIndex");
+                CommandsCount = Reader.ReadUInt32(ref outputFile, "GFMesh(...) | CommandsCount");
+                Padding = Reader.ReadUInt32(ref outputFile, "GFMesh(...) | Padding");
 
                 uint[] Commands = new uint[CommandsLength >> 2];
 
                 for (int Index = 0; Index < Commands.Length; Index++)
                 {
-                    Commands[Index] = Reader.ReadUInt32();
+                    Commands[Index] = Reader.ReadUInt32(ref outputFile, string.Format("GFMesh(...) | Commands[%d]", Index));
                 }
 
                 CmdList.Add(Commands);
@@ -100,22 +100,22 @@ namespace SPICA.Formats.GFL2.Model.Mesh
             {
                 GFSubMesh SM = new GFSubMesh();
 
-                uint SMNameHash = Reader.ReadUInt32();
+                uint SMNameHash = Reader.ReadUInt32(ref outputFile, "GFMesh(...) | SMNameHash");
 
-                SM.Name = Reader.ReadIntLengthString();
-                SM.BoneIndicesCount = Reader.ReadByte();
+                SM.Name = Reader.ReadInt32LengthString(ref outputFile, "GFMesh(...) | SM.Name");
+                SM.BoneIndicesCount = Reader.ReadByte(ref outputFile, "GFMesh(...) | SM.BoneIndicesCount");
 
                 for (int Bone = 0; Bone < 0x1f; Bone++)
                 {
-                    SM.BoneIndices[Bone] = Reader.ReadByte();
+                    SM.BoneIndices[Bone] = Reader.ReadByte(ref outputFile, "GFMesh(...) | SM.BoneIndice");
                 }
 
                 SMSizes[MeshIndex] = new SubMeshSize()
                 {
-                    VerticesCount = Reader.ReadInt32(),
-                    IndicesCount = Reader.ReadInt32(),
-                    VerticesLength = Reader.ReadInt32(),
-                    IndicesLength = Reader.ReadInt32()
+                    VerticesCount = Reader.ReadInt32(ref outputFile, "GFMesh(...) | SubMeshSize.VerticesCount"),
+                    IndicesCount = Reader.ReadInt32(ref outputFile, "GFMesh(...) | SubMeshSize.IndicesCount"),
+                    VerticesLength = Reader.ReadInt32(ref outputFile, "GFMesh(...) | SubMeshSize.VerticesLength"),
+                    IndicesLength = Reader.ReadInt32(ref outputFile, "GFMesh(...) | SubMeshSize.IndicesLength")
                 };
 
                 SubMeshes.Add(SM);
@@ -131,7 +131,7 @@ namespace SPICA.Formats.GFL2.Model.Mesh
 
                 PICACommandReader CmdReader;
 
-                CmdReader = new PICACommandReader(EnableCommands);
+                CmdReader = new PICACommandReader(EnableCommands, ref outputFile);
 
                 PICAVectorFloat24[] Fixed = new PICAVectorFloat24[12];
 
@@ -213,7 +213,7 @@ namespace SPICA.Formats.GFL2.Model.Mesh
                     }
                 }
 
-                CmdReader = new PICACommandReader(IndexCommands);
+                CmdReader = new PICACommandReader(IndexCommands, ref outputFile);
 
                 uint BufferAddress = 0;
                 uint BufferCount = 0;
@@ -243,9 +243,9 @@ namespace SPICA.Formats.GFL2.Model.Mesh
                 for (int Index = 0; Index < BufferCount; Index++)
                 {
                     if ((BufferAddress >> 31) != 0)
-                        SM.Indices[Index] = Reader.ReadUInt16();
+                        SM.Indices[Index] = Reader.ReadUInt16(ref outputFile, string.Format("GFMesh(...) | SM.Indices[%d]", Index));
                     else
-                        SM.Indices[Index] = Reader.ReadByte();
+                        SM.Indices[Index] = Reader.ReadByte(ref outputFile, string.Format("GFMesh(...) | SM.Indices[%d]", Index));
                 }
 
                 Reader.BaseStream.Seek(IndexAddress + SMSizes[MeshIndex].IndicesLength, SeekOrigin.Begin);

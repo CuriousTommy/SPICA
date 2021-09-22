@@ -21,25 +21,25 @@ namespace SPICA.Formats.CtrGfx.Animation
             Values = new List<bool>();
         }
 
-        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer)
+        void ICustomSerialization.Deserialize(ref StreamWriter outputFile, BinaryDeserializer Deserializer)
         {
-            Deserializer.BaseStream.Seek(Deserializer.ReadPointer(), SeekOrigin.Begin);
+            Deserializer.BaseStream.Seek(Deserializer.ReadPointer(ref outputFile), SeekOrigin.Begin);
 
-            StartFrame = Deserializer.Reader.ReadSingle(ref OutputFile);
-            EndFrame = Deserializer.Reader.ReadSingle(ref OutputFile);
+            StartFrame = Deserializer.Reader.ReadSingle(ref outputFile, "GfxAnimBoolean.StartFrame");
+            EndFrame = Deserializer.Reader.ReadSingle(ref outputFile, "GfxAnimBoolean.EndFrame");
 
-            PreRepeat = (GfxLoopType)Deserializer.Reader.ReadByte(ref OutputFile);
-            PostRepeat = (GfxLoopType)Deserializer.Reader.ReadByte(ref OutputFile);
+            PreRepeat = (GfxLoopType)Deserializer.Reader.ReadByte(ref outputFile, "GfxAnimBoolean.PreRepeat");
+            PostRepeat = (GfxLoopType)Deserializer.Reader.ReadByte(ref outputFile, "GfxAnimBoolean.PostRepeat");
 
-            ushort Padding = Deserializer.Reader.ReadUInt16(ref OutputFile);
+            ushort Padding = Deserializer.Reader.ReadUInt16(ref outputFile, "GfxAnimBoolean.Deserialize(...) | Padding");
 
-            Deserializer.BaseStream.Seek(Deserializer.ReadPointer(), SeekOrigin.Begin);
+            Deserializer.BaseStream.Seek(Deserializer.ReadPointer(ref outputFile, "GfxAnimBoolean.Deserialize(...) | Deserializer.ReadPointer(...) -> uint"), SeekOrigin.Begin);
 
             BitReader BR = new BitReader(Deserializer.Reader);
 
             for (int i = 0; i < EndFrame - StartFrame; i++)
             {
-                Values.Add(BR.ReadBit(ref OutputFile));
+                Values.Add(BR.ReadBit(ref outputFile));
             }
         }
 

@@ -7,11 +7,11 @@ namespace SPICA.Formats.CtrGfx.Animation
 {
     static class GfxAnimVector
     {
-        public static void SetVector(ref StreamWriter OutputFile, BinaryDeserializer Deserializer, GfxFloatKeyFrameGroup[] Vector)
+        public static void SetVector(ref StreamWriter outputFile, BinaryDeserializer Deserializer, GfxFloatKeyFrameGroup[] Vector)
         {
             long Position = Deserializer.BaseStream.Position;
 
-            uint Flags = GetFlagsFromElem(Deserializer, Position);
+            uint Flags = GetFlagsFromElem(ref outputFile, Deserializer, Position);
 
             uint ConstantMask = 1u;
             uint NotExistMask = 1u << Vector.Length;
@@ -27,7 +27,7 @@ namespace SPICA.Formats.CtrGfx.Animation
 
                 if (Exists)
                 {
-                    Vector[Axis] = GfxFloatKeyFrameGroup.ReadGroup(ref OutputFile, Deserializer, Constant);
+                    Vector[Axis] = GfxFloatKeyFrameGroup.ReadGroup(ref outputFile, Deserializer, Constant);
                 }
 
                 ConstantMask <<= 1;
@@ -35,27 +35,27 @@ namespace SPICA.Formats.CtrGfx.Animation
             }
         }
 
-        public static void SetVector(ref StreamWriter OutputFile, BinaryDeserializer Deserializer, GfxFloatKeyFrameGroup Vector)
+        public static void SetVector(ref StreamWriter outputFile, BinaryDeserializer Deserializer, GfxFloatKeyFrameGroup Vector)
         {
-            uint Flags = GetFlagsFromElem(Deserializer, Deserializer.BaseStream.Position);
+            uint Flags = GetFlagsFromElem(ref outputFile, Deserializer, Deserializer.BaseStream.Position);
 
             bool Constant = (Flags & 1) != 0;
             bool Exists = (Flags & 2) == 0;
 
             if (Exists)
             {
-                Vector = GfxFloatKeyFrameGroup.ReadGroup(ref OutputFile, Deserializer, Constant);
+                Vector = GfxFloatKeyFrameGroup.ReadGroup(ref outputFile, Deserializer, Constant);
             }
         }
 
-        public static uint GetFlagsFromElem(BinaryDeserializer Deserializer, long Position)
+        public static uint GetFlagsFromElem(ref StreamWriter outputFile, BinaryDeserializer Deserializer, long Position)
         {
             SeekToFlags(
                 Deserializer.BaseStream,
                 Deserializer.FileVersion,
                 Position);
 
-            uint Flags = Deserializer.Reader.ReadUInt32();
+            uint Flags = Deserializer.Reader.ReadUInt32(ref outputFile, "GfxAnimVector.GetFlagsFromElem(...) | Flags");
 
             Deserializer.BaseStream.Seek(Position, SeekOrigin.Begin);
 

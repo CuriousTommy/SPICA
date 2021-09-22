@@ -47,11 +47,11 @@ namespace SPICA.Formats.CtrH3D.LUT
             _Table = new float[256];
         }
 
-        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer)
+        void ICustomSerialization.Deserialize(ref StreamWriter outputFile, BinaryDeserializer Deserializer)
         {
             uint Index = 0;
 
-            PICACommandReader Reader = new PICACommandReader(Commands);
+            PICACommandReader Reader = new PICACommandReader(Commands, ref outputFile);
 
             while (Reader.HasCommand)
             {

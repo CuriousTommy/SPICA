@@ -1,4 +1,5 @@
 ﻿using SPICA.Formats.Common;
+using SPICA.Misc;
 using SPICA.PICA;
 using SPICA.PICA.Commands;
 
@@ -62,9 +63,9 @@ namespace SPICA.Formats.GFL2.Model
             _Table = new float[256];
         }
 
-        public GFLUT(BinaryReader Reader, int Length) : this()
+        public GFLUT(ref StreamWriter outputFile, LogReader Reader, int Length) : this()
         {
-            HashId = Reader.ReadUInt32();
+            HashId = Reader.ReadUInt32(ref outputFile);
 
             _Name = $"LUT_{HashId:X8}";
 
@@ -74,12 +75,12 @@ namespace SPICA.Formats.GFL2.Model
 
             for (int i = 0; i < Commands.Length; i++)
             {
-                Commands[i] = Reader.ReadUInt32();
+                Commands[i] = Reader.ReadUInt32(ref outputFile);
             }
 
             uint Index = 0;
 
-            PICACommandReader CmdReader = new PICACommandReader(Commands);
+            PICACommandReader CmdReader = new PICACommandReader(Commands, ref outputFile);
 
             while (CmdReader.HasCommand)
             {

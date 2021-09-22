@@ -34,7 +34,7 @@ namespace SPICA.Formats.CtrGfx.Model.Mesh
 
         [Ignore] public ushort[] Indices;
 
-        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer)
+        void ICustomSerialization.Deserialize(ref StreamWriter outputFile, BinaryDeserializer Deserializer)
         {
             bool IsBuffer16Bits = Format == GfxGLDataType.GL_UNSIGNED_SHORT;
 

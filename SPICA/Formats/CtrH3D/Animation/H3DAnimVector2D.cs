@@ -20,9 +20,9 @@ namespace SPICA.Formats.CtrH3D.Animation
             };
         }
 
-        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer)
+        void ICustomSerialization.Deserialize(ref StreamWriter outputFile, BinaryDeserializer Deserializer)
         {
-            H3DAnimVector.SetVector(ref OutputFile, Deserializer, Vector);
+            H3DAnimVector.SetVector(ref outputFile, Deserializer, Vector);
         }
 
         bool ICustomSerialization.Serialize(BinarySerializer Serializer)

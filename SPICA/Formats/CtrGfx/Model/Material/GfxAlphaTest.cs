@@ -13,9 +13,9 @@ namespace SPICA.Formats.CtrGfx.Model.Material
 
         [Ignore] public PICAAlphaTest Test;
 
-        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer)
+        void ICustomSerialization.Deserialize(ref StreamWriter outputFile, BinaryDeserializer Deserializer)
         {
-            PICACommandReader Reader = new PICACommandReader(Commands);
+            PICACommandReader Reader = new PICACommandReader(Commands, ref outputFile);
 
             while (Reader.HasCommand)
             {

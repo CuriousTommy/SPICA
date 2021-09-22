@@ -51,15 +51,15 @@ namespace SPICA.Formats.GFL2.Shader
 
             Name = Reader.ReadPaddedString(0x40);
 
-            uint Hash = Reader.ReadUInt32();
-            uint Count = Reader.ReadUInt32();
+            uint Hash = Reader.ReadUInt32(ref outputFile);
+            uint Count = Reader.ReadUInt32(ref outputFile);
 
             GFSection.SkipPadding(Reader.BaseStream);
 
-            uint CommandsLength = Reader.ReadUInt32();
-            uint CommandsCount = Reader.ReadUInt32();
-            uint CommandsHash = Reader.ReadUInt32();
-            uint Padding = Reader.ReadUInt32();
+            uint CommandsLength = Reader.ReadUInt32(ref outputFile);
+            uint CommandsCount = Reader.ReadUInt32(ref outputFile);
+            uint CommandsHash = Reader.ReadUInt32(ref outputFile);
+            uint Padding = Reader.ReadUInt32(ref outputFile);
 
             string FileName = Reader.ReadPaddedString(0x40);
 
@@ -67,7 +67,7 @@ namespace SPICA.Formats.GFL2.Shader
 
             for (int Index = 0; Index < Commands.Length; Index++)
             {
-                Commands[Index] = Reader.ReadUInt32();
+                Commands[Index] = Reader.ReadUInt32(ref outputFile);
             }
 
             uint[] OutMap = new uint[7];
@@ -75,7 +75,7 @@ namespace SPICA.Formats.GFL2.Shader
             List<uint> ShaderExecutable = new List<uint>();
             List<ulong> ShaderSwizzles = new List<ulong>();
 
-            PICACommandReader CmdReader = new PICACommandReader(Commands);
+            PICACommandReader CmdReader = new PICACommandReader(Commands, ref outputFile);
 
             while (CmdReader.HasCommand)
             {

@@ -53,11 +53,11 @@ namespace SPICA.Formats.CtrGfx.Animation
             _TranslationZ = new GfxFloatKeyFrameGroup();
         }
 
-        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer)
+        void ICustomSerialization.Deserialize(ref StreamWriter outputFile, BinaryDeserializer Deserializer)
         {
             long Position = Deserializer.BaseStream.Position;
 
-            uint Flags = GfxAnimVector.GetFlagsFromElem(Deserializer, Position);
+            uint Flags = GfxAnimVector.GetFlagsFromElem(ref outputFile, Deserializer, Position);
 
             uint ConstantMask = (uint)GfxAnimTransformFlags.IsScaleXConstant;
             uint NotExistMask = (uint)GfxAnimTransformFlags.IsScaleXInexistent;
@@ -73,7 +73,7 @@ namespace SPICA.Formats.CtrGfx.Animation
 
                 if (Exists)
                 {
-                    GfxFloatKeyFrameGroup FrameGrp = GfxFloatKeyFrameGroup.ReadGroup(ref OutputFile, Deserializer, Constant);
+                    GfxFloatKeyFrameGroup FrameGrp = GfxFloatKeyFrameGroup.ReadGroup(ref outputFile, Deserializer, Constant);
 
                     switch (ElemIndex)
                     {

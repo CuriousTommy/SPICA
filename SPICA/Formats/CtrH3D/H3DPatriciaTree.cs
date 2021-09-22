@@ -25,7 +25,7 @@ namespace SPICA.Formats.CtrH3D
             Names = new List<string>();
         }
 
-        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer)
+        void ICustomSerialization.Deserialize(ref StreamWriter outputFile, BinaryDeserializer Deserializer)
         {
             int MaxIndex = 0;
             int Index = 0;
@@ -34,7 +34,7 @@ namespace SPICA.Formats.CtrH3D
 
             while (Index++ <= MaxIndex)
             {
-                H3DPatriciaTreeNode Node = Deserializer.Deserialize<H3DPatriciaTreeNode>(ref OutputFile);
+                H3DPatriciaTreeNode Node = Deserializer.Deserialize<H3DPatriciaTreeNode>(ref outputFile);
 
                 MaxIndex = Math.Max(MaxIndex, Node.LeftNodeIndex);
                 MaxIndex = Math.Max(MaxIndex, Node.RightNodeIndex);

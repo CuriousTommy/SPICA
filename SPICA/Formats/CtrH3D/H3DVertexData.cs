@@ -16,7 +16,7 @@ namespace SPICA.Formats.CtrH3D
 
         [Ignore] public byte[] RawBuffer;
 
-        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer)
+        void ICustomSerialization.Deserialize(ref StreamWriter outputFile, BinaryDeserializer Deserializer)
         {
             Attributes = new H3DVertexDataAttribute[(byte)Deserializer.Reader.ReadUInt16()];
             Indices = new H3DVertexDataIndices[Deserializer.Reader.ReadUInt16()];
@@ -30,7 +30,7 @@ namespace SPICA.Formats.CtrH3D
 
             for (int Index = 0; Index < Attributes.Length; Index++)
             {
-                Attributes[Index] = Deserializer.Deserialize<H3DVertexDataAttribute>(ref OutputFile);
+                Attributes[Index] = Deserializer.Deserialize<H3DVertexDataAttribute>(ref outputFile);
 
                 if (!Attributes[Index].IsFixed &&
                      Attributes[Index].Offset < BaseAddress)
@@ -63,7 +63,7 @@ namespace SPICA.Formats.CtrH3D
 
             for (int Index = 0; Index < Indices.Length; Index++)
             {
-                Indices[Index] = Deserializer.Deserialize<H3DVertexDataIndices>(ref OutputFile);
+                Indices[Index] = Deserializer.Deserialize<H3DVertexDataIndices>(ref outputFile);
             }
 
             int BufferCount = 0;

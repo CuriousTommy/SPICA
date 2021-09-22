@@ -15,9 +15,9 @@ namespace SPICA.Formats.CtrGfx.Animation
             _Value = new GfxFloatKeyFrameGroup();
         }
 
-        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer)
+        void ICustomSerialization.Deserialize(ref StreamWriter outputFile, BinaryDeserializer Deserializer)
         {
-            GfxAnimVector.SetVector(ref OutputFile, Deserializer, _Value);
+            GfxAnimVector.SetVector(ref outputFile, Deserializer, _Value);
         }
 
         bool ICustomSerialization.Serialize(BinarySerializer Serializer)

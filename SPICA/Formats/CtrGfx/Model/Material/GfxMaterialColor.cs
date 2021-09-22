@@ -37,7 +37,7 @@ namespace SPICA.Formats.CtrGfx.Model.Material
 
         [Ignore] public float Scale;
 
-        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer)
+        void ICustomSerialization.Deserialize(ref StreamWriter outputFile, BinaryDeserializer Deserializer)
         {
             Scale = AmbientF.W;
         }

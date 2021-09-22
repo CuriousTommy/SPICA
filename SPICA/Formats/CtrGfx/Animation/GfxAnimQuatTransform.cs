@@ -26,11 +26,11 @@ namespace SPICA.Formats.CtrGfx.Animation
             Translations = new List<Vector3>();
         }
 
-        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer)
+        void ICustomSerialization.Deserialize(ref StreamWriter outputFile, BinaryDeserializer Deserializer)
         {
             Deserializer.BaseStream.Seek(-0xc, SeekOrigin.Current);
 
-            uint Flags = Deserializer.Reader.ReadUInt32();
+            uint Flags = Deserializer.Reader.ReadUInt32(ref outputFile, "GfxAnimQuatTransform.Deserialize(...) | Flags");
 
             Deserializer.BaseStream.Seek(8, SeekOrigin.Current);
 
@@ -39,9 +39,9 @@ namespace SPICA.Formats.CtrGfx.Animation
             uint ConstantMask = (uint)GfxAnimQuatTransformFlags.IsScaleConstant;
             uint NotExistMask = (uint)GfxAnimQuatTransformFlags.IsScaleInexistent;
 
-            Addresses[1] = Deserializer.ReadPointer();
-            Addresses[2] = Deserializer.ReadPointer();
-            Addresses[0] = Deserializer.ReadPointer();
+            Addresses[1] = Deserializer.ReadPointer(ref outputFile, string.Format("GfxAnimQuatTransform.Deserialize(...) | Addresses[%d]", 1));
+            Addresses[2] = Deserializer.ReadPointer(ref outputFile, string.Format("GfxAnimQuatTransform.Deserialize(...) | Addresses[%d]", 2));
+            Addresses[0] = Deserializer.ReadPointer(ref outputFile, string.Format("GfxAnimQuatTransform.Deserialize(...) | Addresses[%d]", 0));
 
             for (int ElemIndex = 0; ElemIndex < 3; ElemIndex++)
             {
@@ -52,10 +52,10 @@ namespace SPICA.Formats.CtrGfx.Animation
                 {
                     Deserializer.BaseStream.Seek(Addresses[ElemIndex], SeekOrigin.Begin);
 
-                    float StartFrame = Deserializer.Reader.ReadSingle();
-                    float EndFrame = Deserializer.Reader.ReadSingle();
-                    uint CurveRelPtr = Deserializer.Reader.ReadUInt32();
-                    bool IsConstant = Deserializer.Reader.ReadUInt32() != 0;
+                    float StartFrame = Deserializer.Reader.ReadSingle(ref outputFile, "GfxAnimQuatTransform.Deserialize(...) | StartFrame");
+                    float EndFrame = Deserializer.Reader.ReadSingle(ref outputFile, "GfxAnimQuatTransform.Deserialize(...) | EndFrame");
+                    uint CurveRelPtr = Deserializer.Reader.ReadUInt32(ref outputFile, "GfxAnimQuatTransform.Deserialize(...) | CurveRelPtr");
+                    bool IsConstant = Deserializer.Reader.ReadBoolUInt32(ref outputFile, "GfxAnimQuatTransform.Deserialize(...) | IsConstant");
 
                     int Count = IsConstant ? 1 : (int)(EndFrame - StartFrame);
 
@@ -64,19 +64,19 @@ namespace SPICA.Formats.CtrGfx.Animation
                         switch (ElemIndex)
                         {
                             case 0:
-                                Scales.Add(Deserializer.Reader.ReadVector3());
+                                Scales.Add(Deserializer.Reader.ReadVector3(ref outputFile, "GfxAnimQuatTransform.Deserialize(...) |  Scales.Add(Vector3 item)"));
                                 break;
 
                             case 1:
-                                Rotations.Add(Deserializer.Reader.ReadQuaternion());
+                                Rotations.Add(Deserializer.Reader.ReadQuaternion(ref outputFile, "GfxAnimQuatTransform.Deserialize(...) | Rotations.Add(Quaternion item)"));
                                 break;
 
                             case 2:
-                                Translations.Add(Deserializer.Reader.ReadVector3());
+                                Translations.Add(Deserializer.Reader.ReadVector3(ref outputFile, "GfxAnimQuatTransform.Deserialize(...) | Translations.Add(Vector3 item)"));
                                 break;
                         }
 
-                        uint SegmentFlags = Deserializer.Reader.ReadUInt32();
+                        uint SegmentFlags = Deserializer.Reader.ReadUInt32(ref outputFile, "GfxAnimQuatTransform.Deserialize(...) | SegmentFlags");
                     }
                 }
 

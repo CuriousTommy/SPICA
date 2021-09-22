@@ -42,27 +42,27 @@ namespace SPICA.Formats.CtrGfx.Animation
             KeyFrames = new List<KeyFrame>();
         }
 
-        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer)
+        void ICustomSerialization.Deserialize(ref StreamWriter outputFile, BinaryDeserializer Deserializer)
         {
             if ((CurveFlags & KeyFrameCurveFlags.IsConstantValue) != 0)
             {
-                float Value = Deserializer.Reader.ReadSingle();
+                float Value = Deserializer.Reader.ReadSingle(ref outputFile, "GfxFloatKeyFrameGroup.Deserialize(...) | Value");
 
                 KeyFrames.Add(new KeyFrame(0, Value));
 
                 return;
             }
 
-            int CurveCount = Deserializer.Reader.ReadInt32();
+            int CurveCount = Deserializer.Reader.ReadInt32(ref outputFile, "GfxFloatKeyFrameGroup.Deserialize(...) | CurveCount");
 
-            Deserializer.BaseStream.Seek(Deserializer.ReadPointer(), SeekOrigin.Begin);
+            Deserializer.BaseStream.Seek(Deserializer.ReadPointer(ref outputFile, "GfxFloatKeyFrameGroup.Deserialize(...) | Deserializer.BaseStream.Seek(..., long offset)"), SeekOrigin.Begin);
 
-            StartFrame = Deserializer.Reader.ReadSingle();
-            EndFrame = Deserializer.Reader.ReadSingle();
+            StartFrame = Deserializer.Reader.ReadSingle(ref outputFile, "GfxFloatKeyFrameGroup.StartFrame");
+            EndFrame = Deserializer.Reader.ReadSingle(ref outputFile, "GfxFloatKeyFrameGroup.EndFrame");
 
-            uint FormatFlags = Deserializer.Reader.ReadUInt32();
-            int KeysCount = Deserializer.Reader.ReadInt32();
-            float InvDuration = Deserializer.Reader.ReadSingle();
+            uint FormatFlags = Deserializer.Reader.ReadUInt32(ref outputFile, "GfxFloatKeyFrameGroup.Deserialize(...) | FormatFlags");
+            int KeysCount = Deserializer.Reader.ReadInt32(ref outputFile, "GfxFloatKeyFrameGroup.Deserialize(...) | KeysCount");
+            float InvDuration = Deserializer.Reader.ReadSingle(ref outputFile, "GfxFloatKeyFrameGroup.Deserialize(...) | InvDuration");
 
             Quantization = (KeyFrameQuantization)(FormatFlags >> 5);
 
@@ -76,9 +76,9 @@ namespace SPICA.Formats.CtrGfx.Animation
                 Quantization != KeyFrameQuantization.UnifiedHermite96 &&
                 Quantization != KeyFrameQuantization.StepLinear64)
             {
-                ValueScale = Deserializer.Reader.ReadSingle();
-                ValueOffset = Deserializer.Reader.ReadSingle();
-                FrameScale = Deserializer.Reader.ReadSingle();
+                ValueScale = Deserializer.Reader.ReadSingle(ref outputFile, "GfxFloatKeyFrameGroup.Deserialize(...) | ValueScale");
+                ValueOffset = Deserializer.Reader.ReadSingle(ref outputFile, "GfxFloatKeyFrameGroup.Deserialize(...) | ValueOffset");
+                FrameScale = Deserializer.Reader.ReadSingle(ref outputFile, "GfxFloatKeyFrameGroup.Deserialize(...) | FrameScale");
             }
 
             for (int Index = 0; Index < KeysCount; Index++)
@@ -87,14 +87,14 @@ namespace SPICA.Formats.CtrGfx.Animation
 
                 switch (Quantization)
                 {
-                    case KeyFrameQuantization.Hermite128: KF = Deserializer.Reader.ReadHermite128(); break;
-                    case KeyFrameQuantization.Hermite64: KF = Deserializer.Reader.ReadHermite64(); break;
-                    case KeyFrameQuantization.Hermite48: KF = Deserializer.Reader.ReadHermite48(); break;
-                    case KeyFrameQuantization.UnifiedHermite96: KF = Deserializer.Reader.ReadUnifiedHermite96(); break;
-                    case KeyFrameQuantization.UnifiedHermite48: KF = Deserializer.Reader.ReadUnifiedHermite48(); break;
-                    case KeyFrameQuantization.UnifiedHermite32: KF = Deserializer.Reader.ReadUnifiedHermite32(); break;
-                    case KeyFrameQuantization.StepLinear64: KF = Deserializer.Reader.ReadStepLinear64(); break;
-                    case KeyFrameQuantization.StepLinear32: KF = Deserializer.Reader.ReadStepLinear32(); break;
+                    case KeyFrameQuantization.Hermite128: KF = Deserializer.Reader.ReadHermite128(ref outputFile, "GfxFloatKeyFrameGroup.Deserialize(...) | KF (Hermite128)"); break;
+                    case KeyFrameQuantization.Hermite64: KF = Deserializer.Reader.ReadHermite64(ref outputFile, "GfxFloatKeyFrameGroup.Deserialize(...) | KF (Hermite64)"); break;
+                    case KeyFrameQuantization.Hermite48: KF = Deserializer.Reader.ReadHermite48(ref outputFile, "GfxFloatKeyFrameGroup.Deserialize(...) | KF (Hermite48)"); break;
+                    case KeyFrameQuantization.UnifiedHermite96: KF = Deserializer.Reader.ReadUnifiedHermite96(ref outputFile, "GfxFloatKeyFrameGroup.Deserialize(...) | KF (UnifiedHermite96)"); break;
+                    case KeyFrameQuantization.UnifiedHermite48: KF = Deserializer.Reader.ReadUnifiedHermite48(ref outputFile, "GfxFloatKeyFrameGroup.Deserialize(...) | KF (UnifiedHermite48)"); break;
+                    case KeyFrameQuantization.UnifiedHermite32: KF = Deserializer.Reader.ReadUnifiedHermite32(ref outputFile, "GfxFloatKeyFrameGroup.Deserialize(...) | KF (UnifiedHermite32)"); break;
+                    case KeyFrameQuantization.StepLinear64: KF = Deserializer.Reader.ReadStepLinear64(ref outputFile, "GfxFloatKeyFrameGroup.Deserialize(...) | KF (StepLinear64)"); break;
+                    case KeyFrameQuantization.StepLinear32: KF = Deserializer.Reader.ReadStepLinear32(ref outputFile, "GfxFloatKeyFrameGroup.Deserialize(...) | KF (StepLinear32)"); break;
 
                     default: throw new InvalidOperationException($"Invalid Segment quantization {Quantization}!");
                 }
@@ -220,21 +220,21 @@ namespace SPICA.Formats.CtrGfx.Animation
             return true;
         }
 
-        internal static GfxFloatKeyFrameGroup ReadGroup(ref StreamWriter OutputFile, BinaryDeserializer Deserializer, bool Constant)
+        internal static GfxFloatKeyFrameGroup ReadGroup(ref StreamWriter outputFile, BinaryDeserializer Deserializer, bool Constant)
         {
             GfxFloatKeyFrameGroup FrameGrp = new GfxFloatKeyFrameGroup();
 
             if (Constant)
             {
-                FrameGrp.KeyFrames.Add(new KeyFrame(0, Deserializer.Reader.ReadSingle()));
+                FrameGrp.KeyFrames.Add(new KeyFrame(0, Deserializer.Reader.ReadSingle(ref outputFile, "GfxFloatKeyFrameGroup.ReadGroup(...) | KeyFrame(..., float Value)")));
             }
             else
             {
-                uint Address = Deserializer.ReadPointer();
+                uint Address = Deserializer.ReadPointer(ref outputFile, "GfxFloatKeyFrameGroup.ReadGroup(...) | Address");
 
                 Deserializer.BaseStream.Seek(Address, SeekOrigin.Begin);
 
-                FrameGrp = Deserializer.Deserialize<GfxFloatKeyFrameGroup>(ref OutputFile);
+                FrameGrp = Deserializer.Deserialize<GfxFloatKeyFrameGroup>(ref outputFile);
             }
 
             return FrameGrp;

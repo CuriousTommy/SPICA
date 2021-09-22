@@ -62,7 +62,7 @@ namespace SPICA.Formats.CtrH3D
 
         [Ignore] internal byte[] RawBuffer;
 
-        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer)
+        void ICustomSerialization.Deserialize(ref StreamWriter outputFile, BinaryDeserializer Deserializer)
         {
             if (IsFixed)
             {

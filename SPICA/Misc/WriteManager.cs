@@ -10,9 +10,9 @@ namespace SPICA.Misc
             return Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
         }
 
-        public static StreamWriter CreateOutputFile(String OutputFileName)
+        public static StreamWriter CreateoutputFile(String outputFileName)
         {
-            String newFilePath = Path.Combine(getDesktopPath(), OutputFileName);
+            String newFilePath = Path.Combine(getDesktopPath(), outputFileName);
             return new StreamWriter(newFilePath);
         }
     }

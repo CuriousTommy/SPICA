@@ -6,7 +6,7 @@ namespace SPICA.Formats.CtrH3D.Animation
 {
     static class H3DAnimVector
     {
-        public static void SetVector(ref StreamWriter OutputFile, BinaryDeserializer Deserializer, H3DFloatKeyFrameGroup[] Vector)
+        public static void SetVector(ref StreamWriter outputFile, BinaryDeserializer Deserializer, H3DFloatKeyFrameGroup[] Vector)
         {
             uint Flags = Deserializer.Reader.ReadUInt32();
 
@@ -26,7 +26,7 @@ namespace SPICA.Formats.CtrH3D.Animation
 
                 if (Exists)
                 {
-                    Vector[Axis] = H3DFloatKeyFrameGroup.ReadGroup(ref OutputFile, Deserializer, Constant);
+                    Vector[Axis] = H3DFloatKeyFrameGroup.ReadGroup(ref outputFile, Deserializer, Constant);
                 }
 
                 ConstantMask <<= 1;
@@ -34,7 +34,7 @@ namespace SPICA.Formats.CtrH3D.Animation
             }
         }
 
-        public static void SetVector(ref StreamWriter OutputFile, BinaryDeserializer Deserializer, ref H3DFloatKeyFrameGroup Vector)
+        public static void SetVector(ref StreamWriter outputFile, BinaryDeserializer Deserializer, ref H3DFloatKeyFrameGroup Vector)
         {
             H3DAnimVectorFlags Flags = (H3DAnimVectorFlags)Deserializer.Reader.ReadUInt32();
 
@@ -43,7 +43,7 @@ namespace SPICA.Formats.CtrH3D.Animation
 
             if (Exists)
             {
-                Vector = H3DFloatKeyFrameGroup.ReadGroup(ref OutputFile, Deserializer, Constant);
+                Vector = H3DFloatKeyFrameGroup.ReadGroup(ref outputFile, Deserializer, Constant);
             }
         }
 

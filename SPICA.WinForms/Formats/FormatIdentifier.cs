@@ -89,7 +89,7 @@ namespace SPICA.WinForms.Formats
                         if (GFPackage.IsValidPackage(FS))
                         {
                             GFPackage.Header PackHeader = GFPackage.GetPackageHeader(FS);
-                            StreamWriter outputFile = WriteManager.CreateOutputFile("SPICA_FS.txt");
+                            StreamWriter outputFile = WriteManager.CreateoutputFile("SPICA_FS.txt");
 
                             switch (PackHeader.Magic)
                             {
@@ -112,7 +112,7 @@ namespace SPICA.WinForms.Formats
                             switch (MagicNum)
                             {
                                 case 0x15122117:
-                                    outputFile = WriteManager.CreateOutputFile("SPICA_0x15122117.txt");
+                                    outputFile = WriteManager.CreateoutputFile("SPICA_0x15122117.txt");
                                     
                                     Output = new H3D();
                                     Output.Models.Add(new GFModel(ref outputFile, Reader, "Model").ToH3DModel());
@@ -120,7 +120,7 @@ namespace SPICA.WinForms.Formats
                                     break;
 
                                 case 0x15041213:
-                                    outputFile = WriteManager.CreateOutputFile("SPICA_0x15122117.txt");
+                                    outputFile = WriteManager.CreateoutputFile("SPICA_0x15122117.txt");
                                     
                                     Output = new H3D();
                                     Output.Textures.Add(new GFTexture(ref outputFile, Reader).ToH3DTexture());
@@ -128,7 +128,7 @@ namespace SPICA.WinForms.Formats
                                     break;
 
                                 case 0x00010000:
-                                    outputFile = WriteManager.CreateOutputFile("SPICA_0x00010000.txt");
+                                    outputFile = WriteManager.CreateoutputFile("SPICA_0x00010000.txt");
                                     Output = new GFModelPack(ref outputFile, Reader).ToH3D(); break;
 
                                 case 0x00060000:

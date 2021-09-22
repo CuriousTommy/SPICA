@@ -80,13 +80,13 @@ namespace SPICA.Formats.CtrGfx
             using (FileStream Input = new FileStream(FileName, FileMode.Open))
             {
                 BinaryDeserializer Deserializer = new BinaryDeserializer(Input, GetSerializationOptions());
-                StreamWriter OutputFile = WriteManager.CreateOutputFile("Gfx.txt");
+                StreamWriter outputFile = WriteManager.CreateoutputFile("Gfx.txt");
 
-                GfxHeader Header = Deserializer.Deserialize<GfxHeader>(ref OutputFile);
-                Gfx Scene = Deserializer.Deserialize<Gfx>(ref OutputFile);
+                GfxHeader Header = Deserializer.Deserialize<GfxHeader>(ref outputFile);
+                Gfx Scene = Deserializer.Deserialize<Gfx>(ref outputFile);
 
-                OutputFile.Flush();
-                OutputFile.Close();
+                outputFile.Flush();
+                outputFile.Close();
                 return Scene;
             }
         }
@@ -94,13 +94,13 @@ namespace SPICA.Formats.CtrGfx
         public static H3D Open(Stream Input)
         {
             BinaryDeserializer Deserializer = new BinaryDeserializer(Input, GetSerializationOptions());
-            StreamWriter OutputFile = WriteManager.CreateOutputFile("Gfx.txt");
+            StreamWriter outputFile = WriteManager.CreateoutputFile("Gfx.txt");
 
-            GfxHeader Header = Deserializer.Deserialize<GfxHeader>(ref OutputFile);
-            Gfx Scene = Deserializer.Deserialize<Gfx>(ref OutputFile);
+            GfxHeader Header = Deserializer.Deserialize<GfxHeader>(ref outputFile);
+            Gfx Scene = Deserializer.Deserialize<Gfx>(ref outputFile);
 
-            OutputFile.Flush();
-            OutputFile.Close();
+            outputFile.Flush();
+            outputFile.Close();
             return Scene.ToH3D();
         }
 

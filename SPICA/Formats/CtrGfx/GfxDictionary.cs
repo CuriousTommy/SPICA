@@ -1,7 +1,7 @@
 ﻿using SPICA.Formats.Common;
 using SPICA.Serialization;
 using SPICA.Serialization.Attributes;
-
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -36,17 +36,17 @@ namespace SPICA.Formats.CtrGfx
             Values = new List<T>();
         }
 
-        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer)
+        void ICustomSerialization.Deserialize(ref StreamWriter outputFile, BinaryDeserializer Deserializer)
         {
-            uint MagicNumber = Deserializer.Reader.ReadUInt32();
-            uint TreeLength = Deserializer.Reader.ReadUInt32();
-            uint ValuesCount = Deserializer.Reader.ReadUInt32();
+            uint MagicNumber = Deserializer.Reader.ReadUInt32(ref outputFile, "GfxDictionary.Deserialize(...) | MagicNumber");
+            uint TreeLength = Deserializer.Reader.ReadUInt32(ref outputFile, "GfxDictionary.Deserialize(...) | TreeLength");
+            uint ValuesCount = Deserializer.Reader.ReadUInt32(ref outputFile, "GfxDictionary.Deserialize(...) | ValuesCount");
 
             Nodes.Clear();
 
             for (int i = 0; i < ValuesCount + 1; i++)
             {
-                GfxDictionaryNode<T> Node = Deserializer.Deserialize<GfxDictionaryNode<T>>(ref OutputFile);
+                GfxDictionaryNode<T> Node = Deserializer.Deserialize<GfxDictionaryNode<T>>(ref outputFile);
 
                 if (Nodes.Count > 0) Values.Add(Node.Value);
 

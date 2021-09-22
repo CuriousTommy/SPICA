@@ -16,7 +16,7 @@ namespace SPICA.Formats.CtrGfx.Model.Material
 
         [Inline, FixedLength(2)] private uint[] FaceCullingCommand;
 
-        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer) { }
+        void ICustomSerialization.Deserialize(ref StreamWriter outputFile, BinaryDeserializer Deserializer) { }
 
         bool ICustomSerialization.Serialize(BinarySerializer Serializer)
         {

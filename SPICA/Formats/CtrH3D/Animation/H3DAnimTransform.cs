@@ -55,7 +55,7 @@ namespace SPICA.Formats.CtrH3D.Animation
             _TranslationZ = new H3DFloatKeyFrameGroup();
         }
 
-        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer)
+        void ICustomSerialization.Deserialize(ref StreamWriter outputFile, BinaryDeserializer Deserializer)
         {
             long Position = Deserializer.BaseStream.Position;
 
@@ -73,7 +73,7 @@ namespace SPICA.Formats.CtrH3D.Animation
 
                 if (Exists)
                 {
-                    H3DFloatKeyFrameGroup FrameGrp = H3DFloatKeyFrameGroup.ReadGroup(ref OutputFile, Deserializer, Constant);
+                    H3DFloatKeyFrameGroup FrameGrp = H3DFloatKeyFrameGroup.ReadGroup(ref outputFile, Deserializer, Constant);
 
                     switch (ElemIndex)
                     {

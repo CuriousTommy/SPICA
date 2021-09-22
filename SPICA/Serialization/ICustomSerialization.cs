@@ -4,7 +4,7 @@ namespace SPICA.Serialization
 {
     interface ICustomSerialization
     {
-        void Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer);
+        void Deserialize(ref StreamWriter outputFile, BinaryDeserializer Deserializer);
         bool Serialize(BinarySerializer Serializer);
     }
 }

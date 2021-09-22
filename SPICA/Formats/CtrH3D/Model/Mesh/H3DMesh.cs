@@ -174,9 +174,9 @@ namespace SPICA.Formats.CtrH3D.Model.Mesh
             return VerticesConverter.GetVertices(this);
         }
 
-        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer)
+        void ICustomSerialization.Deserialize(ref StreamWriter outputFile, BinaryDeserializer Deserializer)
         {
-            PICACommandReader Reader = new PICACommandReader(EnableCommands);
+            PICACommandReader Reader = new PICACommandReader(EnableCommands, ref outputFile);
 
             uint BufferAddress = 0;
             ulong BufferFormats = 0;

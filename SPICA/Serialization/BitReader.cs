@@ -19,7 +19,7 @@ namespace SPICA.Serialization
         {
             if ((Index++ & 0x1f) == 0)
             {
-                Bools = Reader.ReadUInt32(ref outputFile);
+                Bools = Reader.ReadUInt32(ref outputFile, "BitReader.Bools");
             }
 
             bool Value = (Bools & 1) != 0;

@@ -20,9 +20,9 @@ namespace SPICA.Formats.CtrGfx.Animation
             };
         }
 
-        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer)
+        void ICustomSerialization.Deserialize(ref StreamWriter outputFile, BinaryDeserializer Deserializer)
         {
-            GfxAnimVector.SetVector(ref OutputFile, Deserializer, Vector);
+            GfxAnimVector.SetVector(ref outputFile, Deserializer, Vector);
         }
 
         bool ICustomSerialization.Serialize(BinarySerializer Serializer)

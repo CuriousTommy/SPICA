@@ -30,7 +30,7 @@ namespace SPICA.Formats.CtrH3D.Animation
             Translations = new List<Vector3>();
         }
 
-        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer)
+        void ICustomSerialization.Deserialize(ref StreamWriter outputFile, BinaryDeserializer Deserializer)
         {
             uint[] Addresses = new uint[3];
 

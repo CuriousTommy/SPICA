@@ -29,9 +29,9 @@ namespace SPICA.Serialization
             ListObjs = new Dictionary<long, object>();
         }
 
-        public T Deserialize<T>(ref StreamWriter OutputFile)
+        public T Deserialize<T>(ref StreamWriter outputFile)
         {
-            return (T)ReadValue(ref OutputFile, typeof(T));
+            return (T)ReadValue(ref outputFile, typeof(T));
         }
 
         private object ReadValue(ref StreamWriter outputFile, Type Type, bool IsRef = false)
@@ -99,7 +99,7 @@ namespace SPICA.Serialization
 
         private IList ReadList(ref StreamWriter outputFile, Type Type)
         {
-            return ReadList(ref outputFile, Type, false, Reader.ReadInt32());
+            return ReadList(ref outputFile, Type, false, Reader.ReadInt32(ref outputFile, "BinaryDeserializer.ReadList(..., int Length)"));
         }
 
         private IList ReadList(ref StreamWriter outputFile, Type Type, FieldInfo Info)
@@ -108,7 +108,7 @@ namespace SPICA.Serialization
                 ref outputFile,
                 Type,
                 Info.IsDefined(typeof(RangeAttribute)),
-                Info.GetCustomAttribute<FixedLengthAttribute>()?.Length ?? Reader.ReadInt32(ref outputFile));
+                Info.GetCustomAttribute<FixedLengthAttribute>()?.Length ?? Reader.ReadInt32(ref outputFile, "BinaryDeserializer.ReadList(..., int Length)"));
         }
 
         private IList ReadList(ref StreamWriter outputFile, Type Type, bool Range, int Length)
@@ -185,24 +185,11 @@ namespace SPICA.Serialization
             return List;
         }
 
-        private string ReadString(ref StreamWriter outputFile)
-        {
-            StringBuilder SB = new StringBuilder();
-            long position = outputFile.BaseStream.Position;
-
-            for (char Chr; (Chr = Reader.ReadChar()) != '\0';)
-            {
-                SB.Append(Chr);
-            }
-
-            outputFile.WriteLine(String.Format("{0} | STRING: {1}", position, SB.ToString()));
-            return SB.ToString();
-        }
-
         private object ReadObject(ref StreamWriter outputFile, Type ObjectType, bool IsRef = false)
         {
             long Position = BaseStream.Position;
             outputFile.WriteLine(String.Format("Type: {1} | {0}", Position, ObjectType.FullName));
+            outputFile.Flush();
 
             if (ObjectType.IsDefined(typeof(TypeChoiceAttribute)))
             {
@@ -276,7 +263,12 @@ namespace SPICA.Serialization
                         FieldValue = ReadReference(ref outputFile, Type, Info);
                     }
 
-                    if (FieldValue != null) Info.SetValue(Value, FieldValue);
+                    if (FieldValue != null)
+                    {
+                        outputFile.WriteLine(String.Format("{0}.{1} = {2}", ObjectType.Name, Info.Name, FieldValue));
+                        outputFile.Flush();
+                        Info.SetValue(Value, FieldValue);
+                    }
 
                     Align(Info.GetCustomAttribute<PaddingAttribute>()?.Size ?? 1);
                 }
@@ -287,7 +279,10 @@ namespace SPICA.Serialization
                 Debug.WriteLine($"[SPICA|BinaryDeserializer] Class {ObjectType.FullName} has no accessible fields!");
             }
 
-            if (Value is ICustomSerialization) ((ICustomSerialization)Value).Deserialize(ref outputFile, this);
+            if (Value is ICustomSerialization)
+            {
+                ((ICustomSerialization)Value).Deserialize(ref outputFile, this);
+            }
 
             return Value;
         }
@@ -305,20 +300,20 @@ namespace SPICA.Serialization
             return null;
         }
 
-        private object ReadReference(ref StreamWriter output_file, Type Type, FieldInfo Info = null)
+        private object ReadReference(ref StreamWriter outputFile, Type Type, FieldInfo Info = null)
         {
             uint Address;
             int Length;
 
             if (GetLengthPos(Info) == LengthPos.AfterPtr)
             {
-                Address = ReadPointer();
-                Length = ReadLength(Type, Info);
+                Address = ReadPointer(ref outputFile);
+                Length = ReadLength(ref outputFile, Type, Info);
             }
             else
             {
-                Length = ReadLength(Type, Info);
-                Address = ReadPointer();
+                Length = ReadLength(ref outputFile, Type, Info);
+                Address = ReadPointer(ref outputFile);
             }
 
             bool Range = Info?.IsDefined(typeof(RangeAttribute)) ?? false;
@@ -337,8 +332,8 @@ namespace SPICA.Serialization
                     BaseStream.Seek(Address, SeekOrigin.Begin);
 
                     Value = IsList(Type)
-                        ? ReadList(ref output_file, Type, Range, Length)
-                        : ReadValue(ref output_file, Type, true);
+                        ? ReadList(ref outputFile, Type, Range, Length)
+                        : ReadValue(ref outputFile, Type, true);
 
                     BaseStream.Seek(Position, SeekOrigin.Begin);
                 }
@@ -347,7 +342,7 @@ namespace SPICA.Serialization
             return Value;
         }
 
-        private int ReadLength(Type Type, FieldInfo Info = null)
+        private int ReadLength(ref StreamWriter outputFile, Type Type, FieldInfo Info = null)
         {
             if (IsList(Type))
             {
@@ -357,21 +352,25 @@ namespace SPICA.Serialization
                 }
                 else if (GetLengthSize(Info) == LengthSize.Short)
                 {
-                    return Reader.ReadUInt16();
+                    return Reader.ReadUInt16(ref outputFile, "BinaryDeserializer.ReadLength(...) /* uint16 */");
                 }
                 else
                 {
-                    return Reader.ReadInt32();
+                    return Reader.ReadInt32(ref outputFile, "BinaryDeserializer.ReadLength(...) /* int32 */");
                 }
             }
 
             return 0;
         }
 
-        public uint ReadPointer()
+        public uint ReadPointer(ref StreamWriter outputFile, String classRef = "")
         {
-            uint Address = Reader.ReadUInt32();
+            if (classRef.Equals(""))
+            {
+                classRef = "BinaryDeserializer.ReadPointer(...) | Address";
+            }
 
+            uint Address = Reader.ReadUInt32(ref outputFile, classRef);
             if (Options.PtrType == PointerType.SelfRelative && Address != 0)
             {
                 Address += (uint)BaseStream.Position - 4;

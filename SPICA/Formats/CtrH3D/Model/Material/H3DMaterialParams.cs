@@ -266,11 +266,11 @@ namespace SPICA.Formats.CtrH3D.Model.Material
             throw new ArgumentOutOfRangeException(nameof(Stage));
         }
 
-        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer)
+        void ICustomSerialization.Deserialize(ref StreamWriter outputFile, BinaryDeserializer Deserializer)
         {
             PICACommandReader Reader;
 
-            Reader = new PICACommandReader(LUTConfigCommands);
+            Reader = new PICACommandReader(LUTConfigCommands, ref outputFile);
 
             while (Reader.HasCommand)
             {
@@ -286,7 +286,7 @@ namespace SPICA.Formats.CtrH3D.Model.Material
                 }
             }
 
-            Reader = new PICACommandReader(FragmentShaderCommands);
+            Reader = new PICACommandReader(FragmentShaderCommands, ref outputFile);
 
             while (Reader.HasCommand)
             {

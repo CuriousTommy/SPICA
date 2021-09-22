@@ -92,14 +92,14 @@ namespace SPICA.Formats.CtrH3D
         {
             //Please note that data should be on Memory when opening because addresses are relocated.
             //Otherwise the original file would be corrupted!
-            StreamWriter OutputFile = WriteManager.CreateOutputFile("H3D.txt");
+            StreamWriter outputFile = WriteManager.CreateoutputFile("H3D.txt");
             BinaryDeserializer Deserializer = new BinaryDeserializer(MS, GetSerializationOptions());
 
-            H3DHeader Header = Deserializer.Deserialize<H3DHeader>(ref OutputFile);
+            H3DHeader Header = Deserializer.Deserialize<H3DHeader>(ref outputFile);
 
             new H3DRelocator(MS, Header).ToAbsolute();
 
-            H3D Scene = Deserializer.Deserialize<H3D>(ref OutputFile);
+            H3D Scene = Deserializer.Deserialize<H3D>(ref outputFile);
 
             Scene.BackwardCompatibility = Header.BackwardCompatibility;
             Scene.ForwardCompatibility = Header.ForwardCompatibility;
@@ -245,7 +245,7 @@ namespace SPICA.Formats.CtrH3D
             }
         }
 
-        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer) { }
+        void ICustomSerialization.Deserialize(ref StreamWriter outputFile, BinaryDeserializer Deserializer) { }
 
         bool ICustomSerialization.Serialize(BinarySerializer Serializer)
         {

@@ -5,9 +5,9 @@ namespace SPICA.Formats.Common
 {
     static class KeyFrameQuantizationHelper
     {
-        private const float FP_1_7_8 = 1f / 256;
-        private const float FP_1_6_5 = 1f / 32;
-        private const float FP_1_10_5 = 1f / 32;
+        public const float FP_1_7_8 = 1f / 256;
+        public const float FP_1_6_5 = 1f / 32;
+        public const float FP_1_10_5 = 1f / 32;
 
         //Read
         public static KeyFrame ReadHermite128(this BinaryReader Reader)

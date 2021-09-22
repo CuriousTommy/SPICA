@@ -47,7 +47,7 @@ namespace SPICA.Formats.CtrGfx.LUT
             _Table = new float[256];
         }
 
-        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer)
+        void ICustomSerialization.Deserialize(ref StreamWriter outputFile, BinaryDeserializer Deserializer)
         {
             uint[] Commands = new uint[RawCommands.Length >> 2];
 
@@ -62,7 +62,7 @@ namespace SPICA.Formats.CtrGfx.LUT
 
             uint Index = 0;
 
-            PICACommandReader Reader = new PICACommandReader(Commands);
+            PICACommandReader Reader = new PICACommandReader(Commands, ref outputFile);
 
             while (Reader.HasCommand)
             {

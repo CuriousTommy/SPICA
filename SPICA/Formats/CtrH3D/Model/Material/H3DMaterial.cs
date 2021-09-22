@@ -136,9 +136,9 @@ namespace SPICA.Formats.CtrH3D.Model.Material
             EnabledTextures = new bool[4];
         }
 
-        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer)
+        void ICustomSerialization.Deserialize(ref StreamWriter outputFile, BinaryDeserializer Deserializer)
         {
-            PICACommandReader Reader = new PICACommandReader(TextureCommands);
+            PICACommandReader Reader = new PICACommandReader(TextureCommands, ref outputFile);
 
             while (Reader.HasCommand)
             {

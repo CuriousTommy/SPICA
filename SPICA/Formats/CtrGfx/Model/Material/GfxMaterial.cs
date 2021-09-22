@@ -65,7 +65,7 @@ namespace SPICA.Formats.CtrGfx.Model.Material
             ShaderParameters = new List<GfxShaderParam>();
         }
 
-        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer) { }
+        void ICustomSerialization.Deserialize(ref StreamWriter outputFile, BinaryDeserializer Deserializer) { }
 
         bool ICustomSerialization.Serialize(BinarySerializer Serializer)
         {

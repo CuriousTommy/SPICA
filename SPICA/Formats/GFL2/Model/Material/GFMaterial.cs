@@ -227,7 +227,7 @@ namespace SPICA.Formats.GFL2.Model.Material
                 Commands[Index] = Reader.ReadUInt32(ref outputFile);
             }
 
-            PICACommandReader CmdReader = new PICACommandReader(Commands);
+            PICACommandReader CmdReader = new PICACommandReader(Commands, ref outputFile);
 
             while (CmdReader.HasCommand)
             {

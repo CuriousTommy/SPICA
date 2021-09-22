@@ -33,7 +33,7 @@ namespace SPICA.Formats.CtrH3D
 
         [Ignore] public ushort[] Indices;
 
-        void ICustomSerialization.Deserialize(ref StreamWriter OutputFile, BinaryDeserializer Deserializer)
+        void ICustomSerialization.Deserialize(ref StreamWriter outputFile, BinaryDeserializer Deserializer)
         {
             bool Is16Bits = Type == 1;
             uint Address = Deserializer.Reader.ReadUInt32();
